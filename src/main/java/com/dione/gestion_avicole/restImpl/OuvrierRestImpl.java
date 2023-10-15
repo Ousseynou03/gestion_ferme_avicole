@@ -1,46 +1,41 @@
 package com.dione.gestion_avicole.restImpl;
 
-import com.dione.gestion_avicole.POJO.Batiment;
+import com.dione.gestion_avicole.POJO.Ouvrier;
 import com.dione.gestion_avicole.constents.AvicoleConstants;
-import com.dione.gestion_avicole.rest.BatimentRest;
-import com.dione.gestion_avicole.service.BatimentService;
+import com.dione.gestion_avicole.rest.OuvrierRest;
+import com.dione.gestion_avicole.service.OuvrierSerice;
 import com.dione.gestion_avicole.utils.AvicoleUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 @RestController
-public class BatimentRestImpl implements BatimentRest {
+public class OuvrierRestImpl implements OuvrierRest {
 
-    private BatimentService batimentService;
+    private OuvrierSerice ouvrierSerice;
 
-    public BatimentRestImpl(BatimentService batimentService) {
-        this.batimentService = batimentService;
+    public OuvrierRestImpl(OuvrierSerice ouvrierSerice) {
+        this.ouvrierSerice = ouvrierSerice;
     }
 
-
     @Override
-    public ResponseEntity<String> ajoutBatiment(Map<String, String> requestMap) {
+    public ResponseEntity<String> ajoutOuvrier(Map<String, String> requestMap) {
         try {
-            return batimentService.ajoutBatiment(requestMap);
+            return ouvrierSerice.ajoutOuvrier(requestMap);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
     @Override
-    public ResponseEntity<List<Batiment>> getAllBatiment() {
+    public ResponseEntity<List<Ouvrier>> getAllOuvrier() {
         try {
-            return batimentService.getAllBatiment();
+            return ouvrierSerice.getAllOuvrier();
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -48,9 +43,9 @@ public class BatimentRestImpl implements BatimentRest {
     }
 
     @Override
-    public ResponseEntity<String> updateBatiment(Map<String, String> requestMap) {
+    public ResponseEntity<String> updateOuvrier(Map<String, String> requestMap) {
         try {
-            return batimentService.updateBatiment(requestMap);
+            return ouvrierSerice.updateOuvrier(requestMap);
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -58,13 +53,12 @@ public class BatimentRestImpl implements BatimentRest {
     }
 
     @Override
-    public ResponseEntity<String> deleteBatiment(Integer id) {
+    public ResponseEntity<String> deleteOuvrier(Integer id) {
         try {
-            return batimentService.deleteBatiment(id);
+            return ouvrierSerice.deleteOuvrier(id);
         }catch (Exception ex){
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 }

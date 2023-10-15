@@ -55,6 +55,7 @@ public class BatimentServiceImpl implements BatimentService {
         }
         batiment.setCode(requestMap.get("code"));
         batiment.setDesignation(requestMap.get("designation"));
+        batiment.setCapacite(requestMap.get("capacite"));
         batiment.setDimension(requestMap.get("dimension"));
         return batiment;
     }

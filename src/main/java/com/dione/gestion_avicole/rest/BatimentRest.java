@@ -12,7 +12,7 @@ import java.util.Map;
 public interface BatimentRest {
 
     @PostMapping("/add")
-    ResponseEntity<String> ajoutBatiment(Map<String, String> requestMap);
+    ResponseEntity<String> ajoutBatiment(@RequestBody(required = true) Map<String, String> requestMap);
 
     @GetMapping("/all")
     ResponseEntity<List<Batiment>> getAllBatiment();
