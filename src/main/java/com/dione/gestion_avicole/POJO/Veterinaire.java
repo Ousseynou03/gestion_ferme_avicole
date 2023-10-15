@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @DynamicUpdate
 @DynamicInsert
@@ -14,25 +15,19 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Materiel {
+public class Veterinaire {
 
     private static final Long serialVersionUID=1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
-    private String designation;
-    private String quantite;
-    //Un métieriel se trouve dans un et un seul batiment
+    private Date date;
+    private String nomVeterinaire;
+    private String traitement;
+    private String posologie;
+
     @ManyToOne
-    @JoinColumn(name = "batiment_id_materiel")
-    private Batiment batiment;
-
-//Un materiel est fournit par un seul fournisseur
-    @ManyToOne
-    @JoinColumn(name = "fournisseur_id_materiel")
-    private Fournisseur fournisseur;
-
-
-
+    //@JoinColumn(name = "bande_id_veto")
+    private Bande bande;
 }

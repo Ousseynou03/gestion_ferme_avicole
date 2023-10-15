@@ -1,5 +1,6 @@
 package com.dione.gestion_avicole.POJO;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.List;
 
 @DynamicUpdate
 @DynamicInsert
@@ -14,25 +16,18 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Materiel {
+public class Fournisseur {
 
     private static final Long serialVersionUID=1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-    private String designation;
-    private String quantite;
-    //Un métieriel se trouve dans un et un seul batiment
-    @ManyToOne
-    @JoinColumn(name = "batiment_id_materiel")
-    private Batiment batiment;
-
-//Un materiel est fournit par un seul fournisseur
-    @ManyToOne
-    @JoinColumn(name = "fournisseur_id_materiel")
-    private Fournisseur fournisseur;
-
-
-
+    private String type;
+    private String nom;
+    private String numTel;
+    private String email;
+    //Un fournisseur peur fournir plusieurs matériels
+    @OneToMany(mappedBy = "fournisseur")
+    private List<Materiel> materiels;
 }

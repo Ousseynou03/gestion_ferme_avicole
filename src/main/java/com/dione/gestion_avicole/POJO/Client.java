@@ -1,5 +1,6 @@
 package com.dione.gestion_avicole.POJO;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,25 +15,18 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Materiel {
+public class Client {
 
     private static final Long serialVersionUID=1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
-    private String designation;
-    private String quantite;
-    //Un métieriel se trouve dans un et un seul batiment
+    private String nom;
+    private String ville;
+    private String numTel;
+
     @ManyToOne
-    @JoinColumn(name = "batiment_id_materiel")
-    private Batiment batiment;
-
-//Un materiel est fournit par un seul fournisseur
-    @ManyToOne
-    @JoinColumn(name = "fournisseur_id_materiel")
-    private Fournisseur fournisseur;
-
-
-
+    @JoinColumn(name = "vente_id_client")
+    private Vente vente;
 }

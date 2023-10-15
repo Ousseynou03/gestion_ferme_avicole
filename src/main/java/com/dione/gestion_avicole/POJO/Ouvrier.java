@@ -25,5 +25,6 @@ public class Ouvrier {
     private String nom;
     private String numTel;
     private String ville;
+    private double salaire;
 
 }
