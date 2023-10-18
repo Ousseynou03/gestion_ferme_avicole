@@ -1,5 +1,6 @@
 package com.dione.gestion_avicole.POJO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,12 +36,15 @@ public class Bande {
     private Batiment batiment;
 
     @OneToMany(mappedBy = "bande")
+    @JsonIgnore
     private List<Vente> ventes;
 
     @OneToMany(mappedBy = "bande")
+    @JsonIgnore
     private List<Mortalite> mortalites;
 
     @OneToMany(mappedBy = "bande")
+    @JsonIgnore
     private List<Veterinaire> veterinaires;
 
 }

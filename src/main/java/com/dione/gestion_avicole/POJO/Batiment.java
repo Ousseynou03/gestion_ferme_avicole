@@ -1,5 +1,6 @@
 package com.dione.gestion_avicole.POJO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,20 +37,24 @@ public class Batiment {
 
 //Un batiment à plusieurs matériels
     @OneToMany(mappedBy = "batiment")
+    @JsonIgnore
     private List<Materiel> materiels;
 
 
     //On peut stocker plusieurs nutritions dans un batiment
     @OneToMany(mappedBy = "batiment")
+    @JsonIgnore
     private List<Nutrition> nutritions;
 
 
 
     @OneToMany(mappedBy = "batiment")
+    @JsonIgnore
     private List<PonteOueuf> ponteOueufs;
 
 //Dans un batiment, on a plusieurs bande
     @OneToMany(mappedBy = "batiment")
+    @JsonIgnore
     private List<Bande> bandes;
 
 }

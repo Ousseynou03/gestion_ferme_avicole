@@ -44,19 +44,23 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
         log.info("Inside signup {}", requestMap);
         try {
-        if (validateUserSignUp(requestMap)){
-            User user = userDao.findEmailById(requestMap.get("email"));
-            if (Objects.isNull(user)){ //Cela signifie que si nous trouvons pas d'email, seul l'objet user ici sera nul
+            if (jwtFilter.isAdmin()){
+                if (validateUserSignUp(requestMap)){
+                    User user = userDao.findEmailById(requestMap.get("email"));
+                    if (Objects.isNull(user)){ //Cela signifie que si nous trouvons pas d'email, seul l'objet user ici sera nul
 
-                userDao.save(getUserFromMap(requestMap));
+                        userDao.save(getUserFromMap(requestMap));
 
-                return AvicoleUtils.getResponseEntity("Successfully Registered.", HttpStatus.CREATED);
+                        return AvicoleUtils.getResponseEntity("Successfully Registered.", HttpStatus.CREATED);
+                    }else {
+                        return AvicoleUtils.getResponseEntity("Email already exist", HttpStatus.BAD_REQUEST);
+                    }
+                }else {
+                    return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+                }
             }else {
-                return AvicoleUtils.getResponseEntity("Email already exist", HttpStatus.BAD_REQUEST);
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
             }
-        }else {
-            return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
-        }
     }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -66,7 +70,7 @@ public class UserServiceImpl implements UserService {
     //Méthode de connexion d'un user
     @Override
     public ResponseEntity<String> login(Map<String, String> requestMap) {
-       log.info("Inside login");
+       log.info("Inside login : ", requestMap);
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password"))
         );
@@ -106,6 +110,7 @@ public class UserServiceImpl implements UserService {
         user.setName(requestMap.get("name"));
         user.setContactNumber(requestMap.get("contactNumber"));
         user.setEmail(requestMap.get("email"));
+       // user.setPassword(passwordEncoder.encode(requestMap.get("password")));
         user.setPassword(passwordEncoder.encode(requestMap.get("password")));
         user.setStatus("true");
         user.setRole("user");
