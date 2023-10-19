@@ -2,6 +2,7 @@ package com.dione.gestion_avicole.POJO;
 
 
 import com.dione.gestion_avicole.POJO.enums.Description;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,8 +34,8 @@ public class Vente {
     }
     private Description description;
 
-    @OneToMany(mappedBy = "vente")
-    private List<Client> clients;
+    @ManyToOne
+    private Client client;
 
 
     @ManyToOne

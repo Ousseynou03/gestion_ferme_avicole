@@ -60,7 +60,16 @@ public class BandeServiceImpl implements BandeService {
         }
         bande.setCode(requestMap.get("code"));
         bande.setDesignation(requestMap.get("designation"));
-        bande.setEffectifdepart(requestMap.get("effectifdepart"));
+
+        // Validation et ajout de effectifdepart
+        if (requestMap.containsKey("effectifdepart")) {
+            try {
+                double effectifDepart = Double.parseDouble(requestMap.get("effectifdepart"));
+                bande.setEffectifdepart(effectifDepart);
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+            }
+        }
 
         // Ajout de la dateDebut et dateFin
         if (requestMap.containsKey("dateDebut") && requestMap.containsKey("dateFin")) {
@@ -74,6 +83,7 @@ public class BandeServiceImpl implements BandeService {
                 ex.printStackTrace();
             }
         }
+
         // Validation de la relation "batiment"
         if (requestMap.containsKey("batiment")) {
             try {
@@ -86,6 +96,7 @@ public class BandeServiceImpl implements BandeService {
         }
         return bande;
     }
+
 
 
 

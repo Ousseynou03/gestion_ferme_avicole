@@ -2,10 +2,7 @@ package com.dione.gestion_avicole.rest;
 
 import com.dione.gestion_avicole.POJO.Mortalite;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -18,4 +15,10 @@ public interface MoratliteRest {
 
     @GetMapping("/all")
     ResponseEntity<List<Mortalite>> getAllMortalite();
+
+    @PostMapping("/update")
+    ResponseEntity<String> updateMortalite(@RequestBody(required = true) Map<String, String> requestMap);
+
+    @DeleteMapping("delete/{id}")
+    ResponseEntity<String> deleteMortalite(@PathVariable Integer id);
 }

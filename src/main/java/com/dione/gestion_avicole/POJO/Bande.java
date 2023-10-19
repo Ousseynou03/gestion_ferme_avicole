@@ -28,7 +28,7 @@ public class Bande {
     private String designation;
     private Date dateDebut;
     private Date dateFin;
-    private String effectifdepart;
+    private double effectifdepart;
 
 
     @ManyToOne

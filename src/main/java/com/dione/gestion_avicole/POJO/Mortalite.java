@@ -23,7 +23,7 @@ public class Mortalite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String effectif;
+    private double effectif;
     private Date dateMortalite;
     private String description;
 

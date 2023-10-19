@@ -22,7 +22,7 @@ public class PonteOueuf {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String designation;
-    private String quantite;
+    private double quantite;
 
 
     @ManyToOne

@@ -22,7 +22,7 @@ public class Materiel {
     @Column(name = "id")
     private Integer id;
     private String designation;
-    private String quantite;
+    private double quantite;
     //Un métieriel se trouve dans un et un seul batiment
     @ManyToOne
     @JoinColumn(name = "batiment_id_materiel")

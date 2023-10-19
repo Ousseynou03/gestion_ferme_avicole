@@ -28,6 +28,6 @@ public class Veterinaire {
     private String posologie;
 
     @ManyToOne
-    //@JoinColumn(name = "bande_id_veto")
+    @JoinColumn(name = "bande_id_veto")
     private Bande bande;
 }

@@ -41,4 +41,24 @@ public class MortaliteRestImpl implements MoratliteRest {
         }
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public ResponseEntity<String> updateMortalite(Map<String, String> requestMap) {
+        try {
+            return mortaliteService.updateMortalite(requestMap);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> deleteMortalite(Integer id) {
+        try {
+            return mortaliteService.deleteMortalite(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

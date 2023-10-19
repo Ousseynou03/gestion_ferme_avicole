@@ -54,8 +54,16 @@ public class OuvrierServiceImpl implements OuvrierSerice {
         }
         ouvrier.setNom(requestMap.get("nom"));
         ouvrier.setFonction(requestMap.get("fonction"));
-        ouvrier.setNumTel("numTel");
+        ouvrier.setNumTel(requestMap.get("numTel"));
         ouvrier.setVille(requestMap.get("ville"));
+        if (requestMap.containsKey("salaire")) {
+            try {
+                double salaire = Double.parseDouble(requestMap.get("salaire"));
+                ouvrier.setSalaire(salaire);
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+            }
+        }
         return ouvrier;
     }
 

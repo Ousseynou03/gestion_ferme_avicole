@@ -1,6 +1,7 @@
 package com.dione.gestion_avicole.POJO;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.List;
 
 @DynamicUpdate
 @DynamicInsert
@@ -26,7 +28,7 @@ public class Client {
     private String ville;
     private String numTel;
 
-    @ManyToOne
-    @JoinColumn(name = "vente_id_client")
-    private Vente vente;
+    @OneToMany(mappedBy = "client")
+    @JsonIgnore
+    private List<Vente> ventes;
 }
