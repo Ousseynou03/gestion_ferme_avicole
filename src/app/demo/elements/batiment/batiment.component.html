@@ -1,81 +1,51 @@
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-custom-purple" data-mdb-toggle="modal" data-mdb-target="#exampleModal">
-  Ajouter un Batiment
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <!-- 2 column grid layout with text inputs for the first and last names -->
-          <div class="row mb-4">
-            <div class="col">
-              <div class="form-outline">
-                <input type="text" id="form6Example1" class="form-control" />
-                <label class="form-label" for="form6Example1">First name</label>
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Ajouter un batiment
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Nouveau Batiment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="cards">
+            <div class="card-bodi">
+              <div class="card-header">
+                <span>Enregistrement d'un Batiment</span>
               </div>
+              <form (ngSubmit)="addBatiment()">
+                <div>
+                  <label></label>
+                  <input placeholder="Code" type="text" [(ngModel)]="batiment.code" name="code" required >
+                </div>
+                <div>
+                  <label></label>
+                  <input placeholder="Designation" type="text" [(ngModel)]="batiment.designation" name="designation" required>
+                </div>
+                <div>
+                  <label></label>
+                  <input placeholder="Capacite" type="text" [(ngModel)]="batiment.capacite" name="Capacite" required>
+                </div>
+                <div>
+                  <label>
+                  </label>
+                  <input placeholder="Dimension" type="text" [(ngModel)]="batiment.dimension" name="dimension" required>
+                </div>
+                <button type="submit">Enregistrer</button>
+              </form>
             </div>
-            <div class="col">
-              <div class="form-outline">
-                <input type="text" id="form6Example2" class="form-control" />
-                <label class="form-label" for="form6Example2">Last name</label>
-              </div>
-            </div>
           </div>
-        
-          <!-- Text input -->
-          <div class="form-outline mb-4">
-            <input type="text" id="form6Example3" class="form-control" />
-            <label class="form-label" for="form6Example3">Company name</label>
-          </div>
-        
-          <!-- Text input -->
-          <div class="form-outline mb-4">
-            <input type="text" id="form6Example4" class="form-control" />
-            <label class="form-label" for="form6Example4">Address</label>
-          </div>
-        
-          <!-- Email input -->
-          <div class="form-outline mb-4">
-            <input type="email" id="form6Example5" class="form-control" />
-            <label class="form-label" for="form6Example5">Email</label>
-          </div>
-        
-          <!-- Number input -->
-          <div class="form-outline mb-4">
-            <input type="number" id="form6Example6" class="form-control" />
-            <label class="form-label" for="form6Example6">Phone</label>
-          </div>
-        
-          <!-- Message input -->
-          <div class="form-outline mb-4">
-            <textarea class="form-control" id="form6Example7" rows="4"></textarea>
-            <label class="form-label" for="form6Example7">Additional information</label>
-          </div>
-        
-          <!-- Checkbox -->
-          <div class="form-check d-flex justify-content-center mb-4">
-            <input class="form-check-input me-2" type="checkbox" value="" id="form6Example8" checked />
-            <label class="form-check-label" for="form6Example8"> Create an account? </label>
-          </div>
-        
-          <!-- Submit button -->
-          <button type="submit" class="btn btn-primary btn-block mb-4">Place order</button>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 
 <!-- Liste des batiments -->
@@ -83,6 +53,7 @@
 <table class="table table-striped">
   <thead>
     <tr>
+      <th scope="col">N°</th>
       <th scope="col">Code</th>
       <th scope="col">Designation</th>
       <th scope="col">Capacite</th>
@@ -92,12 +63,70 @@
   </thead>
   <tbody>
      <tr *ngFor="let batiment of batiments">
+      <td>{{ batiment.id }}</td>
       <td>{{ batiment.code }}</td>
       <td>{{ batiment.designation }}</td>
       <td>{{ batiment.capacite }}</td>
       <td>{{ batiment.dimension }}</td>
-            <td><i class="fas fa-edit"></i>
-        <i class="fas fa-trash-alt"></i></td>
+      <td>
+        <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn btn-link text-danger" (click)="deleteBatiment(batiment.id)">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </td>
     </tr>
   </tbody>
 </table>
+
+
+<!--
+  //Modification
+-->
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Batiment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="cards">
+            <div class="card-bodi">
+              <div class="card-header">
+                <span>Modifier un Batiment</span>
+              </div>
+              <form (ngSubmit)="updateBatiment(batiment)">
+                <div>
+                  <label></label>
+                  <input placeholder="Code" type="text" [(ngModel)]="batiment.code" name="code" required >
+                </div>
+                <div>
+                  <label></label>
+                  <input placeholder="Designation" type="text" [(ngModel)]="batiment.designation" name="designation" required>
+                </div>
+                <div>
+                  <label></label>
+                  <input placeholder="Capacite" type="text" [(ngModel)]="batiment.capacite" name="Capacite" required>
+                </div>
+                <div>
+                  <label>
+                  </label>
+                  <input placeholder="Dimension" type="text" [(ngModel)]="batiment.dimension" name="dimension" required>
+                </div>
+                <button type="submit">Modifier</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+

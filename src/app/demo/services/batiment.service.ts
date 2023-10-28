@@ -13,15 +13,29 @@ export class BatimentService {
 
   constructor(private http: HttpClient) { }
 
+  //Ajout
   addBatiment(batiment: Batiment, headers: any) {
     const url = `${this.baseUrl}/batiment/add`;
     return this.http.post(url, batiment, { headers });
   }
 
+  //Récupération
   getAllBatiments(headers: any): Observable<Batiment[]> {
     return this.http.get<Batiment[]>(`${this.baseUrl}/batiment/all`, { headers });
   }
 
-  
+
+  // Mise à jour d'un bâtiment
+  updateBatiment(batiment: Batiment, headers: any): Observable<any> {
+    const url = `${this.baseUrl}/batiment/update`;
+    return this.http.put(url, batiment, { headers });
+  }
+
+  // Suppression
+  deleteBatiment(id: number, headers: any): Observable<any> {
+  const url = `${this.baseUrl}/batiment/delete/${id}`;
+  return this.http.delete(url, { headers });
+}
+
   
 }
