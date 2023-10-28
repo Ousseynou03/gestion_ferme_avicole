@@ -3,6 +3,7 @@ package com.dione.gestion_avicole.JWT;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -38,7 +39,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
+        http.cors().configurationSource(request -> {
+                    CorsConfiguration corsConfig = new CorsConfiguration();
+                    corsConfig.applyPermitDefaultValues(); // Configure les valeurs par défaut
+                    corsConfig.addAllowedMethod(HttpMethod.DELETE);
+                    corsConfig.addAllowedMethod(HttpMethod.PUT);
+                    return corsConfig;
+                })
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
@@ -56,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    //Cors filter to accept incoming requests
+/*    //Cors filter to accept incoming requests
     @Bean
     CorsConfigurationSource corsConfigurationSource()
     {
@@ -67,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-    }
+    }*/
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

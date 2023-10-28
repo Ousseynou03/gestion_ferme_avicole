@@ -73,7 +73,11 @@ public class BatimentServiceImpl implements BatimentService {
     @Override
     public ResponseEntity<List<Batiment>> getAllBatiment() {
         try {
-            return new ResponseEntity<List<Batiment>>(batimentDao.findAll(), HttpStatus.OK);
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+                return new ResponseEntity<List<Batiment>>(batimentDao.findAll(), HttpStatus.OK);
+            }else {
+                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+            }
         }catch(Exception ex){
             ex.printStackTrace();
         }
@@ -112,7 +116,7 @@ public class BatimentServiceImpl implements BatimentService {
                     batimentDao.deleteById(id);
                     return AvicoleUtils.getResponseEntity("Batiment avec id: " + id + " est supprimé avec succés", HttpStatus.OK);
                 }else {
-                    return AvicoleUtils.getResponseEntity("Batiment id dosen't existe", HttpStatus.OK);
+                    return AvicoleUtils.getResponseEntity("Batiment id dosen't existe", HttpStatus.NO_CONTENT);
                 }
 
             }else {

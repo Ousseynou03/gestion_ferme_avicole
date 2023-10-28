@@ -1,6 +1,7 @@
 package com.dione.gestion_avicole.POJO;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,5 +30,6 @@ public class Fournisseur {
     private String email;
     //Un fournisseur peur fournir plusieurs matériels
     @OneToMany(mappedBy = "fournisseur")
+    @JsonIgnore
     private List<Materiel> materiels;
 }

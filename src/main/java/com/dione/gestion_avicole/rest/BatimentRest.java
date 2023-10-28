@@ -20,6 +20,8 @@ public interface BatimentRest {
     @PostMapping("/update")
     ResponseEntity<String> updateBatiment(@RequestBody(required = true) Map<String, String> requestMap);
 
+
+
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteBatiment(@PathVariable Integer id);
 

@@ -13,8 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Service
@@ -70,17 +72,60 @@ public class FornisseurServiceImpl implements FournisseurService {
     }
 
     @Override
-    public ResponseEntity<List<Bande>> getAllFournisseur() {
-        return null;
+    public ResponseEntity<List<Fournisseur>> getAllFournisseur() {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+                return new ResponseEntity<List<Fournisseur>>(fournisseurDao.findAll(), HttpStatus.OK);
+            }else {
+                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<String> updateFournisseur(Map<String, String> requestMap) {
-        return null;
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+                if (validateFournisseurMap(requestMap, true)){
+                    Optional optional = fournisseurDao.findById(Integer.parseInt(requestMap.get("id")));
+                    if (!optional.isEmpty()){
+                        fournisseurDao.save(getFournisseurFromMap(requestMap,true));
+                        return AvicoleUtils.getResponseEntity("Fournisseur modifié avec succés", HttpStatus.OK);
+                    }else {
+                        return AvicoleUtils.getResponseEntity("Fournisseur id dosen't exist", HttpStatus.OK);
+                    }
+                }
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            }else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<String> deleteFournisseur(Integer id) {
-        return null;
+        try {
+            if (jwtFilter.isAdmin()){
+                Optional optional = fournisseurDao.findById(id);
+                if (!optional.isEmpty()){
+                    fournisseurDao.deleteById(id);
+                    return AvicoleUtils.getResponseEntity("Fournisseur avec id: " + id + " est supprimé avec succés", HttpStatus.OK);
+                }else {
+                    return AvicoleUtils.getResponseEntity("Fournisseur id dosen't existe", HttpStatus.OK);
+                }
+
+            }else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS,HttpStatus.UNAUTHORIZED);
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
