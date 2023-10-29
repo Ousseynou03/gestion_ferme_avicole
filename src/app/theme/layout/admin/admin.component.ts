@@ -11,6 +11,9 @@ import { BerryConfig } from '../../../app-config';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent {
+
+  test : Date = new Date();
+  
   // public props
   berryConfig;
   navCollapsed: boolean;

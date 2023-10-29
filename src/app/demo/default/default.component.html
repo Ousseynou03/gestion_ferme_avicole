@@ -17,14 +17,12 @@
                 <i class="ti ti-dots"></i>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
-                <li><button class="dropdown-item" type="button">Import Card</button></li>
-                <li><button class="dropdown-item" type="button">Export</button></li>
               </ul>
             </div>
           </div>
         </div>
-        <span class="text-white d-block fs-1 fw-bold my-2">1350 <i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
-        <p class="mb-0 opacity-50">Total Pending Orders</p>
+        <span class="text-white d-block fs-1 fw-bold my-2">1 100 000, 00 FCFA <i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
+        <p class="mb-0 opacity-50">Dépenses Avicole</p>
       </div>
     </div>
   </div>
@@ -42,30 +40,14 @@
           <div class="col-auto">
             <ul ngbNav class="nav-tabs nav-pills" #nav="ngbNav" (navChange)="onNavChange($event)">
               <li class="nav-item" [ngbNavItem]="1">
-                <a class="nav-link text-white" ngbNavLink>Month</a>
+                
                 <ng-template ngbNavContent>
                   <div class="row">
-                    <div class="col-6">
-                      <span class="text-white d-block fs-1 fw-bold my-2">$108<i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
-                      <p class="mb-0 opacity-50">Total Earning</p>
-                    </div>
-                    <div class="col-6">
-                      <div id="tab-chart-1"></div>
-                    </div>
-                  </div>
-                </ng-template>
-              </li>
-              <li class="nav-item" [ngbNavItem]="2">
-                <a class="nav-link text-white" ngbNavLink>Year</a>
-                <ng-template ngbNavContent>
-                  <div class="row">
-                    <div class="col-6">
-                      <span class="text-white d-block fs-1 fw-bold my-2">$961<i class="ti ti-arrow-down-right-circle opacity-50"></i></span>
-                      <p class="mb-0 opacity-50">C/W Last Year</p>
-                    </div>
-                    <div class="col-6">
-                      <div id="tab-chart-2"></div>
-                    </div>
+                    
+                      <span class="text-white d-block fs-1 fw-bold my-2">1 410 000, 00 FCFA <i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
+                      <p class="mb-0 opacity-50">Ventes Poules</p>
+                    
+                    
                   </div>
                 </ng-template>
               </li>
@@ -86,8 +68,8 @@
             <i class="text-white ti ti-credit-card"></i>
           </div>
           <div class="ms-2">
-            <h4 class="text-white mb-1">$203k <i class="ti ti-arrow-up-right-circle opacity-50"></i></h4>
-            <p class="mb-0 opacity-50 text-sm">Net Profit</p>
+            <h4 class="text-white mb-1">1050.0 poules <i class="ti ti-arrow-up-right-circle opacity-50"></i></h4>
+            <p class="mb-0 opacity-50 text-sm">Totale Poules</p>
           </div>
         </div>
       </div>
@@ -101,8 +83,8 @@
             <i class="text-warning ti ti-credit-card"></i>
           </div>
           <div class="ms-2">
-            <h4 class="mb-1">$550K <i class="ti ti-arrow-up-right-circle opacity-50"></i></h4>
-            <p class="mb-0 opacity-50 text-sm">Total Revenue</p>
+            <h4 class="mb-1">2 358 000,00 FCFA <i class="ti ti-arrow-up-right-circle opacity-50"></i></h4>
+            <p class="mb-0 opacity-50 text-sm">Solde des Comptes</p>
           </div>
         </div>
       </div>
@@ -114,15 +96,10 @@
       <div class="card-body">
         <div class="row mb-3 align-items-center">
           <div class="col">
-            <small>Total Growth</small>
-            <h3>$2,324.00</h3>
+            <small>Bénéfice</small>
+            <h3>1 258 000,00 FCFA</h3>
           </div>
           <div class="col-auto">
-            <select class="form-select">
-              <option>Today</option>
-              <option selected>This Month</option>
-              <option>This Year</option>
-            </select>
           </div>
         </div>
         <div id="growthChart">
@@ -146,52 +123,63 @@
       <div class="card-body">
         <div class="row mb-3 align-items-center">
           <div class="col">
-            <h4>Popular Stocks</h4>
+            <h4>Indicateurs</h4>
           </div>
           <div class="col-auto"> </div>
         </div>
-        <div class="rounded bg-light-secondary overflow-hidden mb-3">
+        <div class="rounded bg-light-secondary overflow-hidden mb-3" style="height: 50px;">
           <div class="px-3 pt-3">
             <div class="row mb-1 align-items-start">
               <div class="col">
-                <h5 class="text-secondary mb-0">Bajaj Finery</h5>
-                <small class="text-muted">10% Profit</small>
+                <h5 class="text-secondary mb-0">Vente Oeufs <i class="fas fa-shopping-cart"></i></h5>
               </div>
               <div class="col-auto">
-                <h4 class="mb-0">$1839.00</h4>
+                <h4 class="mb-0">48 000,00 FCFA</h4>
               </div>
+              
             </div>
           </div>
-          <div id="bajajchart">
-            <apx-chart
-              [series]="chartOptions1.series"
-              [chart]="chartOptions1.chart"
-              [dataLabels]="chartOptions1.dataLabels"
-              [plotOptions]="chartOptions1.plotOptions"
-              [responsive]="chartOptions1.responsive"
-              [colors]="chartOptions1.colors"
-              [stroke]="chartOptions1.stroke"
-            ></apx-chart>
-          </div>
+          
         </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item px-0" *ngFor="let list of ListGroup">
-            <div class="row align-items-start">
+        <div class="rounded bg-light-secondary overflow-hidden mb-3" style="height: 50px;">
+          <div class="px-3 pt-3">
+            <div class="row mb-1 align-items-start">
               <div class="col">
-                <h5 class="mb-0">{{ list.name }}</h5>
-                <small class="text-success">{{ list.profit }}</small>
+                <h5 class="text-secondary mb-0">Bandes <i class="fas fa-chalkboard"></i></h5>
               </div>
               <div class="col-auto">
-                <h4 class="mb-0">
-                  {{ list.invest
-                  }}<span class="ms-2 align-top avtar avtar-xxs {{ list.bgColor }}"><i class="{{ list.icon }} {{ list.color }}"></i></span>
-                </h4>
+                <h4 class="mb-0">4</h4>
               </div>
             </div>
-          </li>
-        </ul>
-        <div class="text-center">
-          <a href="javascripr:" class="b-b-primary text-primary">View all <i class="ti ti-chevron-right"></i></a>
+          </div>
+          
+        </div>
+        <div class="rounded bg-light-secondary overflow-hidden mb-3" style="height: 50px;">
+          <div class="px-3 pt-3">
+            <div class="row mb-1 align-items-start">
+              <div class="col">
+                <h5 class="text-secondary mb-0">Batiments <i class="fas fa-home"></i> </h5>
+              </div>
+              <div class="col-auto">
+                <h4 class="mb-0">3</h4>
+              </div>
+              
+            </div>
+          </div>
+          <div class="rounded bg-light-secondary overflow-hidden mb-3" style="height: 50px;">
+            <div class="px-3 pt-3">
+              <div class="row mb-1 align-items-start">
+                <div class="col">
+                  <h5 class="text-secondary mb-0">Totale motalités</h5>
+                </div>
+                <div class="col-auto">
+                  <h4 class="mb-0">48 000,00 FCFA</h4>
+                </div>
+                
+              </div>
+            </div>
+            
+          
         </div>
       </div>
     </div>

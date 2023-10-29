@@ -23,6 +23,7 @@ import {
   ApexStroke,
   ApexTooltip
 } from 'ng-apexcharts';
+import Swal from 'sweetalert2';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -145,6 +146,8 @@ export default class DefaultComponent {
       this.monthChart = new ApexCharts(document.querySelector('#tab-chart-1'), this.monthOptions);
       this.monthChart.render();
     }, 500);
+
+
   }
 
   // public Method

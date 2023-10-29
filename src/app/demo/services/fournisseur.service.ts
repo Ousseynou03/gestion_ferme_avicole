@@ -13,7 +13,31 @@ export class FournisseurService {
 
   constructor(private http: HttpClient) { }
 
+  //Ajout
+  addFournisseur(fournisseur: Fournisseur, headers: any) {
+      const url = `${this.baseUrl}/fournisseur/add`;
+      return this.http.post(url, fournisseur, { headers });
+    }
+
+
+  //Récupération
   getAllFournisseurs(headers: any): Observable<Fournisseur[]> {
     return this.http.get<Fournisseur[]>(`${this.baseUrl}/fournisseur/all`, { headers });
   }
+  
+
+    // Mise à jour d'un bâtiment
+  updateFournisseur(fournisseur: Fournisseur, headers: any): Observable<any> {
+      const url = `${this.baseUrl}/fournisseur/update`;
+      return this.http.put(url, fournisseur, { headers });
+    }
+  
+    // Suppression
+  deleteFournisseur(id: number, headers: any): Observable<any> {
+    const url = `${this.baseUrl}/fournisseur/delete/${id}`;
+    return this.http.delete(url, { headers });
+  }
+
+
+
 }

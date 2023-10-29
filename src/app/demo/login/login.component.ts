@@ -16,43 +16,35 @@ export class LoginComponent {
   constructor(private authService: AuthService, 
     private router: Router) {}
 
-    login() {
-      this.authService.login(this.credentials).subscribe(
-        (response: any) => {
-          if (response.token) {
-            // Stockez le jeton JWT dans le localStorage ou utilisez un service de gestion des jetons
-            localStorage.setItem('token', response.token);
-  
-            // Afficher une alerte de succès avec SweetAlert
+
+    onLogin() {
+      this.authService.login(this.credentials).subscribe(() => {
             Swal.fire({
               icon: 'success',
-              title: 'Connexion réussie',
-              text: 'Vous êtes connecté avec succès.'
-            }).then(() => {
-              // Redirigez l'utilisateur vers la page signup
-              this.router.navigate(['/default']);
-            });
-          } else {
-            // Afficher une alerte d'erreur avec SweetAlert en cas d'échec de l'authentification
-            Swal.fire({
-              icon: 'error',
-              title: 'Erreur d\'authentification',
-              text: 'Vérifiez vos identifiants et réessayez.'
-            });
-          }
-        },
-        (error) => {
-          // Gérez les erreurs d'authentification ici
-          console.error('Erreur lors de la connexion', error);
-  
-          // Afficher une alerte d'erreur avec SweetAlert en cas d'erreur HTTP
-          Swal.fire({
-            icon: 'error',
-            title: 'Erreur d\'authentification',
-            text: 'Vérifiez vos identifiants et réessayez.'
+              title: 'Bienvenue.',
+              showConfirmButton: false,
+              timer: 1500
+            }).then();
+            this.router.navigate(['/default']).then(r => r);
+          },
+          (error) => {
+            let message: string;
+            if (error.code === 'auth/user-not-found') {
+              message = 'Adresse Email invalide!';
+            } else if (error.code === 'auth/wrong-password') {
+              message = 'Mot de passe incorrecte!';
+            } else if (error.code === 'userNotActived') {
+              message = 'Votre compte a été désactivé. Veuillez contacter l\'administrateur!';
+            } else {
+              message = 'Une erreur est survenue. Veuillez réessayer svp!';
+            }
+            Swal.fire(
+                'Oups!',
+                message,
+                'error'
+            ).then();
           });
-        }
-      );
     }
+    
 
 }

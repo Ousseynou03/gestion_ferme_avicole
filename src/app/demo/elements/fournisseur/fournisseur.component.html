@@ -1,9 +1,63 @@
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Ajouter un Fournisseur
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Nouveau Fournisseur</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="cards">
+            <div class="card-bodi">
+              <div class="card-header">
+                <span>Enregistrement d'un Fournisseur</span>
+              </div>
+              <form (ngSubmit)="addFournisseur()">
+                <div>
+                  <label>Type :</label>
+                  <select [(ngModel)]="fournisseur.type" name="type" required>
+                    <option value="Particulier">Particulier</option>
+                    <option value="Entreprise">Entreprise</option>
+                  </select>
+                </div>
+                <div>
+                  <label></label>
+                  <input placeholder="Nom" type="text" [(ngModel)]="fournisseur.nom" name="nom" required >
+                </div>
+                <div>
+                  <label></label>
+                  <input placeholder="Numéro Téléphone" type="text" [(ngModel)]="fournisseur.numTel" name="numTel" required>
+                </div>
+                <div>
+                  <label></label>
+                  <input placeholder="Email" type="email" [(ngModel)]="fournisseur.email" name="email" required>
+                </div>
+                <button type="submit">Enregistrer</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<!-- Liste des batiments -->
+
+
+<!-- Liste des fournisseurs -->
 
 <table class="table table-striped">
     <thead>
       <tr>
+        <th scope="col">N°</th>
+        <th scope="col">type</th>
         <th scope="col">nom</th>
         <th scope="col">numTel</th>
         <th scope="col">email</th>
@@ -11,12 +65,20 @@
       </tr>
     </thead>
     <tbody>
-       <tr *ngFor="let fournisseur of fournisseurs">
+       <tr *ngFor="let fournisseur of fournisseurs; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ fournisseur.type }}</td>
         <td>{{ fournisseur.nom }}</td>
         <td>{{ fournisseur.numTel }}</td>
         <td>{{ fournisseur.email }}</td>
-        <td><i class="fas fa-edit"></i>
-          <i class="fas fa-trash-alt"></i></td>
+        <td>
+          <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-link text-danger" (click)="deleteFounisseur(fournisseur.id)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>

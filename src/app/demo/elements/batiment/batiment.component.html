@@ -62,8 +62,8 @@
     </tr>
   </thead>
   <tbody>
-     <tr *ngFor="let batiment of batiments">
-      <td>{{ batiment.id }}</td>
+     <tr *ngFor="let batiment of batiments; let i = index">
+      <td>{{ i + 1 }}</td>
       <td>{{ batiment.code }}</td>
       <td>{{ batiment.designation }}</td>
       <td>{{ batiment.capacite }}</td>

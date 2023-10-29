@@ -1,1 +1,34 @@
-<p>materiel works!</p>
+
+
+
+<!-- Liste des matériaux -->
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">N°</th>
+        <th scope="col">designation</th>
+        <th scope="col">quantite</th>
+        <th scope="col">batiment</th>
+        <th scope="col">fournisseur</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+       <tr *ngFor="let materiel of materiels; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ materiel.designation }}</td>
+        <td>{{ materiel.quantite }}</td>
+        <td>{{ materiel.batiment.designation }}</td>
+        <td>{{ materiel.fournisseur.nom }}</td>
+        <td>
+          <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-link text-danger">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>

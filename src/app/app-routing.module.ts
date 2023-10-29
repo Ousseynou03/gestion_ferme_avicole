@@ -6,6 +6,7 @@ import { BatimentComponent } from './demo/elements/batiment/batiment.component';
 import { LoginComponent } from './demo/login/login.component';
 import { FournisseurComponent } from './demo/elements/fournisseur/fournisseur.component';
 import { UserComponent } from './demo/user/user.component';
+import { MaterielComponent } from './demo/elements/materiel/materiel.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,9 @@ const routes: Routes = [
       },
       {
         path: 'batiment', component : BatimentComponent
+      },
+      {
+        path: 'materiel', component : MaterielComponent
       },
       {
         path: 'fournisseur', component : FournisseurComponent

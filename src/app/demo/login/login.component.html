@@ -8,17 +8,17 @@
                 <div class="card-body p-md-5 mx-md-4">
   
                   <div class="text-center">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+                    <img src="assets/images/illustrations/logoGestavicole.png"
                       style="width: 185px;" alt="logo">
-                    <h4 class="mt-1 mb-5 pb-1">We are The Lotus Team</h4>
+                    <h4 class="mt-1 mb-5 pb-1">GESTAVICOLE</h4>
                   </div>
   
-                  <form (ngSubmit)="login()" #loginForm="ngForm">
-                    <p>Please login to your account</p>
+                  <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+                    <p>Connexion</p>
   
                     <div class="form-outline mb-4">
                         <input type="email" class="form-control" id="form2Example11" name="email" [(ngModel)]="credentials.email" required
-                        placeholder="Phone number or email address"
+                        placeholder="email address"
                       />
                       <label class="form-label" for="form2Example11">Username</label>
                     </div>
@@ -40,12 +40,6 @@
                         in</button>
                       <a class="text-muted" href="#!">Forgot password?</a>
                     </div>
-  
-                    <div class="d-flex align-items-center justify-content-center pb-4">
-                      <p class="mb-0 me-2">Don't have an account?</p>
-                      <button type="button" class="btn btn-outline-danger">Create new</button>
-                    </div>
-  
                   </form>
   
                 </div>

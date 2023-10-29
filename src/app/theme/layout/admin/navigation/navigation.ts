@@ -54,6 +54,14 @@ const NavigationItems = [
             url: '/batiment',
             icon: 'fas fa-building'
           },
+          {
+            id: 'materiel',
+            title: 'Materiel',
+            type: 'item',
+            classes: 'nav-item',
+            url: '/materiel',
+            icon: 'fas fa-wrench'
+          },
         ]
       },
 
@@ -194,7 +202,7 @@ const NavigationItems = [
   },
 
 
-  {
+/*  {
     id: 'other',
     title: 'Other',
     type: 'group',
@@ -219,7 +227,7 @@ const NavigationItems = [
         external: true
       }
     ]
-  }
+  }*/
 ];
 
 @Injectable()
