@@ -43,6 +43,11 @@ public class Vente {
     private Bande bande;
 
 
+    @ManyToOne
+    @JoinColumn(name = "tresorerie_id_vente")
+    private Tresorerie tresorerie;
+
+
 
 
 

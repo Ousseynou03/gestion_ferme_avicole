@@ -26,14 +26,19 @@ public class Depense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Date dateDepense;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(30)")
     private Categorie categorie;
+
     private double quantite;
     private double prixUnitaire;
     private double montant;
-    @PostLoad
+
     public void calculateMontant() {
         this.montant = quantite * prixUnitaire;
     }
+
     private String description;
 
     @ManyToOne
