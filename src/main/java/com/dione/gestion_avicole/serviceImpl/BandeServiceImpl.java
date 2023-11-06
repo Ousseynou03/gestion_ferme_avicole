@@ -165,4 +165,27 @@ public class BandeServiceImpl implements BandeService {
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public ResponseEntity<Bande> getBandeById(Integer id) {
+        try {
+            if (jwtFilter.isAdmin()){
+                return new ResponseEntity<>(bandeDao.getBandeById(id), HttpStatus.OK);
+            }
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>(new Bande(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<List<Bande>> getLatestThreeBandes() {
+        try {
+            return new ResponseEntity<List<Bande>>(bandeDao.getLatestThreeBandes(), HttpStatus.OK);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

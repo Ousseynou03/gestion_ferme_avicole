@@ -24,4 +24,11 @@ public interface BandeRest {
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteBande(@PathVariable Integer id);
+
+
+    @GetMapping("/getById/{id}")
+    ResponseEntity<Bande> getBandeById(@PathVariable Integer id);
+
+    @GetMapping("/getLatestBandes")
+    ResponseEntity<List<Bande>> getLatestThreeBandes();
 }

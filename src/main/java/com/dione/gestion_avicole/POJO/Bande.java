@@ -11,6 +11,14 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+
+@NamedQuery(name = "Bande.getBandeById", query = "SELECT b FROM Bande b WHERE b.id = :id")
+
+
+@NamedQuery(name = "Bande.getLatestThreeBandes", query = "SELECT b FROM Bande b ORDER BY b.dateFin DESC")
+
+
+
 @DynamicUpdate
 @DynamicInsert
 @Data

@@ -16,4 +16,14 @@ public interface BandeService {
     ResponseEntity<String> updateBande(Map<String, String> requestMap);
 
     ResponseEntity<String> deleteBande(Integer id);
+
+    ResponseEntity<Bande> getBandeById(Integer id);
+
+
+    ResponseEntity<List<Bande>> getLatestThreeBandes();
+
+
+
+
+
 }

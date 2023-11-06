@@ -50,7 +50,7 @@ public class Batiment {
 
     @OneToMany(mappedBy = "batiment")
     @JsonIgnore
-    private List<PonteOueuf> ponteOueufs;
+    private List<Oueuf> ponteOueufs;
 
 //Dans un batiment, on a plusieurs bande
     @OneToMany(mappedBy = "batiment")
