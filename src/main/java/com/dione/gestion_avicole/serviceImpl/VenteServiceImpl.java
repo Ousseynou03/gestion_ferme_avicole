@@ -1,46 +1,49 @@
 package com.dione.gestion_avicole.serviceImpl;
 
+
 import com.dione.gestion_avicole.JWT.JwtFilter;
 import com.dione.gestion_avicole.POJO.Bande;
-import com.dione.gestion_avicole.POJO.Batiment;
-import com.dione.gestion_avicole.POJO.Depense;
-import com.dione.gestion_avicole.POJO.enums.Categorie;
+import com.dione.gestion_avicole.POJO.Client;
+import com.dione.gestion_avicole.POJO.Vente;
+import com.dione.gestion_avicole.POJO.enums.Description;
 import com.dione.gestion_avicole.constents.AvicoleConstants;
 import com.dione.gestion_avicole.dao.BandeDao;
-import com.dione.gestion_avicole.dao.DepenseDao;
-import com.dione.gestion_avicole.service.DepenseService;
+import com.dione.gestion_avicole.dao.ClientDao;
+import com.dione.gestion_avicole.dao.VenteDao;
+import com.dione.gestion_avicole.service.VenteService;
 import com.dione.gestion_avicole.utils.AvicoleUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-public class DepenseServiceImpl implements DepenseService {
+public class VenteServiceImpl implements VenteService {
 
-    private DepenseDao depenseDao;
-    private BandeDao bandeDao;
+    private VenteDao venteDao;
     private JwtFilter jwtFilter;
+    private BandeDao bandeDao;
+    private ClientDao clientDao;
 
-    public DepenseServiceImpl(DepenseDao depenseDao, BandeDao bandeDao, JwtFilter jwtFilter) {
-        this.depenseDao = depenseDao;
-        this.bandeDao = bandeDao;
+    public VenteServiceImpl(VenteDao venteDao, JwtFilter jwtFilter, BandeDao bandeDao, ClientDao clientDao) {
+        this.venteDao = venteDao;
         this.jwtFilter = jwtFilter;
+        this.bandeDao = bandeDao;
+        this.clientDao = clientDao;
     }
 
     @Override
-    public ResponseEntity<String> ajoutDepense(Map<String, String> requestMap) {
+    public ResponseEntity<String> ajoutVente(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
-                if (validateDepenseMap(requestMap, false)) {
-                    Depense depense = getDepensesFromMap(requestMap, false);
-                    if (depense.getBande() == null) {
-                        return AvicoleUtils.getResponseEntity("La Bande id spécifié n'existe pas", HttpStatus.BAD_REQUEST);
+                if (validateVenteMap(requestMap, false)) {
+                    Vente vente = getVentesFromMap(requestMap, false);
+                    if (vente.getClient() == null) {
+                        return AvicoleUtils.getResponseEntity("Le Client id spécifié n'existe pas", HttpStatus.BAD_REQUEST);
                     }
-                    depenseDao.save(depense);
-                    return AvicoleUtils.getResponseEntity("Dépense ajoutée avec succès", HttpStatus.OK);
+                    venteDao.save(vente);
+                    return AvicoleUtils.getResponseEntity("Vente ajoutée avec succès", HttpStatus.OK);
                 }
             } else {
                 return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
@@ -51,53 +54,44 @@ public class DepenseServiceImpl implements DepenseService {
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private Depense getDepensesFromMap(Map<String, String> requestMap, Boolean isAdd) {
-        Depense depense = new Depense();
+    private Vente getVentesFromMap(Map<String, String> requestMap, Boolean isAdd) {
+        Vente vente = new Vente();
         if (isAdd) {
-            depense.setId(Integer.parseInt(requestMap.get("id")));
+            vente.setId(Integer.parseInt(requestMap.get("id")));
         }
 
-        depense.setCategorie(Categorie.valueOf((requestMap.get("categorie"))));
-        depense.setDescription(requestMap.get("description"));
+        vente.setDescription(Description.valueOf((requestMap.get("description"))));
 
         // Validation et ajout de quantite
         if (requestMap.containsKey("quantite") && requestMap.containsKey("prixUnitaire")) {
             try {
                 double quantite = Double.parseDouble(requestMap.get("quantite"));
                 double prixUnitaire = Double.parseDouble(requestMap.get("prixUnitaire"));
-                depense.setQuantite(quantite);
-                depense.setPrixUnitaire(prixUnitaire);
-                depense.calculateMontant();
+                vente.setQuantite(quantite);
+                vente.setPrixUnitaire(prixUnitaire);
+                vente.calculateMontant();
             } catch (NumberFormatException ex) {
                 ex.printStackTrace();
             }
         }
-
-        if (requestMap.containsKey("dateDepense")) {
+        // Validation de la relation "client"
+        if (requestMap.containsKey("client") && requestMap.containsKey("bande")) {
             try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                Date dateDepense = dateFormat.parse(requestMap.get("dateDepense"));
-                depense.setDateDepense(dateDepense);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        // Validation de la relation "bande"
-        if (requestMap.containsKey("bande")) {
-            try {
+                Integer clientId = Integer.parseInt(requestMap.get("client"));
                 Integer bandeId = Integer.parseInt(requestMap.get("bande"));
+                Client client = clientDao.findById(clientId).orElse(null);
                 Bande bande = bandeDao.findById(bandeId).orElse(null);
-                depense.setBande(bande);
+                vente.setClient(client);
+                vente.setBande(bande);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
-        return depense;
+        return vente;
     }
 
-    private boolean validateDepenseMap(Map<String, String> requestMap, Boolean validatId) {
-        if (requestMap.containsKey("dateDepense") && requestMap.containsKey("bande")) {
+    private boolean validateVenteMap(Map<String, String> requestMap, Boolean validatId) {
+        if (requestMap.containsKey("client") && requestMap.containsKey("bande")) {
             if (requestMap.containsKey("id") && validatId) {
                 return true;
             } else if (!validatId) {
@@ -106,12 +100,11 @@ public class DepenseServiceImpl implements DepenseService {
         }
         return false;
     }
-
     @Override
-    public ResponseEntity<List<Depense>> getAllDepense() {
+    public ResponseEntity<List<Vente>> getAllVente() {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()){
-                return new ResponseEntity<List<Depense>>(depenseDao.findAll(), HttpStatus.OK);
+                return new ResponseEntity<List<Vente>>(venteDao.findAll(), HttpStatus.OK);
             }else {
                 return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
             }
@@ -122,16 +115,16 @@ public class DepenseServiceImpl implements DepenseService {
     }
 
     @Override
-    public ResponseEntity<String> updateDepense(Map<String, String> requestMap) {
+    public ResponseEntity<String> updateVente(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()){
-                if (validateDepenseMap(requestMap, true)){
-                    Optional optional = depenseDao.findById(Integer.parseInt(requestMap.get("id")));
+                if (validateVenteMap(requestMap, true)){
+                    Optional optional = venteDao.findById(Integer.parseInt(requestMap.get("id")));
                     if (!optional.isEmpty()){
-                        depenseDao.save(getDepensesFromMap(requestMap,true));
-                        return AvicoleUtils.getResponseEntity("Dépense modifié avec succés", HttpStatus.OK);
+                        venteDao.save(getVentesFromMap(requestMap,true));
+                        return AvicoleUtils.getResponseEntity("Vente modifiée avec succés", HttpStatus.OK);
                     }else {
-                        return AvicoleUtils.getResponseEntity("Dépense id dosen't exist", HttpStatus.OK);
+                        return AvicoleUtils.getResponseEntity("Vente id dosen't exist", HttpStatus.OK);
                     }
                 }
                 return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
@@ -145,15 +138,15 @@ public class DepenseServiceImpl implements DepenseService {
     }
 
     @Override
-    public ResponseEntity<String> deleteDepense(Integer id) {
+    public ResponseEntity<String> deleteVente(Integer id) {
         try {
             if (jwtFilter.isAdmin()){
-                Optional optional = depenseDao.findById(id);
+                Optional optional = venteDao.findById(id);
                 if (!optional.isEmpty()){
-                    depenseDao.deleteById(id);
-                    return AvicoleUtils.getResponseEntity("Dépense avec id: " + id + " est supprimé avec succés", HttpStatus.OK);
+                    venteDao.deleteById(id);
+                    return AvicoleUtils.getResponseEntity("Vente avec id: " + id + " est supprimé avec succés", HttpStatus.OK);
                 }else {
-                    return AvicoleUtils.getResponseEntity("Dépense id dosen't existe", HttpStatus.OK);
+                    return AvicoleUtils.getResponseEntity("Vente id dosen't existe", HttpStatus.OK);
                 }
 
             }else {
