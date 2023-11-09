@@ -55,4 +55,6 @@ public class Bande {
     @JsonIgnore
     private List<Veterinaire> veterinaires;
 
+
+
 }

@@ -28,10 +28,13 @@ public class Vente {
     private double quantite;
     private double prixUnitaire;
     private double montant;
-    @PostLoad
+
     public void calculateMontant() {
         this.montant = quantite * prixUnitaire;
     }
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(30)")
     private Description description;
 
     @ManyToOne
