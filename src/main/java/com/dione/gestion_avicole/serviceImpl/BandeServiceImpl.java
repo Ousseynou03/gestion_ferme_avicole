@@ -83,12 +83,13 @@ public class BandeServiceImpl implements BandeService {
                 ex.printStackTrace();
             }
         }
-
         // Validation de la relation "batiment"
         if (requestMap.containsKey("batiment")) {
             try {
                 Integer batimentId = Integer.parseInt(requestMap.get("batiment"));
                 Batiment batiment = batimentDao.findById(batimentId).orElse(null);
+/*                String batimentDesignation = requestMap.get("batiment");
+                Batiment batiment = batimentDao.findByDesignation(batimentDesignation).orElse(null);*/
                 bande.setBatiment(batiment);
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -103,7 +104,7 @@ public class BandeServiceImpl implements BandeService {
 
 
     private boolean validateBandeMap(Map<String, String> requestMap, Boolean validatId) {
-        if (requestMap.containsKey("code") && requestMap.containsKey("batiment")) {
+        if (requestMap.containsKey("code")) {
             if (requestMap.containsKey("id") && validatId) {
                 return true;
             } else if (!validatId) {

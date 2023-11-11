@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -22,7 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Batiment {
+public class Batiment implements Serializable {
 
     private static final Long serialVersionUID=1L;
 
@@ -50,7 +51,7 @@ public class Batiment {
 
     @OneToMany(mappedBy = "batiment")
     @JsonIgnore
-    private List<Oueuf> ponteOueufs;
+    private List<Oeuf> ponteOueufs;
 
 //Dans un batiment, on a plusieurs bande
     @OneToMany(mappedBy = "batiment")

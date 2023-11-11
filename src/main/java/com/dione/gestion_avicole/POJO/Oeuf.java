@@ -14,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Oueuf {
+public class Oeuf {
 
     private static final Long serialVersionUID=1L;
 

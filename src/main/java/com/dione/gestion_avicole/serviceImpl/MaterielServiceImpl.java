@@ -46,9 +46,9 @@ public class MaterielServiceImpl implements MaterielService {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
                 if (validateMaterielMap(requestMap, false)) {
                     Materiel materiel = getMaterielsFromMap(requestMap, false);
-                    if (materiel.getBatiment() == null || materiel.getFournisseur() == null) {
+/*                    if (materiel.getBatiment() == null || materiel.getFournisseur() == null) {
                         return AvicoleUtils.getResponseEntity("Le Batimentid ou le Founisseurid spécifié n'existe pas", HttpStatus.BAD_REQUEST);
-                    }
+                    }*/
                     materielDao.save(materiel);
                     return AvicoleUtils.getResponseEntity("Materiel ajouté avec succès", HttpStatus.OK);
                 }
@@ -78,7 +78,7 @@ public class MaterielServiceImpl implements MaterielService {
             }
         }
 
-        // Validation de la relation "batiment"
+/*        // Validation de la relation "batiment"
         if (requestMap.containsKey("batiment")) {
             try {
                 Integer batimentId = Integer.parseInt(requestMap.get("batiment"));
@@ -98,12 +98,12 @@ public class MaterielServiceImpl implements MaterielService {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        }
+        }*/
         return materiel;
     }
 
     private boolean validateMaterielMap(Map<String, String> requestMap, Boolean validatId) {
-        if (requestMap.containsKey("designation") && requestMap.containsKey("batiment")) {
+        if (requestMap.containsKey("designation")) {
             if (requestMap.containsKey("id") && validatId) {
                 return true;
             } else if (!validatId) {
