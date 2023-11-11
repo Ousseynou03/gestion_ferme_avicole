@@ -1,1 +1,74 @@
-<p>client works!</p>
+
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Ajouter un Client
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Nouveau Client</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="cards">
+            <div class="card-bodi">
+              <div class="card-header">
+                <span>Enregistrement d'un Client</span>
+              </div>
+              <form (ngSubmit)="addClient()">
+                <div>
+                  <label></label>
+                  <input placeholder="Nom" type="text" [(ngModel)]="client.nom" name="nom" required >
+                </div>
+                <div>
+                  <label></label>
+                  <input placeholder="Ville" type="text" [(ngModel)]="client.ville" name="ville" required>
+                </div>
+                <div>
+                  <label></label>
+                  <input placeholder="Numero Téléphone" type="text" [(ngModel)]="client.numTel" name="numTel" required>
+                </div>
+                <button type="submit">Enregistrer</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Liste des batiments -->
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">N°</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Ville</th>
+      <th scope="col">Numéro Téléphone</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+     <tr *ngFor="let client of clients; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ client.nom }}</td>
+      <td>{{ client.ville }}</td>
+      <td>{{ client.numTel }}</td>
+      <td>
+        <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn btn-link text-danger" (click)="deleteClient(client.id)">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

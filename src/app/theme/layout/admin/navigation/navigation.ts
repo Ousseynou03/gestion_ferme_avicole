@@ -130,7 +130,16 @@ const NavigationItems = [
         icon: 'ti ti-key',
         children: [
           {
-            id: 'batiment',
+            id: 'Depense',
+            title: 'Depense',
+            type: 'item',
+            classes: 'nav-item',
+            url: '/depense',
+            icon: 'fa fa-user'
+          },
+
+          {
+            id: 'Vente',
             title: 'Vente',
             type: 'item',
             classes: 'nav-item',
@@ -168,6 +177,30 @@ const NavigationItems = [
             type: 'item',
             classes: 'nav-item',
             url: '/bande',
+            icon: 'fa fa-user'
+          },
+          {
+            id: 'Nutrition',
+            title: 'Nutrition',
+            type: 'item',
+            classes: 'nav-item',
+            url: '/nutrition',
+            icon: 'fa fa-user'
+          },
+          {
+            id: 'Moratlite',
+            title: 'Moratlite',
+            type: 'item',
+            classes: 'nav-item',
+            url: '/moratlite',
+            icon: 'fa fa-user'
+          },
+          {
+            id: 'Oeuf',
+            title: 'Oeuf',
+            type: 'item',
+            classes: 'nav-item',
+            url: '/oeuf',
             icon: 'fa fa-user'
           },
         ]

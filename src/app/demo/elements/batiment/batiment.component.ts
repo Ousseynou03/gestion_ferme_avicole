@@ -72,7 +72,7 @@ export class BatimentComponent implements OnInit{
         (response) => {
           Swal.fire({
             icon: 'success',
-            title: 'Inscription réussie',
+            title: 'Enregistré',
             text: 'Batiment ajouté avec succcés'
           });
   

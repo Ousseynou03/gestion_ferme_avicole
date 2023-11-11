@@ -1,1 +1,88 @@
-<p>ouvrier works!</p>
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Ajouter un Ouvrier
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Nouveau Ouvrier</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="cards">
+            <div class="card-bodi">
+              <div class="card-header">
+                <span>Enregistrement d'un Ouvrier</span>
+              </div>
+              <form (ngSubmit)="addOuvrier()">
+                <div>
+                  <label></label>
+                  <input placeholder="Fonction" type="text" [(ngModel)]="ouvrier.fonction" name="fonction" required >
+                </div>
+                <div>
+                  <label></label>
+                  <input placeholder="Nom" type="text" [(ngModel)]="ouvrier.nom" name="nom" required>
+                </div>
+                <div>
+                  <label></label>
+                  <input placeholder="Numero Téléphone" type="text" [(ngModel)]="ouvrier.numTel" name="numTel" required>
+                </div>
+                <div>
+                  <label>
+                  </label>
+                  <input placeholder="Ville" type="text" [(ngModel)]="ouvrier.ville" name="ville" required>
+                </div>
+                <div>
+                    <label>
+                    </label>
+                    <input placeholder="Salaire" type="text" [(ngModel)]="ouvrier.salaire" name="salaire" required>
+                  </div>
+                <button type="submit">Enregistrer</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- Liste des batiments -->
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">N°</th>
+      <th scope="col">Fonction</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Numero Téléphone</th>
+      <th scope="col">Ville</th>
+      <th scope="col">Salaire</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+     <tr *ngFor="let ouvrier of ouvriers; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ ouvrier.fonction }}</td>
+      <td>{{ ouvrier.nom }}</td>
+      <td>{{ ouvrier.numTel }}</td>
+      <td>{{ ouvrier.ville }}</td>
+      <td>{{ ouvrier.salaire }}</td>
+      <td>
+        <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn btn-link text-danger" (click)="deleteOuvrier(ouvrier.id)">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

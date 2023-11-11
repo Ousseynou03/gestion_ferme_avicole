@@ -7,12 +7,18 @@ import { LoginComponent } from './demo/login/login.component';
 import { FournisseurComponent } from './demo/elements/fournisseur/fournisseur.component';
 import { UserComponent } from './demo/user/user.component';
 import { MaterielComponent } from './demo/elements/materiel/materiel.component';
+import { OuvrierComponent } from './demo/elements/ouvrier/ouvrier.component';
+import { ClientComponent } from './demo/elements/client/client.component';
+import { VenteComponent } from './demo/elements/vente/vente.component';
+import { DepenseComponent } from './demo/elements/depense/depense.component';
+import { BandeComponent } from './demo/elements/bande/bande.component';
 
 const routes: Routes = [
   {
     path: 'login',
     component : LoginComponent,
   },
+
   {
     path: '',
     component: AdminComponent,
@@ -28,11 +34,27 @@ const routes: Routes = [
       {
         path: 'batiment', component : BatimentComponent
       },
+
+      {
+        path: 'fournisseur', component : FournisseurComponent
+      },
+      {
+        path: 'ouvrier', component : OuvrierComponent
+      },
+      {
+        path: 'client', component : ClientComponent
+      },
+      {
+        path: 'vente', component : VenteComponent
+      },
       {
         path: 'materiel', component : MaterielComponent
       },
       {
-        path: 'fournisseur', component : FournisseurComponent
+        path: 'depense', component : DepenseComponent
+      },
+      {
+        path: 'bande', component : BandeComponent
       },
       {
         path: 'user', component : UserComponent

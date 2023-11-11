@@ -15,7 +15,7 @@ export class MaterielService {
 
   //Ajout
   addMteriel(materiel: Materiel, headers: any) {
-    const url = `${this.baseUrl}/mateiel/add`;
+    const url = `${this.baseUrl}/materiel/add`;
     return this.http.post(url, materiel, { headers });
   }
 

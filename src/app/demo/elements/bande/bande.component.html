@@ -1,0 +1,179 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#bandeModal">
+  Ajouter une bande
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="bandeModal" tabindex="-1" aria-labelledby="bandeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bandeModalLabel">Nouvelle Bande</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="cards">
+          <div class="card-bodi">
+            <div class="card-header">
+              <span>Enregistrement d'une Bande</span>
+            </div>
+            <div class="py-4 overflow-hidden">
+              <div class="flex">
+              <!-- Selected agent form -->
+              <form class="flex flex-col w-full" [formGroup]="bande">
+              <div class="flex flex-col sm:flex-row p-2">
+              
+              <div class="flex flex-col w-full flex-wrap">
+              <!-- Name, SKU & etc. -->
+              <div class="flex flex-col w-full lg:w-full">
+              <div></div>
+              <div class="flex">
+            
+              
+              <mat-form-field class="w-11/12 pl-2">
+              <mat-label class="font-bold" >Code</mat-label>
+              <input
+              matInput
+              [formControlName]="'code'">
+              </mat-form-field>
+              
+              <mat-form-field class="w-11/12 pl-2">
+              <mat-label>Designation</mat-label>
+              <input
+              matInput
+              [formControlName]="'designation'">
+              </mat-form-field>
+
+              <mat-form-field class="w-11/12 pl-2">
+                <mat-label>Date Debut</mat-label>
+                <input
+                matInput
+                [formControlName]="'dateDebut'">
+                </mat-form-field>
+
+                <mat-form-field class="w-11/12 pl-2">
+                  <mat-label>Date Fin</mat-label>
+                  <input
+                  matInput
+                  [formControlName]="'dateFin'">
+                  </mat-form-field>
+
+                  <mat-form-field class="w-11/12 pl-2">
+                    <mat-label>effectif Départ</mat-label>
+                    <input
+                    matInput
+                    [formControlName]="'effectifdepart'">
+                    </mat-form-field>
+
+                    <mat-form-field class="w-2/3 pl-2 pr-2">
+                      <mat-label class="font-bold">Batiment</mat-label>
+                      <input matInput [matAutocomplete]="batiment"
+                      [formControlName]="'batiment'">
+                      <!--
+                      <mat-icon matSuffix class="text-noire-1">arrow_drop_down</mat-icon>
+                      <mat-icon matSuffix class="">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256.001 256" id="eraser"><rect width="256" height="256" fill="none"></rect><path d="M216.001,207.833H130.34375l34.72949-34.72949.0166-.01465.01465-.0166,56.55371-56.55274a24.02962,24.02962,0,0,0,0-33.94141L176.40332,37.32324a24.0007,24.0007,0,0,0-33.94141,0L85.90283,93.88232l-.01025.00928-.00928.01026L29.32422,150.46094a24.00066,24.00066,0,0,0,0,33.9414l37.08887,37.08789a8.00232,8.00232,0,0,0,5.65722,2.34278H216.001a8,8,0,0,0,0-16ZM153.77637,48.6377a7.99708,7.99708,0,0,1,11.3125,0l45.25488,45.25488a8.00888,8.00888,0,0,1,0,11.31347l-50.91113,50.91114L102.86475,99.54932Z"></path></svg>
+                      </mat-icon>
+                      -->
+                      <mat-autocomplete #batiment="matAutocomplete" [displayWith]="getBatiment">
+                      <mat-option *ngFor="let batiment of filterOptions | async" [value]="batiment"
+                      >{{batiment}}</mat-option>
+                      </mat-autocomplete>
+                      </mat-form-field>
+
+              </div>
+              
+              
+              
+              
+              <!-- Category, Brand & Vendor -->
+              <!-- Stock and Reserved -->
+              </div>
+              </div>
+              <!-- Cost, Base price, Tax & Price -->
+              
+              <!-- Weight & Tags -->
+              
+              </div>
+              <!-- 
+            <div class="flex items-center justify-between w-full px-4">
+                
+              <button class=" border borde-bleue-claire-1" mat-stroked-button [color]="'warn'" (click)="deleteSelectedAgent()">
+              {{'button.supprimer_label' | transloco}}
+              </button>
+              <div class="flex items-center">
+              <div class="flex items-center mr-4" *ngIf="flashMessage">
+              <ng-container *ngIf="flashMessage === 'success'">
+              <mat-icon class="text-green-500" [svgIcon]="'heroicons_outline:check'"></mat-icon>
+              <span class="ml-2">{{t('modification.effectue')}}</span>
+              </ng-container>
+              <ng-container *ngIf="flashMessage === 'error'">
+              <mat-icon class="text-red-500" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+              <span class="ml-2">{{t('erreur.update')}}!</span>
+              </ng-container>
+              </div>
+              <button mat-flat-button [color]="'primary'" (click)="updateSelectedAgent()">
+              {{'button.modifier_label' | transloco}}
+              </button>
+            
+              </div>
+              </div>
+              -->
+              
+              </form>
+              </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- Liste des bandes -->
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">N°</th>
+        <th scope="col">Code</th>
+        <th scope="col">Designation</th>
+        <th scope="col">Date Début</th>
+        <th scope="col">Date Fin</th>
+        <th scope="col">Effectif depart</th>
+        <th scope="col">Batiment</th>
+        <th scope="col">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+       <tr *ngFor="let bande of bandes; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ bande.code }}</td>
+        <td>{{ bande.designation }}</td>
+        <td>{{ bande.dateDebut | date:'yyyy-MM-dd' }}</td>
+        <td>{{ bande.dateFin | date:'yyyy-MM-dd' }}</td>
+        <td>{{ bande.effectifdepart }}</td>
+       <td>{{ bande.batiment?.designation }}</td>
+        <td>
+          <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-link text-danger">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  

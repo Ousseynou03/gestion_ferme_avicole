@@ -78,7 +78,7 @@ export class FournisseurComponent implements OnInit{
       (response) => {
         Swal.fire({
           icon: 'success',
-          title: 'Ajout réussie',
+          title: 'Enregistré',
           text: 'Fournisseur ajouté avec succcés'
         });
 
@@ -117,7 +117,7 @@ export class FournisseurComponent implements OnInit{
   //Suppession
   deleteFounisseur(id: number) {
     Swal.fire({
-      title: 'Voulez-vous vraiment supprimer ce founisseu ?',
+      title: 'Voulez-vous vraiment supprimer ce founisseur ?',
       text: 'Le founisseur sera définitivement supprimé!',
       icon: 'warning',
       showCancelButton: true,

@@ -1,82 +1,82 @@
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Ajouter un batiment
-  </button>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Nouveau Batiment</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="cards">
-            <div class="card-bodi">
-              <div class="card-header">
-                <span>Enregistrement d'un Batiment</span>
-              </div>
-              <form (ngSubmit)="addBatiment()">
-                <div>
-                  <label></label>
-                  <input placeholder="Code" type="text" [(ngModel)]="batiment.code" name="code" required >
-                </div>
-                <div>
-                  <label></label>
-                  <input placeholder="Designation" type="text" [(ngModel)]="batiment.designation" name="designation" required>
-                </div>
-                <div>
-                  <label></label>
-                  <input placeholder="Capacite" type="text" [(ngModel)]="batiment.capacite" name="Capacite" required>
-                </div>
-                <div>
-                  <label>
-                  </label>
-                  <input placeholder="Dimension" type="text" [(ngModel)]="batiment.dimension" name="dimension" required>
-                </div>
-                <button type="submit">Enregistrer</button>
-              </form>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Ajouter un batiment
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nouveau Batiment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="cards">
+          <div class="card-bodi">
+            <div class="card-header">
+              <span>Enregistrement d'un Batiment</span>
             </div>
+            <form (ngSubmit)="addBatiment()">
+              <div>
+                <label></label>
+                <input placeholder="Code" type="text" [(ngModel)]="batiment.code" name="code" required >
+              </div>
+              <div>
+                <label></label>
+                <input placeholder="Designation" type="text" [(ngModel)]="batiment.designation" name="designation" required>
+              </div>
+              <div>
+                <label></label>
+                <input placeholder="Capacite" type="text" [(ngModel)]="batiment.capacite" name="Capacite" required>
+              </div>
+              <div>
+                <label>
+                </label>
+                <input placeholder="Dimension" type="text" [(ngModel)]="batiment.dimension" name="dimension" required>
+              </div>
+              <button type="submit">Enregistrer</button>
+            </form>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
+</div>
 
 
 <!-- Liste des batiments -->
 
 <table class="table table-striped">
   <thead>
-    <tr>
-      <th scope="col">N°</th>
-      <th scope="col">Code</th>
-      <th scope="col">Designation</th>
-      <th scope="col">Capacite</th>
-      <th scope="col">Dimension</th>
-      <th scope="col">Action</th>
-    </tr>
+  <tr>
+    <th scope="col">N°</th>
+    <th scope="col">Code</th>
+    <th scope="col">Designation</th>
+    <th scope="col">Capacite</th>
+    <th scope="col">Dimension</th>
+    <th scope="col">Action</th>
+  </tr>
   </thead>
   <tbody>
-     <tr *ngFor="let batiment of batiments; let i = index">
-      <td>{{ i + 1 }}</td>
-      <td>{{ batiment.code }}</td>
-      <td>{{ batiment.designation }}</td>
-      <td>{{ batiment.capacite }}</td>
-      <td>{{ batiment.dimension }}</td>
-      <td>
-        <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
-          <i class="fas fa-edit"></i>
-        </button>
-        <button class="btn btn-link text-danger" (click)="deleteBatiment(batiment.id)">
-          <i class="fas fa-trash-alt"></i>
-        </button>
-      </td>
-    </tr>
+  <tr *ngFor="let batiment of batiments; let i = index">
+    <td>{{ i + 1 }}</td>
+    <td>{{ batiment.code }}</td>
+    <td>{{ batiment.designation }}</td>
+    <td>{{ batiment.capacite }}</td>
+    <td>{{ batiment.dimension }}</td>
+    <td>
+      <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="btn btn-link text-danger" (click)="deleteBatiment(batiment.id)">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </td>
+  </tr>
   </tbody>
 </table>
 
@@ -85,48 +85,47 @@
   //Modification
 -->
 
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Batiment</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="cards">
-            <div class="card-bodi">
-              <div class="card-header">
-                <span>Modifier un Batiment</span>
-              </div>
-              <form (ngSubmit)="updateBatiment(batiment)">
-                <div>
-                  <label></label>
-                  <input placeholder="Code" type="text" [(ngModel)]="batiment.code" name="code" required >
-                </div>
-                <div>
-                  <label></label>
-                  <input placeholder="Designation" type="text" [(ngModel)]="batiment.designation" name="designation" required>
-                </div>
-                <div>
-                  <label></label>
-                  <input placeholder="Capacite" type="text" [(ngModel)]="batiment.capacite" name="Capacite" required>
-                </div>
-                <div>
-                  <label>
-                  </label>
-                  <input placeholder="Dimension" type="text" [(ngModel)]="batiment.dimension" name="dimension" required>
-                </div>
-                <button type="submit">Modifier</button>
-              </form>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Batiment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="cards">
+          <div class="card-bodi">
+            <div class="card-header">
+              <span>Modifier un Batiment</span>
             </div>
+            <form (ngSubmit)="updateBatiment(batiment)">
+              <div>
+                <label></label>
+                <input placeholder="Code" type="text" [(ngModel)]="batiment.code" name="code" required >
+              </div>
+              <div>
+                <label></label>
+                <input placeholder="Designation" type="text" [(ngModel)]="batiment.designation" name="designation" required>
+              </div>
+              <div>
+                <label></label>
+                <input placeholder="Capacite" type="text" [(ngModel)]="batiment.capacite" name="Capacite" required>
+              </div>
+              <div>
+                <label>
+                </label>
+                <input placeholder="Dimension" type="text" [(ngModel)]="batiment.dimension" name="dimension" required>
+              </div>
+              <button type="submit">Modifier</button>
+            </form>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
-
+</div>
 

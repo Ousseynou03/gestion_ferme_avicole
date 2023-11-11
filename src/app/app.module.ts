@@ -1,4 +1,3 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -24,11 +23,21 @@ import { MaterielComponent } from './demo/elements/materiel/materiel.component';
 import { OuvrierComponent } from './demo/elements/ouvrier/ouvrier.component';
 import { FournisseurComponent } from './demo/elements/fournisseur/fournisseur.component';
 import { HttpClientModule } from '@angular/common/http';
-//import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './demo/services/auth.service';
 import { LoginComponent } from './demo/login/login.component';
 import { UserComponent } from './demo/user/user.component';
+import { VenteComponent } from './demo/elements/vente/vente.component';
+import { DepenseComponent } from './demo/elements/depense/depense.component';
+import { BandeComponent } from './demo/elements/bande/bande.component';
+
+
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -51,7 +60,10 @@ import { UserComponent } from './demo/user/user.component';
     OuvrierComponent,
     FournisseurComponent,
     LoginComponent,
-    UserComponent
+    UserComponent,
+    VenteComponent,
+    DepenseComponent,
+    BandeComponent
   ],
   imports: [
     BrowserModule, 
@@ -59,7 +71,16 @@ import { UserComponent } from './demo/user/user.component';
     SharedModule, 
     BrowserAnimationsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    AsyncPipe,
+    MatInputModule,
+    MatSelectModule,
+    CommonModule
+
   ],
   providers: [NavigationItem, AuthService],
   bootstrap: [AppComponent]

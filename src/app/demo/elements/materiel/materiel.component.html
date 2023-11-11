@@ -1,4 +1,54 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#addBandeModal">
+  Ajouter un Matériel
+</button>
 
+<!-- Modal -->
+<div class="modal fade" id="addBandeModal" tabindex="-1" aria-labelledby="addBandeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addBandeModalLabel">Nouvelle Bande</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="cards">
+          <div class="card-bodi">
+            <div class="card-header">
+              <span>Enregistrement d'un Matériel</span>
+            </div>
+            <form (ngSubmit)="addMateriel()">
+              <div>
+                <label></label>
+                <input placeholder="Désignation" type="text" [(ngModel)]="materiel.designation" name="designation" required>
+              </div>
+              <div>
+                <label></label>
+                <input placeholder="Quantite" type="number" [(ngModel)]="materiel.quantite" name="quantite" required>
+              </div>
+              <div>
+                <label>Batiment</label>
+                <select [(ngModel)]="materiel.batiment" name="batiment" required>
+                  <option *ngFor="let b of batiments" [ngValue]="b">{{ b.designation }}</option>
+                </select>
+              </div>
+              <div>
+                <label>Fournisseur</label>
+                <select [(ngModel)]="materiel.fournisseur" name="fournisseur" required>
+                  <option *ngFor="let f of fournisseurs" [ngValue]="f">{{ f.nom }}</option>
+                </select>
+              </div>
+              <button type="submit">Enregistrer</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <!-- Liste des matériaux -->
@@ -19,8 +69,8 @@
         <td>{{ i + 1 }}</td>
         <td>{{ materiel.designation }}</td>
         <td>{{ materiel.quantite }}</td>
-        <td>{{ materiel.batiment.designation }}</td>
-        <td>{{ materiel.fournisseur.nom }}</td>
+        <td>{{ materiel.batiment?.designation }}</td>
+        <td>{{ materiel.fournisseur?.nom }}</td>
         <td>
           <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
             <i class="fas fa-edit"></i>
