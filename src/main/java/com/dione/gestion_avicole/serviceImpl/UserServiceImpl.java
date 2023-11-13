@@ -159,6 +159,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<String> deleteUser(Integer id) {
+        try {
+            if (jwtFilter.isAdmin()){
+                Optional optional = userDao.findById(id);
+                if (!optional.isEmpty()){
+                    userDao.deleteById(id);
+                    return AvicoleUtils.getResponseEntity("User avec id: " + id + " est supprimé avec succés", HttpStatus.OK);
+                }else {
+                    return AvicoleUtils.getResponseEntity("User id dosen't existe", HttpStatus.NO_CONTENT);
+                }
+
+            }else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS,HttpStatus.UNAUTHORIZED);
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
     public ResponseEntity<String> checkToken() {
         return AvicoleUtils.getResponseEntity("true", HttpStatus.OK);
     }

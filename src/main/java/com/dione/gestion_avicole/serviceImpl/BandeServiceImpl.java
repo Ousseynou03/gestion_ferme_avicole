@@ -83,17 +83,25 @@ public class BandeServiceImpl implements BandeService {
                 ex.printStackTrace();
             }
         }
-        // Validation de la relation "batiment"
+
+        // Validation et ajout de l'id du batiment
         if (requestMap.containsKey("batiment")) {
             try {
                 Integer batimentId = Integer.parseInt(requestMap.get("batiment"));
-                Batiment batiment = batimentDao.findById(batimentId).orElse(null);
-/*                String batimentDesignation = requestMap.get("batiment");
-                Batiment batiment = batimentDao.findByDesignation(batimentDesignation).orElse(null);*/
-                bande.setBatiment(batiment);
-            } catch (Exception ex) {
+
+                // Charger le Batiment depuis la base de données
+                Batiment batimentFromDB = batimentDao.findById(batimentId).orElse(null);
+
+                if (batimentFromDB == null) {
+                    throw new IllegalArgumentException("Le Batiment avec l'ID spécifié n'existe pas.");
+                }
+
+                bande.setBatiment(batimentFromDB);
+            } catch (NumberFormatException ex) {
                 ex.printStackTrace();
             }
+        } else {
+            throw new IllegalArgumentException("L'identifiant du bâtiment est obligatoire.");
         }
         return bande;
     }

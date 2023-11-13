@@ -10,6 +10,8 @@ import java.util.Map;
 @RequestMapping("bande")
 public interface BandeRest {
 
+
+
     @PostMapping("/add")
     ResponseEntity<String> ajoutBande(@RequestBody(required = true) Map<String, String> requestMap);
 
@@ -18,8 +20,10 @@ public interface BandeRest {
     ResponseEntity<List<Bande>> getAllBande();
 
 
+
     @PostMapping("/update")
     ResponseEntity<String> updateBande(@RequestBody(required = true) Map<String, String> requestMap);
+
 
 
     @DeleteMapping("/delete/{id}")

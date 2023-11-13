@@ -22,6 +22,8 @@ public interface UserRest {
     @PostMapping("/update")
     ResponseEntity<String> update(@RequestBody Map<String, String> requestMap);
 
+    @DeleteMapping("/delete/{id}")
+    ResponseEntity<String> deleteUser(@PathVariable Integer id);
 
     @GetMapping("/checkToken")
     ResponseEntity<String> checkToken();

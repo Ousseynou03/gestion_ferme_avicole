@@ -22,8 +22,7 @@ public class Oeuf {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String designation;
-    private double quantite;
-
+    private String quantite;
 
     @ManyToOne
     @JoinColumn(name = "batiment_id_ponte")

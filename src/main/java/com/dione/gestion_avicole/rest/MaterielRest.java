@@ -24,5 +24,5 @@ public interface MaterielRest {
 
 
     @DeleteMapping("/delete/{id}")
-    ResponseEntity<String> deleteMateriel(Integer id);
+    ResponseEntity<String> deleteMateriel(@PathVariable Integer id);
 }

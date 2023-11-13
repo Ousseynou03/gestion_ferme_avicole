@@ -15,6 +15,8 @@ public interface UserService {
 
     ResponseEntity<String> update(Map<String, String> requestMap);
 
+    ResponseEntity<String> deleteUser(Integer id);
+
     ResponseEntity<String> checkToken();
 
     ResponseEntity<String> changePassword(@RequestBody Map<String,String> requestMap);
