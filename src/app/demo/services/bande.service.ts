@@ -14,7 +14,7 @@ export class BandeService {
   constructor(private http: HttpClient) { }
 
   //Ajout
-  addBande(bande: Bande, headers: any) {
+  addBande(bande: Bande, headers: any):Observable<any> {
     const url = `${this.baseUrl}/bande/add`;
     return this.http.post(url, bande, { headers });
   }

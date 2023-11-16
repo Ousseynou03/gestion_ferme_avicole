@@ -37,5 +37,10 @@ export class BatimentService {
   return this.http.delete(url, { headers });
 }
 
+getBatimentDesignation(id: number, headers: any): Observable<string> {
+  const url = `${this.baseUrl}/batiment/designation/${id}`;
+  return this.http.get<string>(url, { headers });
+}
+
   
 }

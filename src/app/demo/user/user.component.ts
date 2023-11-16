@@ -17,6 +17,7 @@ export class UserComponent {
     contactNumber: '',
     email: '',
     password: '',
+    id: 0
   };
 
   constructor(private authService: AuthService) {}
@@ -118,5 +119,53 @@ export class UserComponent {
         }
       );
     }
+  }
+
+  // Suppression
+  deleteUser(id: number) {
+    Swal.fire({
+      title: 'Voulez-vous vraiment supprimer cet utilisateur ?',
+      text: 'L\'utilisateur définitivement supprimé!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, supprimer!'
+    }).then((result) => {
+      if (result.value) {
+        const token = localStorage.getItem('token');
+  
+        if (!token) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Vous devez être connecté en tant qu\'administrateur pour effectuer cette action.'
+          });
+          return;
+        }
+  
+        const headers = { Authorization: `Bearer ${token}` };
+  
+        this.authService.deleteUser(id, headers).subscribe(
+          () => {
+            Swal.fire({
+              title: 'Supprimé!',
+              text: 'L\'utilisateur a été supprimé avec succès.',
+              icon: 'success'
+            });
+            this.authService.getAllUsers(headers).subscribe(updatedUsers => {
+              this.users = updatedUsers;
+            });
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Oups!',
+              text: 'Impossible de supprimer cet utilisateur.',
+              icon: 'error'
+            });
+          }
+        );
+      }
+    });
   }
 }

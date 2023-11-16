@@ -32,7 +32,7 @@ export class MaterielService {
   }
 
   // Suppression
-  deleteMateiel(id: number, headers: any): Observable<any> {
+  deleteMateriel(id: number, headers: any): Observable<any> {
   const url = `${this.baseUrl}/materiel/delete/${id}`;
   return this.http.delete(url, { headers });
 }

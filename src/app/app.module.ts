@@ -38,6 +38,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {MatSelectModule} from '@angular/material/select';
+import { NutritionComponent } from './demo/elements/nutrition/nutrition.component';
+import { MortaliteComponent } from './demo/elements/mortalite/mortalite.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import {MatSelectModule} from '@angular/material/select';
     UserComponent,
     VenteComponent,
     DepenseComponent,
-    BandeComponent
+    BandeComponent,
+    NutritionComponent,
+    MortaliteComponent
   ],
   imports: [
     BrowserModule, 

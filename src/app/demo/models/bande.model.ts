@@ -7,11 +7,8 @@ export interface Bande {
     id: number;
     code: string;
     designation: string;
-    dateDebut: string; // Changer le type à string
-    dateFin: string;   // Changer le type à string
+    dateDebut: string;
+    dateFin: string;
     effectifdepart: number;
     batiment: Batiment;
-   // ventes: Vente[];
-   // mortalites: Mortalite[];
-   // veterinaires: Veterinaire[];
   }

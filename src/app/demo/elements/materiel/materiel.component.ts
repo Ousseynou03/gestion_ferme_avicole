@@ -150,4 +150,53 @@ export class MaterielComponent implements OnInit{
       );
     }
   }
+
+
+    // Suppression
+    deleteMateriel(id: number) {
+      Swal.fire({
+        title: 'Voulez-vous vraiment supprimer ce matériel ?',
+        text: 'Le Matériel sera définitivement supprimé!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, supprimer!'
+      }).then((result) => {
+        if (result.value) {
+          const token = localStorage.getItem('token');
+    
+          if (!token) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Vous devez être connecté en tant qu\'administrateur pour effectuer cette action.'
+            });
+            return;
+          }
+    
+          const headers = { Authorization: `Bearer ${token}` };
+    
+          this.materielService.deleteMateriel(id, headers).subscribe(
+            () => {
+              Swal.fire({
+                title: 'Supprimé!',
+                text: 'Le Matériel a été supprimé avec succès.',
+                icon: 'success'
+              });
+              this.materielService.getAllMateriels(headers).subscribe(updatedMatériels => {
+                this.materiels = updatedMatériels;
+              });
+            },
+            (error) => {
+              Swal.fire({
+                title: 'Oups!',
+                text: 'Impossible de supprimer ce materiel.',
+                icon: 'error'
+              });
+            }
+          );
+        }
+      });
+    }
 }
