@@ -14,7 +14,7 @@ export class MaterielService {
   constructor(private http: HttpClient) { }
 
   //Ajout
-  addMteriel(materiel: Materiel, headers: any) {
+  addMteriel(materiel: Materiel, headers: any):Observable<any>  {
     const url = `${this.baseUrl}/materiel/add`;
     return this.http.post(url, materiel, { headers });
   }

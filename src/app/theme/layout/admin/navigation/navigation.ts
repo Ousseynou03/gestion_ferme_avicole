@@ -94,7 +94,7 @@ const NavigationItems = [
             type: 'item',
             classes: 'nav-item',
             url: '/client',
-            icon: 'ti ti-typography'
+            icon: 'ti ti-user'
           },
           {
             id: 'ouvrier',
@@ -102,7 +102,7 @@ const NavigationItems = [
             type: 'item',
             classes: 'nav-item',
             url: '/ouvrier',
-            icon: 'ti ti-typography'
+            icon: 'fas fa-hard-hat'
           },
           {
             id: 'fournisseur',
@@ -135,7 +135,7 @@ const NavigationItems = [
             type: 'item',
             classes: 'nav-item',
             url: '/depense',
-            icon: 'fa fa-user'
+            icon: 'fas fa-money-check-alt'
           },
 
           {
@@ -144,7 +144,7 @@ const NavigationItems = [
             type: 'item',
             classes: 'nav-item',
             url: '/vente',
-            icon: 'fa fa-user'
+            icon: 'fas fa-shopping-cart'
           },
           {
             id: 'Trésorerie',
@@ -152,7 +152,7 @@ const NavigationItems = [
             type: 'item',
             classes: 'nav-item',
             url: '/tresorerie',
-            icon: 'ti ti-typography'
+            icon: 'fas fa-arrow-up'
           },
         ]
       },
@@ -177,7 +177,7 @@ const NavigationItems = [
             type: 'item',
             classes: 'nav-item',
             url: '/bande',
-            icon: 'fa fa-user'
+            icon: 'fas fa-band-aid'
           },
           {
             id: 'Nutrition',
@@ -185,7 +185,7 @@ const NavigationItems = [
             type: 'item',
             classes: 'nav-item',
             url: '/nutrition',
-            icon: 'fa fa-user'
+            icon: 'fas fa-balance-scale'
           },
           {
             id: 'Moratlite',
@@ -193,7 +193,7 @@ const NavigationItems = [
             type: 'item',
             classes: 'nav-item',
             url: '/moratlite',
-            icon: 'fa fa-user'
+            icon: 'fas fa-skull'
           },
           {
             id: 'Oeuf',
@@ -201,7 +201,7 @@ const NavigationItems = [
             type: 'item',
             classes: 'nav-item',
             url: '/oeuf',
-            icon: 'fa fa-user'
+            icon: 'fas fa-egg'
           },
         ]
       },
@@ -226,7 +226,7 @@ const NavigationItems = [
             type: 'item',
             classes: 'nav-item',
             url: '/appartement',
-            icon: 'fa fa-user'
+            icon: 'fas fa-home'
           },
         ]
       },
@@ -234,33 +234,6 @@ const NavigationItems = [
     ]
   },
 
-
-/*  {
-    id: 'other',
-    title: 'Other',
-    type: 'group',
-    icon: 'icon-navigation',
-    children: [
-      {
-        id: 'sample-page',
-        title: 'Sample Page',
-        type: 'item',
-        url: '/sample-page',
-        classes: 'nav-item',
-        icon: 'ti ti-brand-chrome'
-      },
-      {
-        id: 'document',
-        title: 'Document',
-        type: 'item',
-        classes: 'nav-item',
-        url: 'https://codedthemes.gitbook.io/berry-angular/',
-        icon: 'ti ti-vocabulary',
-        target: true,
-        external: true
-      }
-    ]
-  }*/
 ];
 
 @Injectable()

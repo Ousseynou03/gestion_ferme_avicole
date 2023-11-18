@@ -36,4 +36,10 @@ export class BandeService {
   const url = `${this.baseUrl}/bande/delete/${id}`;
   return this.http.delete(url, { headers });
 }
+
+  //Récupération nombre de Bande dans chaque batiment 
+  countTotalBandes(headers : any):Observable<number> {
+    const url = `${this.baseUrl}/bande/countAllBande`;
+    return this.http.get<number>(url,{headers})
+  }
 }

@@ -7,6 +7,7 @@ import {Batiment} from "../../models/batiment.model";
 import {Fournisseur} from "../../models/fournisseur.model";
 import {BatimentService} from "../../services/batiment.service";
 import {FournisseurService} from "../../services/fournisseur.service";
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-materiel',
@@ -16,21 +17,21 @@ import {FournisseurService} from "../../services/fournisseur.service";
 export class MaterielComponent implements OnInit{
 
   materiels : Materiel[];
-  batiments: Batiment[] = [];
-  fournisseurs : Fournisseur[] = [];
+  batiments: Batiment[];
+  fournisseurs : Fournisseur[];
 
-  materiel : Materiel = {
-    batiment: undefined,
-    designation: "",
-    fournisseur: undefined,
-    id: 0, quantite: 0
-
-  };
+  materielForm = this.fb.group({
+    designation: ['', Validators.required],
+    quantite: [null, Validators.required],
+    batiment: [null, Validators.required],
+    fournisseur: [null, Validators.required],
+  });
 
   constructor(private materielService: MaterielService,
               private authService: AuthService,
               private batimentService : BatimentService,
-              private fournisseurService : FournisseurService) {}
+              private fournisseurService : FournisseurService,
+              private fb : FormBuilder) {}
 
   ngOnInit() {
     const token = localStorage.getItem('token');
@@ -58,13 +59,13 @@ export class MaterielComponent implements OnInit{
       }
     );
 
-    this.loadBatimentList()
-    this.loadFournisseurList()
+    this.loadBatimentList(headers)
+    this.loadFournisseurList(headers)
 
 
     }
 
-
+/*
 //Ajout
   addMateriel(){
     const token = localStorage.getItem('token');
@@ -105,8 +106,59 @@ export class MaterielComponent implements OnInit{
 
   }
 
+  */
+
+  addMateriel() {
+    if (this.materielForm.valid) {
+      const materiel: Materiel = {
+        id: null,
+        designation: this.materielForm.value.designation,
+        quantite: this.materielForm.value.quantite,
+        batiment: this.materielForm.value.batiment,
+        fournisseur: this.materielForm.value.fournisseur,
+      };
+  
+      console.log('Valeur de Materiel avant envoi:', this.materielForm.value.batiment);
+  
+      const token = localStorage.getItem('token');
+  
+      if (!token) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Vous devez être connecté...'
+        });
+        return;
+      }
+  
+      const headers = { Authorization: `Bearer ${token}` };
+  
+      this.materielService.addMteriel(materiel, headers).subscribe(
+        (createdMateriel) => {
+          console.log('Materiel created successfully:', createdMateriel);
+          Swal.fire({
+            icon: 'success',
+            title: 'Succès',
+            text: 'Le Materiel a été ajoutée avec succès.'
+          });
+          this.loadMaterielList(headers);
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout de la bande:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Une erreur est survenue lors de l\'ajout dU Matériel.'
+          });
+        }
+      );
+    }
+  }
+
+
+
   // Méthode pour récupérer la liste des bâtiments
-  loadBatimentList() {
+  loadBatimentList(headers: any) {
     const token = localStorage.getItem('token');
     if (token) {
       const headers = { Authorization: `Bearer ${token}` };
@@ -121,7 +173,7 @@ export class MaterielComponent implements OnInit{
     }
   }
   // Méthode pour récupérer la liste des fournisseurs
-  loadFournisseurList() {
+  loadFournisseurList(headers: any) {
     const token = localStorage.getItem('token');
     if (token) {
       const headers = { Authorization: `Bearer ${token}` };
@@ -135,20 +187,23 @@ export class MaterielComponent implements OnInit{
       );
     }
   }
-  loadMaterielList() {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const headers = { Authorization: `Bearer ${token}` };
 
-      this.materielService.getAllMateriels(headers).subscribe(
-        (data: Materiel[]) => {
-          this.materiels = data;
-        },
-        (error) => {
-          console.error('Erreur lors de la récupération des Matériel:', error);
-        }
-      );
-    }
+
+  loadMaterielList(headers: any) {
+    this.materielService.getAllMateriels(headers).subscribe(
+      (data: Materiel[]) => {
+        this.materiels = data;
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur de récupération',
+          text: 'Impossible de récupérer la liste des matériels.'
+        });
+  
+        console.error('Erreur lors de la récupération des matériels :', error);
+      }
+    );
   }
 
 

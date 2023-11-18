@@ -1,1 +1,42 @@
-<p>depense works!</p>
+
+
+
+<!-- Liste des dépense -->
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">N°</th>
+        <th scope="col">Categorie</th>
+        <th scope="col">date Depense</th>
+        <th scope="col">Quantite</th>
+        <th scope="col">Prix Unitaire</th>
+        <th scope="col">Description</th>
+        <th scope="col">Montant</th>
+        <th scope="col">bande</th>
+        <th scope="col">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+       <tr *ngFor="let depense of depenses; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ depense.categorie }}</td>
+        <td>{{ depense.dateDepense | date:'yyyy-MM-dd'  }}</td>
+        <td>{{ depense.quantite }}</td>
+        <td>{{ depense.prixUnitaire }}</td>
+        <td>{{ depense.description }}</td>
+        <td>{{ depense.montant }}</td>
+        <td>{{ depense.bande.designation }}</td>
+        <td>
+          <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-link text-danger">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  

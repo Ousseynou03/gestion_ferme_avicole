@@ -14,7 +14,7 @@ export class DepenseService {
   constructor(private http: HttpClient) { }
 
   //Ajout
-  addDepense(depense: Depense, headers: any) {
+  addDepense(depense: Depense, headers: any):Observable<any> {
     const url = `${this.baseUrl}/depense/add`;
     return this.http.post(url, depense, { headers });
   }
@@ -36,4 +36,10 @@ export class DepenseService {
   const url = `${this.baseUrl}/depense/delete/${id}`;
   return this.http.delete(url, { headers });
 }
+
+  //Récupération des dépenses totales 
+  totalDepense(headers : any):Observable<number> {
+    const url = `${this.baseUrl}/depense/totalDepenses`;
+    return this.http.get<number>(url,{headers})
+  }
 }

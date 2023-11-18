@@ -14,7 +14,7 @@ export class VenteService {
   constructor(private http: HttpClient) { }
 
     //Ajout
-    addVente(vente: Vente, headers: any) {
+    addVente(vente: Vente, headers: any): Observable<any> {
       const url = `${this.baseUrl}/vente/add`;
       return this.http.post(url, vente, { headers });
     }
@@ -36,4 +36,16 @@ export class VenteService {
     const url = `${this.baseUrl}/vente/delete/${id}`;
     return this.http.delete(url, { headers });
   }
+
+    //Récupération des ventes total de poulet 
+    sommeTotalVentePoulet(headers : any):Observable<number> {
+      const url = `${this.baseUrl}/vente/ventePoulets`;
+      return this.http.get<number>(url,{headers})
+    }
+
+    //Récupération des ventes total des oeufs 
+    sommeTotalVenteOeuf(headers : any):Observable<number> {
+        const url = `${this.baseUrl}/vente/venteOeufs`;
+        return this.http.get<number>(url,{headers})
+      }
 }

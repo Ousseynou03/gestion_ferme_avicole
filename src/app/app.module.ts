@@ -40,6 +40,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {MatSelectModule} from '@angular/material/select';
 import { NutritionComponent } from './demo/elements/nutrition/nutrition.component';
 import { MortaliteComponent } from './demo/elements/mortalite/mortalite.component';
+import { TresorerieComponent } from './demo/elements/tresorerie/tresorerie.component';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,8 @@ import { MortaliteComponent } from './demo/elements/mortalite/mortalite.componen
     DepenseComponent,
     BandeComponent,
     NutritionComponent,
-    MortaliteComponent
+    MortaliteComponent,
+    TresorerieComponent
   ],
   imports: [
     BrowserModule, 
@@ -83,7 +86,8 @@ import { MortaliteComponent } from './demo/elements/mortalite/mortalite.componen
     AsyncPipe,
     MatInputModule,
     MatSelectModule,
-    CommonModule
+    CommonModule,
+    NgbDropdownModule
 
   ],
   providers: [NavigationItem, AuthService],

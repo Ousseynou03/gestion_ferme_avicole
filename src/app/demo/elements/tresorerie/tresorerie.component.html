@@ -1,0 +1,32 @@
+<!-- Liste des trésoreries -->
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">N°</th>
+        <th scope="col">Type</th>
+        <th scope="col">Nom</th>
+        <th scope="col">Numero</th>
+        <th scope="col">Solde</th>
+        <th scope="col">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+       <tr *ngFor="let tresorerie of tresoreries; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ tresorerie.type }}</td>
+        <td>{{ tresorerie.nom }}</td>
+        <td>{{ tresorerie.numero }}</td>
+        <td>{{ tresorerie.solde}}</td>
+        <td>
+          <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-link text-danger" (click)="deleteTresorerie(tresorerie.id)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>

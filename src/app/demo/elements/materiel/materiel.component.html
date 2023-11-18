@@ -17,25 +17,25 @@
             <div class="card-header">
               <span>Enregistrement d'un Matériel</span>
             </div>
-            <form (ngSubmit)="addMateriel()">
+            <form [formGroup]="materielForm" (ngSubmit)="addMateriel()">
               <div>
                 <label></label>
-                <input placeholder="Désignation" type="text" [(ngModel)]="materiel.designation" name="designation" required>
+                <input placeholder="Désignation" type="text"  name="designation" formControlName="designation" required>
               </div>
               <div>
                 <label></label>
-                <input placeholder="Quantite" type="number" [(ngModel)]="materiel.quantite" name="quantite" required>
+                <input placeholder="Quantite" type="number" name="quantite" formControlName="quantite" required>
               </div>
               <div>
-                <label>Batiment</label>
-                <select [(ngModel)]="materiel.batiment" name="batiment" required>
-                  <option *ngFor="let b of batiments" [ngValue]="b">{{ b.designation }}</option>
-                </select>
-              </div>
+                <label for="batiment">Batiment:</label>
+              <select id="batiment" formControlName="batiment">
+                <option *ngFor="let batiment of batiments" [value]="batiment.id">{{ batiment?.designation }}</option>
+              </select>
+            </div>
               <div>
                 <label>Fournisseur</label>
-                <select [(ngModel)]="materiel.fournisseur" name="fournisseur" required>
-                  <option *ngFor="let f of fournisseurs" [ngValue]="f">{{ f.nom }}</option>
+                <select id="fournisseur" formControlName="fournisseur">
+                  <option *ngFor="let fournisseur of fournisseurs" [value]="fournisseur.id">{{ fournisseur?.nom }}</option>
                 </select>
               </div>
               <button type="submit">Enregistrer</button>

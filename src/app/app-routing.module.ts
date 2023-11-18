@@ -12,6 +12,7 @@ import { ClientComponent } from './demo/elements/client/client.component';
 import { VenteComponent } from './demo/elements/vente/vente.component';
 import { DepenseComponent } from './demo/elements/depense/depense.component';
 import { BandeComponent } from './demo/elements/bande/bande.component';
+import { TresorerieComponent } from './demo/elements/tresorerie/tresorerie.component';
 
 const routes: Routes = [
   {
@@ -26,10 +27,6 @@ const routes: Routes = [
       {
         path: 'default',
         loadComponent: () => import('./demo/default/default.component')
-      },
-      {
-        path: 'typography',
-        loadComponent: () => import('./demo/elements/typography/typography.component')
       },
       {
         path: 'batiment', component : BatimentComponent
@@ -55,6 +52,9 @@ const routes: Routes = [
       },
       {
         path: 'bande', component : BandeComponent
+      },
+      {
+        path: 'tresorerie', component : TresorerieComponent
       },
       {
         path: 'user', component : UserComponent

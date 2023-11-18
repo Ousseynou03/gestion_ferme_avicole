@@ -8,7 +8,15 @@
           href="javascript:"
           ngbDropdownToggle
         >
-          <img src="assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
+         <!-- <img src="assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" /> -->
+         
+        <!-- Assurez-vous que userById est défini avant d'essayer d'accéder à ses propriétés -->
+            <div *ngIf="userById">
+              <!-- Afficher le nom de l'utilisateur -->
+              <p>{{ userById.name }}</p>
+            </div>
+
+        
           <span>
             <i class="ti ti-settings"></i>
           </span>

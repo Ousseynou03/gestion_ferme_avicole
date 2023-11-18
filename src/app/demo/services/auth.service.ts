@@ -27,6 +27,12 @@ export class AuthService {
     return this.http.get<User[]>(`${this.baseUrl}/user/get`, { headers });
   }
 
+
+  //Récupérer un utilisateur sachant son id
+  getUserById(id : number,headers: any): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/user/name/${id}`, { headers });
+  }
+
     // Mise à jour d'un bâtiment
     updateUser(user: User, headers: any): Observable<any> {
       const url = `${this.baseUrl}/user/update`;

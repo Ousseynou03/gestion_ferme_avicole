@@ -1,1 +1,47 @@
-<p>vente works!</p>
+<!-- vente.component.html -->
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">N°</th>
+        <th scope="col">Bande</th>
+        <th scope="col">Client</th>
+        <th scope="col">Description</th>
+        <th scope="col">Quantite</th>
+        <th scope="col">Prix Unitaire</th>
+        <th scope="col">Montant</th>
+        <th scope="col">Tresorerie</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+       <tr *ngFor="let vente of ventes; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ vente.bande.designation }}</td>
+        <td>{{ vente.client.nom }}</td>
+        <td>{{ vente.description }}</td>
+        <td>{{ vente.quantite }}</td>
+        <td>{{ vente.prixUnitaire }}</td>
+        <td>{{ vente.montant }}</td>
+        <td>{{ vente.tresorerie.nom }}</td>
+        <td>
+          <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-link text-danger">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="6"></td>
+        <td>Total</td>
+        <td>
+            <span class="total-amount">{{ totalMontant }}  FCFA</span>
+          </td>
+        <td></td>
+      </tr>
+    </tfoot>
+</table>

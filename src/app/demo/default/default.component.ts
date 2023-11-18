@@ -24,6 +24,11 @@ import {
   ApexTooltip
 } from 'ng-apexcharts';
 import Swal from 'sweetalert2';
+import { BatimentService } from '../services/batiment.service';
+import { BandeService } from '../services/bande.service';
+import { TresorerieService } from '../services/tresorerie.service';
+import { VenteService } from '../services/vente.service';
+import { DepenseService } from '../services/depense.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -46,6 +51,23 @@ export type ChartOptions = {
   styleUrls: ['./default.component.scss']
 })
 export default class DefaultComponent {
+
+  totalBatiments: number;
+  totalBandes : number;
+  soldeTotalTresoreries : number;
+  ventePoulets : number;
+  venteOeufs : number;
+  totalDepenses : number;
+  benefice: number;
+
+
+ 
+
+
+
+
+
+
   // private props
   @ViewChild('growthChart') growthChart: ChartComponent;
   chartOptions: Partial<ChartOptions>;
@@ -56,7 +78,16 @@ export default class DefaultComponent {
   colorChart = ['#673ab7'];
 
   // Constructor
-  constructor() {
+  constructor(
+    private batimentService : BatimentService,
+    private bandeService : BandeService,
+    private tresorerieService : TresorerieService,
+    private venteServiceService : VenteService,
+    private depenseService : DepenseService
+
+
+
+  ) {
     this.chartOptions = {
       series: [
         {
@@ -147,7 +178,135 @@ export default class DefaultComponent {
       this.monthChart.render();
     }, 500);
 
+    this.countTotalBatiments();
+    this.countTotalBandes();
+    this.sommeTotaleTresorerie();
+    this.sommeTotalVentePoulet();
+    this.sommeTotalVenteOeuf();
+    this.totalDepense();
+    this.calculerBénéfice();
 
+
+  }
+
+     // Méthode pour calculer le bénéfice
+     calculerBénéfice() {
+      if (this.soldeTotalTresoreries != null && this.totalDepenses != null) {
+        this.benefice = this.soldeTotalTresoreries - this.totalDepenses;
+      } else {
+        this.benefice = null;
+      }
+      return this.benefice;
+    }
+
+            //Récupération des ventes de Poulets
+            totalDepense() {
+              const token = localStorage.getItem('token');
+          
+              if (token) {
+                const headers = { Authorization: `Bearer ${token}` };
+          
+                this.depenseService.totalDepense(headers).subscribe(
+                  (data: number) => {
+                    this.totalDepenses = data;
+                  },
+                  (error) => {
+                    console.error('Erreur lors de la récupération des ventes de poulet:', error);
+                  }
+                );
+              }
+            }
+
+
+          //Récupération des ventes de Poulets
+          sommeTotalVenteOeuf() {
+            const token = localStorage.getItem('token');
+        
+            if (token) {
+              const headers = { Authorization: `Bearer ${token}` };
+        
+              this.venteServiceService.sommeTotalVenteOeuf(headers).subscribe(
+                (data: number) => {
+                  this.venteOeufs = data;
+                },
+                (error) => {
+                  console.error('Erreur lors de la récupération des ventes de poulet:', error);
+                }
+              );
+            }
+          }
+
+
+        //Récupération des ventes de Poulets
+        sommeTotalVentePoulet() {
+          const token = localStorage.getItem('token');
+      
+          if (token) {
+            const headers = { Authorization: `Bearer ${token}` };
+      
+            this.venteServiceService.sommeTotalVentePoulet(headers).subscribe(
+              (data: number) => {
+                this.ventePoulets = data;
+              },
+              (error) => {
+                console.error('Erreur lors de la récupération des ventes de poulet:', error);
+              }
+            );
+          }
+        }
+
+      //Récupération du solde total
+      sommeTotaleTresorerie() {
+        const token = localStorage.getItem('token');
+    
+        if (token) {
+          const headers = { Authorization: `Bearer ${token}` };
+    
+          this.tresorerieService.sommeTotaleTresorerie(headers).subscribe(
+            (data: number) => {
+              this.soldeTotalTresoreries = data;
+            },
+            (error) => {
+              console.error('Erreur lors de la récupération du solde total:', error);
+            }
+          );
+        }
+      }
+
+    //Récupération nombre total de Bandes
+    countTotalBandes() {
+      const token = localStorage.getItem('token');
+  
+      if (token) {
+        const headers = { Authorization: `Bearer ${token}` };
+  
+        this.bandeService.countTotalBandes(headers).subscribe(
+          (data: number) => {
+            this.totalBandes = data;
+          },
+          (error) => {
+            console.error('Erreur lors de la récupération du nombre total de batiments:', error);
+          }
+        );
+      }
+    }
+
+  //Récupération nombre total de Batiments
+  countTotalBatiments() {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      const headers = { Authorization: `Bearer ${token}` };
+
+      this.batimentService.countTotalBatiments(headers).subscribe(
+        (data: number) => {
+          this.totalBatiments = data;
+        },
+        (error) => {
+          console.error('Erreur lors de la récupération du nombre total de batiments:', error);
+        }
+      );
+    }
   }
 
   // public Method
