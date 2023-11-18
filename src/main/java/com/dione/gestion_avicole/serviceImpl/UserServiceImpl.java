@@ -3,6 +3,7 @@ package com.dione.gestion_avicole.serviceImpl;
 import com.dione.gestion_avicole.JWT.CustomerUsersDetailsService;
 import com.dione.gestion_avicole.JWT.JwtFilter;
 import com.dione.gestion_avicole.JWT.JwtUtil;
+import com.dione.gestion_avicole.POJO.Batiment;
 import com.dione.gestion_avicole.POJO.User;
 import com.dione.gestion_avicole.constents.AvicoleConstants;
 import com.dione.gestion_avicole.dao.UserDao;
@@ -201,6 +202,27 @@ public class UserServiceImpl implements UserService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> getUserById(Integer id) {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
+                Optional<User> userOptional = userDao.findById(id);
+
+                if (userOptional.isPresent()) {
+                    User user = userOptional.get();
+                    return AvicoleUtils.getResponseEntity(user.getName(), HttpStatus.OK);
+                } else {
+                    return AvicoleUtils.getResponseEntity("User avec id: " + id + " n'existe pas", HttpStatus.NOT_FOUND);
+                }
+            } else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

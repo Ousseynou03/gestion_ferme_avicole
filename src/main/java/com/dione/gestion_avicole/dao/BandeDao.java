@@ -10,7 +10,6 @@ public interface BandeDao extends JpaRepository<Bande,Integer> {
 
 
     Bande getBandeById(@Param("id") Integer id);
-
-
     List<Bande> getLatestThreeBandes();
+    Long countTotalBande();
 }

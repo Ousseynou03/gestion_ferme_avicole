@@ -60,6 +60,7 @@ public class BandeServiceImpl implements BandeService {
         }
         bande.setCode(requestMap.get("code"));
         bande.setDesignation(requestMap.get("designation"));
+        bande.setCloture("false");
 
         // Validation et ajout de effectifdepart
         if (requestMap.containsKey("effectifdepart")) {
@@ -196,5 +197,17 @@ public class BandeServiceImpl implements BandeService {
             ex.printStackTrace();
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public Long countTotalBande() {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
+                return bandeDao.countTotalBande();
+            }
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des bandes.", ex);
+        }
+        return null;
     }
 }

@@ -23,4 +23,7 @@ public interface TresorerieRest {
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteTresorerie(@PathVariable Integer id);
+
+    @GetMapping("/solde")
+    Integer sommeTotaleTresorerie();
 }

@@ -35,4 +35,7 @@ public interface BandeRest {
 
     @GetMapping("/getLatestBandes")
     ResponseEntity<List<Bande>> getLatestThreeBandes();
+
+    @GetMapping("/countAllBande")
+    Long countTotalBande();
 }

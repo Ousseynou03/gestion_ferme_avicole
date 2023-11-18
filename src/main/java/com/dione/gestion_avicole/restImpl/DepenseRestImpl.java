@@ -62,4 +62,13 @@ public class DepenseRestImpl implements DepenseRest {
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public Integer totalDepense() {
+        try {
+            return depenseService.totalDepense();
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des dépenses.", ex);
+        }
+    }
 }

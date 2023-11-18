@@ -14,6 +14,7 @@ import java.util.List;
 
 //@NamedQuery(name = "Batiment.getAllBatiments", query = "select b from Batiment b")
 
+@NamedQuery(name = "Batiment.countTotalBatiments", query = "SELECT  COUNT(*) FROM Batiment")
 
 
 

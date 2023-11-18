@@ -17,4 +17,8 @@ public interface VenteService {
 
     ResponseEntity<String> deleteVente(Integer id);
 
+    Integer sommeTotalVentePoulet();
+
+    Integer sommeTotalVenteOeuf();
+
 }

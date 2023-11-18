@@ -164,4 +164,16 @@ public class DepenseServiceImpl implements DepenseService {
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public Integer totalDepense() {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
+                return depenseDao.totalDepense();
+            }
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des dépenses.", ex);
+        }
+        return null;
+    }
 }

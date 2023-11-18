@@ -25,5 +25,11 @@ public interface BatimentRest {
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteBatiment(@PathVariable Integer id);
 
+    @GetMapping("/designation/{id}")
+    ResponseEntity<String> getBatimentDesignationById(@PathVariable Integer id);
+
+    @GetMapping("/countAllBatiment")
+    Long countTotalBatiments();
+
 
 }

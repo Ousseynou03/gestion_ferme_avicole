@@ -21,4 +21,6 @@ public interface UserService {
 
     ResponseEntity<String> changePassword(@RequestBody Map<String,String> requestMap);
 
+    ResponseEntity<String> getUserById(Integer id);
+
 }

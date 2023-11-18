@@ -16,4 +16,6 @@ public interface DepenseService {
     ResponseEntity<String> updateDepense(Map<String, String> requestMap);
 
     ResponseEntity<String> deleteDepense(Integer id);
+
+    Integer totalDepense();
 }

@@ -19,6 +19,8 @@ import java.util.List;
 
 @NamedQuery(name = "Bande.getLatestThreeBandes", query = "SELECT b FROM Bande b ORDER BY b.dateFin DESC")
 
+@NamedQuery(name = "Bande.countTotalBande", query = "SELECT COUNT(*) FROM Bande WHERE cloture='false'")
+
 
 
 @DynamicUpdate
@@ -39,6 +41,7 @@ public class Bande implements Serializable {
     private Date dateDebut;
     private Date dateFin;
     private double effectifdepart;
+    private String cloture;
 
 
     @ManyToOne

@@ -35,6 +35,8 @@ public class Depense {
     private double prixUnitaire;
     private double montant;
 
+    @PrePersist
+    @PreUpdate
     public void calculateMontant() {
         this.montant = quantite * prixUnitaire;
     }

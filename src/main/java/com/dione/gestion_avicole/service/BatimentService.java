@@ -17,5 +17,8 @@ public interface BatimentService {
 
     ResponseEntity<String> deleteBatiment(Integer id);
 
+    ResponseEntity<String> getBatimentDesignationById(Integer id);
+
+    Long countTotalBatiments();
 
 }

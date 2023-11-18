@@ -64,4 +64,13 @@ public class TresorerieRestImpl implements TresorerieRest {
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public Integer sommeTotaleTresorerie() {
+        try {
+            return tresorerieService.sommeTotaleTresorerie();
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage de la somme des soldes.", ex);
+        }
+    }
 }

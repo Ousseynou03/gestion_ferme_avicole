@@ -64,8 +64,6 @@ public class OeufServiceImpl implements OeufService {
         if (requestMap.containsKey("batiment")) {
             try {
                 Integer batimentId = Integer.parseInt(requestMap.get("batiment"));
-
-                // Charger le Batiment depuis la base de données
                 Batiment batimentFromDB = batimentDao.findById(batimentId).orElse(null);
 
                 if (batimentFromDB == null) {

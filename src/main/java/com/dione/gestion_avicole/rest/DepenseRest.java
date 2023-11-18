@@ -24,4 +24,7 @@ public interface DepenseRest {
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteDepense(@PathVariable Integer id);
+
+    @GetMapping("/totalDepenses")
+    Integer totalDepense();
 }

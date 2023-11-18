@@ -62,4 +62,22 @@ public class VenteRestImpl implements VenteRest {
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public Integer sommeTotalVentePoulet() {
+        try {
+            return venteService.sommeTotalVentePoulet();
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des ventes de poulets.", ex);
+        }
+    }
+
+    @Override
+    public Integer sommeTotalVenteOeuf() {
+        try {
+            return venteService.sommeTotalVenteOeuf();
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des ventes d'oeufs.", ex);
+        }
+    }
 }

@@ -25,4 +25,10 @@ public interface VenteRest {
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteVente(@PathVariable Integer id);
+
+    @GetMapping("/ventePoulets")
+    Integer sommeTotalVentePoulet();
+
+    @GetMapping("/venteOeufs")
+    Integer sommeTotalVenteOeuf();
 }

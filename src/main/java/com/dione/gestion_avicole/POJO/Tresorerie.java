@@ -11,6 +11,10 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.util.List;
 
+
+@NamedQuery(name = "Tresorerie.sommeTotaleTresorerie", query = "SELECT SUM(solde) FROM Tresorerie")
+
+
 @DynamicUpdate
 @DynamicInsert
 @Data

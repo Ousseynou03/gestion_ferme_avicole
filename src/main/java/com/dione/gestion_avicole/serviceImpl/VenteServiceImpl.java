@@ -4,11 +4,13 @@ package com.dione.gestion_avicole.serviceImpl;
 import com.dione.gestion_avicole.JWT.JwtFilter;
 import com.dione.gestion_avicole.POJO.Bande;
 import com.dione.gestion_avicole.POJO.Client;
+import com.dione.gestion_avicole.POJO.Tresorerie;
 import com.dione.gestion_avicole.POJO.Vente;
 import com.dione.gestion_avicole.POJO.enums.Description;
 import com.dione.gestion_avicole.constents.AvicoleConstants;
 import com.dione.gestion_avicole.dao.BandeDao;
 import com.dione.gestion_avicole.dao.ClientDao;
+import com.dione.gestion_avicole.dao.TresorerieDao;
 import com.dione.gestion_avicole.dao.VenteDao;
 import com.dione.gestion_avicole.service.VenteService;
 import com.dione.gestion_avicole.utils.AvicoleUtils;
@@ -25,12 +27,14 @@ public class VenteServiceImpl implements VenteService {
     private JwtFilter jwtFilter;
     private BandeDao bandeDao;
     private ClientDao clientDao;
+    private TresorerieDao tresorerieDao;
 
-    public VenteServiceImpl(VenteDao venteDao, JwtFilter jwtFilter, BandeDao bandeDao, ClientDao clientDao) {
+    public VenteServiceImpl(VenteDao venteDao, JwtFilter jwtFilter, BandeDao bandeDao, ClientDao clientDao, TresorerieDao tresorerieDao) {
         this.venteDao = venteDao;
         this.jwtFilter = jwtFilter;
         this.bandeDao = bandeDao;
         this.clientDao = clientDao;
+        this.tresorerieDao = tresorerieDao;
     }
 
     @Override
@@ -74,15 +78,18 @@ public class VenteServiceImpl implements VenteService {
                 ex.printStackTrace();
             }
         }
-        // Validation de la relation "client"
-        if (requestMap.containsKey("client") && requestMap.containsKey("bande")) {
+
+        if (requestMap.containsKey("client") && requestMap.containsKey("bande") && requestMap.containsKey("tresorerie")) {
             try {
                 Integer clientId = Integer.parseInt(requestMap.get("client"));
                 Integer bandeId = Integer.parseInt(requestMap.get("bande"));
+                Integer tresorerieId = Integer.parseInt(requestMap.get("tresorerie"));
                 Client client = clientDao.findById(clientId).orElse(null);
                 Bande bande = bandeDao.findById(bandeId).orElse(null);
+                Tresorerie tresorerie = tresorerieDao.findById(tresorerieId).orElse(null);
                 vente.setClient(client);
                 vente.setBande(bande);
+                vente.setTresorerie(tresorerie);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -157,4 +164,31 @@ public class VenteServiceImpl implements VenteService {
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public Integer sommeTotalVentePoulet() {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
+                return venteDao.sommeTotalVentePoulet();
+            }
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage de la somme des ventes de Poulet.", ex);
+        }
+        return null;
+    }
+
+    @Override
+    public Integer sommeTotalVenteOeuf() {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
+                return venteDao.sommeTotalVenteOeuf();
+            }
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage de la somme des ventes d'oeuf.", ex);
+        }
+        return null;
+    }
+
+
+
 }

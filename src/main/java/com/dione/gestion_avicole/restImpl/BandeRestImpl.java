@@ -84,4 +84,13 @@ public class BandeRestImpl implements BandeRest {
         }
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public Long countTotalBande() {
+        try {
+            return bandeService.countTotalBande();
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des bandes.", ex);
+        }
+    }
 }

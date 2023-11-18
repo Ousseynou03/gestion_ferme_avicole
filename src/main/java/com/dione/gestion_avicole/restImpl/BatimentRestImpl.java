@@ -69,4 +69,23 @@ public class BatimentRestImpl implements BatimentRest {
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @Override
+    public ResponseEntity<String> getBatimentDesignationById(Integer id) {
+        try {
+            return batimentService.getBatimentDesignationById(id);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public Long countTotalBatiments() {
+        try {
+            return batimentService.countTotalBatiments();
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des bâtiments.", ex);
+        }
+    }
+
 }

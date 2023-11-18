@@ -19,8 +19,8 @@ public interface BandeService {
 
     ResponseEntity<Bande> getBandeById(Integer id);
 
-
     ResponseEntity<List<Bande>> getLatestThreeBandes();
+    Long countTotalBande();
 
 
 

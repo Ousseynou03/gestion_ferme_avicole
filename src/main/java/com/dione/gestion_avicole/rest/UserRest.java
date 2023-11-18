@@ -30,4 +30,7 @@ public interface UserRest {
 
     @PostMapping("/changePassword")
     ResponseEntity<String> changePassword(@RequestBody Map<String,String> requestMap);
+
+    @GetMapping("/name/{id}")
+    ResponseEntity<String> getUserById(@PathVariable Integer id);
 }
