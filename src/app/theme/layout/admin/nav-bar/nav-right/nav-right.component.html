@@ -7,19 +7,12 @@
           data-bs-toggle="dropdown"
           href="javascript:"
           ngbDropdownToggle
+          (click)="logout()"
+          *ngIf="this.authService.isLoggedIn" 
         >
-         <!-- <img src="assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" /> -->
-         
-        <!-- Assurez-vous que userById est défini avant d'essayer d'accéder à ses propriétés -->
-            <div *ngIf="userById">
-              <!-- Afficher le nom de l'utilisateur -->
-              <p>{{ userById.name }}</p>
-            </div>
-
-        
-          <span>
-            <i class="ti ti-settings"></i>
-          </span>
+      
+          <i class="ti ti-logout"></i>
+          <span>Logout</span>
         </a>
         <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown" ngbDropdownMenu>
           <div class="dropdown-header">
@@ -27,15 +20,18 @@
           
           
               <hr />
-              <a [routerLink]="['/guest/register']" class="dropdown-item">
-                <i class="ti ti-settings"></i>
+              <a *ngIf="this.authService.isLoggedIn" class="dropdown-item">
+                
+                
                 <span>Account Profile</span>
               </a>
               <a href="javascript:" class="dropdown-item">
                 <i class="ti ti-user"></i>
                 <span>Social Profile</span>
               </a>
-              <a [routerLink]="['/guest/login']" class="dropdown-item">
+              <a class="dropdown-item"     
+              (click)="logout()"
+              *ngIf="this.authService.isLoggedIn" >
                 <i class="ti ti-logout"></i>
                 <span>Logout</span>
               </a>

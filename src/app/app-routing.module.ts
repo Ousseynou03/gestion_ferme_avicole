@@ -13,16 +13,15 @@ import { VenteComponent } from './demo/elements/vente/vente.component';
 import { DepenseComponent } from './demo/elements/depense/depense.component';
 import { BandeComponent } from './demo/elements/bande/bande.component';
 import { TresorerieComponent } from './demo/elements/tresorerie/tresorerie.component';
+import { AuthGuard } from './demo/services/auth-guard.service';
 
 const routes: Routes = [
-  {
-    path: 'login',
-    component : LoginComponent,
-  },
-
+  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirection vers la page de connexion par défaut
+  { path: 'login', component: LoginComponent },
   {
     path: '',
     component: AdminComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'default',

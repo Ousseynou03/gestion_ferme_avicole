@@ -1,6 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AdminComponent } from './theme/layout/admin/admin.component';
@@ -42,6 +45,7 @@ import { NutritionComponent } from './demo/elements/nutrition/nutrition.componen
 import { MortaliteComponent } from './demo/elements/mortalite/mortalite.component';
 import { TresorerieComponent } from './demo/elements/tresorerie/tresorerie.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthInterceptor } from './demo/services/auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -90,7 +94,12 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     NgbDropdownModule
 
   ],
-  providers: [NavigationItem, AuthService],
+  providers: [NavigationItem, AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
