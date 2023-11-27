@@ -99,7 +99,7 @@ public class MortaliteServiceImpl implements MortaliteService {
 
 
     private boolean validateMortaliteMap(Map<String, String> requestMap, Boolean validatId) {
-        if (requestMap.containsKey("bande")) {
+        if (requestMap.containsKey("effectif")) {
             if (requestMap.containsKey("id") && validatId) {
                 return true;
             } else if (!validatId) {

@@ -3,6 +3,8 @@ package com.dione.gestion_avicole.JWT;
 import com.dione.gestion_avicole.dao.UserDao;
 import com.dione.gestion_avicole.POJO.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -40,5 +42,13 @@ public class CustomerUsersDetailsService implements UserDetailsService {
     public User getUserDetail(){
 
         return userDetail;
+    }
+
+    public UserDetails getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            return (UserDetails) authentication.getPrincipal();
+        }
+        return null;
     }
 }

@@ -14,11 +14,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @Slf4j
@@ -71,34 +75,40 @@ public class UserServiceImpl implements UserService {
     //Méthode de connexion d'un user
     @Override
     public ResponseEntity<String> login(Map<String, String> requestMap) {
-       log.info("Inside login : ", requestMap);
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password"))
-        );
-        if (auth.isAuthenticated()){
-            if (customerUsersDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")){
-                return new ResponseEntity<String>("{\"token\":\"" + jwtUtil.generateToken(
-                        customerUsersDetailsService.getUserDetail().getEmail(), customerUsersDetailsService.getUserDetail().getRole())
-                        + "\"}",
-                        HttpStatus.OK);
-            }else {
-                //Demande d'autorisation à l'admin du systéme de se connecter
-                return new ResponseEntity<String>("{\"message\":\"" + "Votre compte est actuellement inactif." + "\"}", HttpStatus.BAD_REQUEST);
+        log.info("Inside login : ", requestMap);
+        try {
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password"))
+            );
+            if (auth.isAuthenticated()) {
+                if (customerUsersDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
+                    return new ResponseEntity<String>("{\"token\":\"" + jwtUtil.generateToken(
+                            customerUsersDetailsService.getUserDetail().getEmail(),
+                            customerUsersDetailsService.getUserDetail().getRole())
+                            + "\"}",
+                            HttpStatus.OK);
+                } else {
+                    // Demande d'autorisation à l'admin du système de se connecter
+                    return new ResponseEntity<String>("{\"message\":\"" + "Votre compte est actuellement inactif." + "\"}", HttpStatus.BAD_REQUEST);
+                }
             }
+        } catch (BadCredentialsException ex) {
+            log.error("Bad Credentials: {}", ex.getMessage());
+            return new ResponseEntity<String>("{\"message\":\"" + "Bad Credentials." + "\"}", HttpStatus.BAD_REQUEST);
+        } catch (Exception ex) {
+            log.error("Error during login: {}", ex.getMessage());
         }
-       try {
 
-       }catch (Exception ex){
-           log.error("{}", ex);
-       }
-        return new ResponseEntity<String>("{\"message\":\"" + "Bad Credentials." + "\"}", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<String>("{\"message\":\"" + "Error during login." + "\"}", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
 
 
 
     //Les noms qui suivent sont obligatoires pour pouvoir valider l'enregistrement d'un utilisateur
     public boolean validateUserSignUp(Map<String, String> requestMap){
-       if( requestMap.containsKey("name") && requestMap.containsKey("contactNumber")
+       if( requestMap.containsKey("name")
                 && requestMap.containsKey("email") && requestMap.containsKey("password")){
            return true;
        }
@@ -111,7 +121,6 @@ public class UserServiceImpl implements UserService {
         user.setName(requestMap.get("name"));
         user.setContactNumber(requestMap.get("contactNumber"));
         user.setEmail(requestMap.get("email"));
-       // user.setPassword(passwordEncoder.encode(requestMap.get("password")));
         user.setPassword(passwordEncoder.encode(requestMap.get("password")));
         user.setStatus("true");
         user.setRole("user");
@@ -204,25 +213,15 @@ public class UserServiceImpl implements UserService {
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
-    public ResponseEntity<String> getUserById(Integer id) {
-        try {
-            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
-                Optional<User> userOptional = userDao.findById(id);
 
-                if (userOptional.isPresent()) {
-                    User user = userOptional.get();
-                    return AvicoleUtils.getResponseEntity(user.getName(), HttpStatus.OK);
-                } else {
-                    return AvicoleUtils.getResponseEntity("User avec id: " + id + " n'existe pas", HttpStatus.NOT_FOUND);
-                }
-            } else {
-                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public UserDetails getAuthenticatedUser() {
+        return customerUsersDetailsService.getAuthenticatedUser();
     }
+
+
+
+
+
+
 
 }

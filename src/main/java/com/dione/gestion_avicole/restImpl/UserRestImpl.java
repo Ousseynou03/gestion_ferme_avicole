@@ -1,5 +1,6 @@
 package com.dione.gestion_avicole.restImpl;
 
+import com.dione.gestion_avicole.POJO.User;
 import com.dione.gestion_avicole.constents.AvicoleConstants;
 import com.dione.gestion_avicole.rest.UserRest;
 import com.dione.gestion_avicole.service.UserService;
@@ -8,9 +9,15 @@ import com.dione.gestion_avicole.wrapper.UserWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.EntityNotFoundException;
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -90,13 +97,22 @@ public class UserRestImpl implements UserRest {
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
-    public ResponseEntity<String> getUserById(Integer id) {
-        try {
-            return userService.getUserById(id);
-        }catch (Exception ex){
-            ex.printStackTrace();
+
+    public ResponseEntity<UserDetails> getAuthenticatedUser() {
+        UserDetails authenticatedUser = userService.getAuthenticatedUser();
+        if (authenticatedUser != null) {
+            return ResponseEntity.ok(authenticatedUser);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
+    @GetMapping("/profile")
+    public Authentication authentication(Authentication authentication){
+        return authentication;
+    }
+
+
 }
+

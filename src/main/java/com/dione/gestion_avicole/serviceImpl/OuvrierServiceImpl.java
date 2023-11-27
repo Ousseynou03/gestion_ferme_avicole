@@ -33,7 +33,7 @@ public class OuvrierServiceImpl implements OuvrierSerice {
     @Override
     public ResponseEntity<String> ajoutOuvrier(Map<String, String> requestMap) {
         try {
-            if (jwtFilter.isAdmin()) {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
                 if (validateOuvrierMap(requestMap, false)) {
                     ouvrierDao.save(getOuvrierFromMap(requestMap, false));
                     return AvicoleUtils.getResponseEntity("Ouvrier ajouté avec succés", HttpStatus.OK);
@@ -80,7 +80,7 @@ public class OuvrierServiceImpl implements OuvrierSerice {
     @Override
     public ResponseEntity<List<Ouvrier>> getAllOuvrier() {
         try {
-            if (jwtFilter.isAdmin()){
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()){
                 return new ResponseEntity<List<Ouvrier>>(ouvrierDao.findAll(), HttpStatus.OK);
             }else {
                 return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);

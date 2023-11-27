@@ -1,6 +1,7 @@
 package com.dione.gestion_avicole.wrapper;
 
 
+import com.dione.gestion_avicole.POJO.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,5 +21,10 @@ public class UserWrapper {
         this.contactNumber = contactNumber;
         this.email = email;
         this.status = status;
+    }
+
+    // Ajoutez cette méthode de conversion statique
+    public static UserWrapper fromUser(User user) {
+        return new UserWrapper(user.getId(), user.getName(), user.getEmail(), user.getContactNumber(), user.getStatus());
     }
 }

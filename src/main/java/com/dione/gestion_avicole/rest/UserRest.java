@@ -1,7 +1,9 @@
 package com.dione.gestion_avicole.rest;
 
+import com.dione.gestion_avicole.POJO.User;
 import com.dione.gestion_avicole.wrapper.UserWrapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +33,8 @@ public interface UserRest {
     @PostMapping("/changePassword")
     ResponseEntity<String> changePassword(@RequestBody Map<String,String> requestMap);
 
-    @GetMapping("/name/{id}")
-    ResponseEntity<String> getUserById(@PathVariable Integer id);
+    @GetMapping("/authenticated-user")
+    ResponseEntity<UserDetails> getAuthenticatedUser();
+
+
 }
