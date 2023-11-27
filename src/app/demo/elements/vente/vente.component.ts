@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Vente } from '../../models/vente.model';
 import { VenteService } from '../../services/vente.service';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-vente',
@@ -14,7 +15,7 @@ export class VenteComponent implements OnInit {
   ventes: Vente[];
   totalMontant: number = 0;
 
-  constructor(private venteService: VenteService) {}
+  constructor(private venteService: VenteService, public authService: AuthService) {}
 
   ngOnInit() {
     const token = localStorage.getItem('token');

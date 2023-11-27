@@ -20,9 +20,8 @@ export class BatimentComponent implements OnInit{
     capacite : '',
     dimension : ''
   };
-  
 
-  constructor(private batimentService: BatimentService, private authService: AuthService) {}
+  constructor(private batimentService: BatimentService, public authService: AuthService) {}
 
   ngOnInit() {
     const token = localStorage.getItem('token');
@@ -107,48 +106,54 @@ export class BatimentComponent implements OnInit{
       }
     }
 
+    selectedBatiment: Batiment = {
+      id : null,
+      code : '',
+      designation : '',
+      capacite : '',
+      dimension : ''
+    };
 
 
 
-  // Méthode pour mettre à jour un bâtiment
-  updateBatiment(batiment: Batiment) {
+  // Nouvelle méthode pour mettre à jour un bâtiment
+  updateBatiment() {
     const token = localStorage.getItem('token');
     if (!token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté pour effectuer cette action.'
-      });
+      // Gérer le cas où l'utilisateur n'est pas connecté
       return;
     }
-
-    // Créez un en-tête avec le token JWT
     const headers = { Authorization: `Bearer ${token}` };
 
-    // Appelez la méthode de mise à jour du service
-    this.batimentService.updateBatiment(batiment, headers).subscribe(
+    // Effectuez la requête HTTP avec le token dans l'en-tête
+    this.batimentService.updateBatiment(this.selectedBatiment, headers).subscribe(
       (response) => {
         Swal.fire({
           icon: 'success',
-          title: 'Mise à jour réussie',
-          text: 'Le bâtiment a été mis à jour avec succès.'
+          title: 'Mise à jour',
+          text: 'Batiment mis à jour avec succès'
         });
 
-        // Mettez à jour la liste des bâtiments (facultatif)
+        console.log('Batiment mis à jour:', response);
         this.loadBatimentList();
       },
       (error) => {
         Swal.fire({
           icon: 'error',
-          title: 'Erreur de mise à jour',
-          text: 'Impossible de mettre à jour le bâtiment.'
+          title: 'Mise à jour non autorisée',
+          text: 'Vous n\'êtes pas autorisé à mettre à jour un bâtiment.'
         });
 
-        console.error('Erreur lors de la mise à jour du bâtiment:', error);
+        console.error('Erreur lors de la mise à jour d\'un bâtiment:', error);
       }
     );
   }
 
+  // Nouvelle méthode pour pré-remplir le formulaire de mise à jour
+  editBatiment(batiment: Batiment) {
+    // Copiez les données du bâtiment à mettre à jour dans selectedBatiment
+    this.selectedBatiment = { ...batiment };
+  } 
 
 
 // Suppression

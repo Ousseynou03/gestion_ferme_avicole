@@ -1,7 +1,7 @@
 <div class="row">
   <!-- [ sample-page ] start -->
   <div class="col-xl-4 col-md-6">
-    <div class="card bg-secondary-dark dashnum-card text-white overflow-hidden">
+    <div class="card bg-white dashnum-card rounded bg-light-secondary overflow-hidden">
       <span class="round small"></span>
       <span class="round big"></span>
       <div class="card-body">
@@ -13,21 +13,18 @@
           </div>
           <div class="col-auto">
             <div class="btn-group" ngbDropdown>
-              <a type="button" class="avtar bg-secondary dropdown-toggle arrow-none" data-bs-toggle="dropdown" ngbDropdownToggle>
-                <i class="ti ti-dots"></i>
-              </a>
               <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
               </ul>
             </div>
           </div>
         </div>
-        <span class="text-white d-block fs-1 fw-bold my-2">{{totalDepenses}} FCFA <i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
-        <p class="mb-0 opacity-50">Dépenses Avicole</p>
+        <span class="text-purple d-block fs-1 fw-bold my-2">{{soldeTotalTresoreries}}  FCFA <i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
+        <p class="mb-0 opacity-50">Solde des Comptes</p>
       </div>
     </div>
   </div>
   <div class="col-xl-4 col-md-6">
-    <div class="card bg-primary-dark dashnum-card text-white overflow-hidden">
+    <div class="card bg-white dashnum-card rounded bg-light-secondary overflow-hidden">
       <span class="round small"></span>
       <span class="round big"></span>
       <div class="card-body">
@@ -44,8 +41,8 @@
                 <ng-template ngbNavContent>
                   <div class="row">
                     
-                      <span class="text-white d-block fs-1 fw-bold my-2">{{ventePoulets}}  FCFA <i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
-                      <p class="mb-0 opacity-50">Ventes Poules</p>
+                      <span class="text-purple d-block fs-1 fw-bold my-2">{{totalDepenses}}  FCFA <i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
+                      <p class="mb-0 opacity-50"> Dépenses Avicole </p>
                     
                     
                   </div>
@@ -59,7 +56,7 @@
     </div>
   </div>
   <div class="col-xl-4 col-md-12">
-    <div class="card bg-primary-dark dashnum-card dashnum-card-small text-white overflow-hidden">
+    <div class="card bg-white dashnum-card rounded bg-light-secondary overflow-hidden">
       <span class="round bg-primary small"></span>
       <span class="round bg-primary big"></span>
       <div class="card-body p-3">
@@ -68,13 +65,13 @@
             <i class="text-white ti ti-credit-card"></i>
           </div>
           <div class="ms-2">
-            <h4 class="text-white mb-1">1050.0 poules <i class="ti ti-arrow-up-right-circle opacity-50"></i></h4>
+            <h4 class="text-purple d-block fs-1 fw-bold my-2">1050.0 poules <i class="ti ti-arrow-up-right-circle opacity-50"></i></h4>
             <p class="mb-0 opacity-50 text-sm">Totale Poules</p>
           </div>
         </div>
       </div>
     </div>
-    <div class="card dashnum-card dashnum-card-small overflow-hidden">
+    <div class="card bg-white dashnum-card rounded bg-light-secondary overflow-hidden">
       <span class="round bg-warning small"></span>
       <span class="round bg-warning big"></span>
       <div class="card-body p-3">
@@ -83,41 +80,139 @@
             <i class="text-warning ti ti-credit-card"></i>
           </div>
           <div class="ms-2">
-            <h4 class="mb-1">{{soldeTotalTresoreries}}  FCFA<i class="ti ti-arrow-up-right-circle opacity-50"></i></h4>
-            <p class="mb-0 opacity-50 text-sm">Solde des Comptes</p>
+            <h4 class="mb-1">0.5 Litres eau<i class="ti ti-arrow-up-right-circle opacity-50"></i></h4>
+            <p class="mb-0 opacity-50 text-sm">Nutritions</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="col-xl-8 col-md-12">
-    <div class="card">
+  <div class="col-xl-4 col-md-6">
+    <div class="card bg-white dashnum-card rounded bg-light-secondary overflow-hidden">
+      <span class="round small"></span>
+      <span class="round big"></span>
       <div class="card-body">
-        <div class="row mb-3 align-items-center">
+        <div class="row">
           <div class="col">
-            <small>Bénéfice</small>
-            <h3>{{ benefice }}</h3>
+            <div class="avtar">
+              <i class="text-purple ti ti-credit-card"></i>
+            </div>
           </div>
           <div class="col-auto">
+            <div class="btn-group" ngbDropdown>
+
+              <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              </ul>
+            </div>
           </div>
         </div>
-        <div id="growthChart">
-          <apx-chart
-            [series]="chartOptions.series"
-            [chart]="chartOptions.chart"
-            [dataLabels]="chartOptions.dataLabels"
-            [plotOptions]="chartOptions.plotOptions"
-            [responsive]="chartOptions.responsive"
-            [xaxis]="chartOptions.xaxis"
-            [colors]="chartOptions.colors"
-            [grid]="chartOptions.grid"
-            [tooltip]="chartOptions.tooltip"
-          ></apx-chart>
-        </div>
+        <span class="text-purple d-block fs-1 fw-bold my-2">{{ventePoulets}} FCFA <i class="fas fa-shopping-cart"></i></span>
+        <p class="mb-0 opacity-50 text-purple">Ventes Poules</p>
       </div>
     </div>
   </div>
+  
+
+  <div class="col-xl-4 col-md-6">
+    <div class="card bg-white dashnum-card rounded bg-light-secondary overflow-hidden">
+      <span class="round small"></span>
+      <span class="round big"></span>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <div class="avtar">
+              <i class="text-white ti ti-credit-card"></i>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="btn-group" ngbDropdown>
+              <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <span class="text-purple d-block fs-1 fw-bold my-2">{{venteOeufs}} FCFA <i class="fas fa-shopping-cart"></i></span>
+        <p class="mb-0 opacity-50"> Ventes Oeufs</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-4 col-md-6">
+    <div class="card bg-white dashnum-card rounded bg-light-secondary overflow-hidden">
+      <span class="round small"></span>
+      <span class="round big"></span>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <div class="avtar">
+              <i class="text-white ti ti-credit-card"></i>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="btn-group" ngbDropdown>
+              <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <span class="text-purple d-block fs-1 fw-bold my-2">1000 œufs <i class="fas fa-egg"></i></span>
+        <p class="mb-0 opacity-50"> Total Œufs</p>
+        
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4 col-md-6">
+    <div class="card bg-white dashnum-card rounded bg-light-secondary overflow-hidden">
+      <span class="round small"></span>
+      <span class="round big"></span>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <div class="avtar">
+              <i class="text-white ti ti-credit-card"></i>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="btn-group" ngbDropdown>
+              <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <span class="text-purple d-block fs-1 fw-bold my-2">11.5 sacs <i class="fas fa-shopping-bag"></i></span>
+        <p class="mb-0 opacity-50"> Stock aliments</p>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-4 col-md-6">
+    <div class="card bg-white dashnum-card rounded bg-light-secondary overflow-hidden">
+      <span class="round small"></span>
+      <span class="round big"></span>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <div class="avtar">
+              <i class="text-white ti ti-credit-card"></i>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="btn-group" ngbDropdown>
+              <ul class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <span class="text-purple d-block fs-1 fw-bold my-2">1.5 sacs <i class="fas fa-utensils"></i></span>
+        <p class="mb-0 opacity-50">Aliments consommés</p>
+        
+      </div>
+    </div>
+  </div>
+
+
   <div class="col-xl-4 col-md-12">
     <div class="card">
       <div class="card-body">
@@ -131,10 +226,10 @@
           <div class="px-3 pt-3">
             <div class="row mb-1 align-items-start">
               <div class="col">
-                <h5 class="text-secondary mb-0">Vente Oeufs <i class="fas fa-shopping-cart"></i></h5>
+                <h5 class="text-secondary mb-0">Totale Mortalité <i class="fas fa-shopping-cart"></i></h5>
               </div>
               <div class="col-auto">
-                <h4 class="mb-0">{{venteOeufs}} FCFA</h4>
+                <h4 class="mb-0">30</h4>
               </div>
               
             </div>

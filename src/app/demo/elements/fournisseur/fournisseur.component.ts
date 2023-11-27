@@ -21,7 +21,7 @@ export class FournisseurComponent implements OnInit{
     email: ''
   }
 
-  constructor(private fournisseurService: FournisseurService, private authService: AuthService) {}
+  constructor(private fournisseurService: FournisseurService, public authService: AuthService) {}
 
 
   ngOnInit() {

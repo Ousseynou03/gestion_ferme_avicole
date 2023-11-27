@@ -21,7 +21,8 @@ export class ClientComponent implements OnInit{
   };
   
 
-  constructor(private clientService: ClientService, private authService: AuthService) {}
+  constructor(private clientService: ClientService, 
+    public authService: AuthService) {}
 
   ngOnInit() {
     const token = localStorage.getItem('token');

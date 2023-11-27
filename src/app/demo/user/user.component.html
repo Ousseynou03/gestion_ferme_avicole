@@ -2,10 +2,11 @@
 
 
   <!-- Button trigger modal -->
+  <div *ngIf="authService && authService.roles && authService.roles.includes('admin')">
 <button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#exampleModal">
   Ajouter un utilisateur
 </button>
-
+</div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -52,7 +53,7 @@
 
 
   <!-- Liste des users -->
-
+<ng-container *ngIf="authService && authService.roles && authService.roles.includes('admin')">
 <table class="table table-striped">
   <thead>
     <tr>
@@ -61,23 +62,35 @@
       <th scope="col">Numero Tel</th>
       <th scope="col">email</th>
 
-      <th scope="col">Action</th>
+      <th scope="col" *ngIf="authService && authService.roles && authService.roles.includes('admin')">Action</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody >
      <tr *ngFor="let user of users; let i = index">
       <td>{{ i + 1 }}</td>
       <td>{{ user.name }}</td>
       <td>{{ user.contactNumber }}</td>
       <td>{{ user.email }}</td>
       <td>
-        <button class="btn btn-link text-primary">
+        <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary">
           <i class="fas fa-edit"></i>
         </button>
-        <button class="btn btn-link text-danger" (click)="deleteUser(user.id)">
+        <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteUser(user.id)">
           <i class="fas fa-trash-alt"></i>
         </button>
       </td>
     </tr>
   </tbody>
 </table>
+</ng-container>
+<div class="p-3">
+  <div class="card">
+      <div class="card-body">
+          <div class="alert alert-danger">
+             <h3>Non Autorisé</h3> 
+          </div>
+
+      </div>
+  </div>
+
+</div>

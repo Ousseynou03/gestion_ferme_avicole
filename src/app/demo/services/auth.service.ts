@@ -1,14 +1,24 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { environment } from 'src/environments/environment';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  isAuthenticated : boolean = false
+
+  roles : any
+
+  username : any
+
+  token : string
+
 
 
   baseUrl = environment.apiUrl;
@@ -51,7 +61,8 @@ export class AuthService {
 
 
    getToken() {
-    return localStorage.getItem('token');
+    this.token = localStorage.getItem('token')
+    return this.token;
   }
 
 
@@ -67,30 +78,23 @@ export class AuthService {
     if (removeToken == null) {
       this.router.navigate(['login']);
     }
-}
-
-
-// User profile
-getUserProfile(id: any, headers: any): Observable<any> {
-  let api = `${this.baseUrl}/user_profil/${id}`;
-  return this.http.get(api, { headers }).pipe(
-    map((res) => {
-      return res || {};
-    }),
-    catchError(this.handleError)
-  );
-}
-// Error
-handleError(error: HttpErrorResponse) {
-  let msg = '';
-  if (error.error instanceof ErrorEvent) {
-    // client-side error
-    msg = error.error.message;
-  } else {
-    // server-side error
-    msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
   }
-  return throwError(msg);
-}
+
+
+  //Charger les informations utilisateur authentifié
+
+  loadProfile(data : any){
+    this.isAuthenticated=true
+    this.token = data['token']
+
+ //   let decodedJWT: any = jwtDecode(this.token)
+ let decodedJWT: any = jwtDecode(this.getToken())
+
+    this.username = decodedJWT.sub
+    this.roles = decodedJWT.role
+
+  }
+
+
 
 }

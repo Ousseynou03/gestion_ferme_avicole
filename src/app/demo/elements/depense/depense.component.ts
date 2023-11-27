@@ -4,6 +4,7 @@ import { BandeService } from '../../services/bande.service';
 import Swal from 'sweetalert2';
 import { Bande } from '../../models/bande.model';
 import { Depense } from '../../models/depense.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-depense',
@@ -16,7 +17,8 @@ export class DepenseComponent implements OnInit{
   depenses : Depense[];
 
   constructor(private depenseService : DepenseService,
-    private bandeService : BandeService){}
+    private bandeService : BandeService,
+    public authService : AuthService){}
 
 
     ngOnInit() {

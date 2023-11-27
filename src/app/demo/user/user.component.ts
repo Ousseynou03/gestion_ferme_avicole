@@ -20,7 +20,7 @@ export class UserComponent {
     id: 0
   };
 
-  constructor(private authService: AuthService) {}
+  constructor(public authService: AuthService) {}
 
   ngOnInit() {
     // Récupérez le token JWT du localStorage (ou d'où vous le stockez)
@@ -47,8 +47,8 @@ export class UserComponent {
       (error) => {
         Swal.fire({
           icon: 'error',
-          title: 'Erreur de récupération',
-          text: 'Impossible de récupérer la liste des users.'
+          title: 'Action Non Autorisée',
+          text: "Vous n'êtes pas autorisé à visualiser la liste des utilisateurs ."
         });
 
         console.error('Erreur lors de la récupération des users:', error);
@@ -111,8 +111,8 @@ export class UserComponent {
         (error) => {
           Swal.fire({
             icon: 'error',
-            title: 'Erreur de récupération',
-            text: 'Impossible de récupérer la liste des utilisateurs.'
+            title: 'Non Autorisé',
+            text: "Vous n'êtes pas autorisé à visualiser la liste utilisateurs"
           });
 
           console.error('Erreur lors de la récupération des utilisateurs:', error);
@@ -134,7 +134,7 @@ export class UserComponent {
     }).then((result) => {
       if (result.value) {
         const token = localStorage.getItem('token');
-  
+
         if (!token) {
           Swal.fire({
             icon: 'error',
@@ -143,9 +143,9 @@ export class UserComponent {
           });
           return;
         }
-  
+
         const headers = { Authorization: `Bearer ${token}` };
-  
+
         this.authService.deleteUser(id, headers).subscribe(
           () => {
             Swal.fire({

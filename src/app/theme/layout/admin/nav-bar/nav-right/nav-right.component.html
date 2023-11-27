@@ -2,6 +2,8 @@
   <ul class="list-unstyled">
     <li>
       <div class="dropdown pc-h-item header-user-profile" ngbDropdown>
+        <a *ngIf="authService.isAuthenticated==true"> Bienvenue dans votre espace utilisateur! {{this.authService.username}}</a>
+
         <a
           class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0"
           data-bs-toggle="dropdown"

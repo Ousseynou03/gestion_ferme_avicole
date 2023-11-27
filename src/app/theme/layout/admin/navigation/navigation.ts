@@ -11,6 +11,7 @@ export interface NavigationItem {
   target?: boolean;
   breadcrumbs?: boolean;
   children?: Navigation[];
+  role? : string;
 }
 
 export interface Navigation extends NavigationItem {
@@ -61,6 +62,14 @@ const NavigationItems = [
             classes: 'nav-item',
             url: '/materiel',
             icon: 'fas fa-wrench'
+          },
+          {
+            id: 'Nutrition',
+            title: 'Nutrition',
+            type: 'item',
+            classes: 'nav-item',
+            url: '/nutrition',
+            icon: 'fas fa-balance-scale'
           },
         ]
       },
@@ -180,19 +189,11 @@ const NavigationItems = [
             icon: 'fas fa-band-aid'
           },
           {
-            id: 'Nutrition',
-            title: 'Nutrition',
-            type: 'item',
-            classes: 'nav-item',
-            url: '/nutrition',
-            icon: 'fas fa-balance-scale'
-          },
-          {
             id: 'Moratlite',
             title: 'Moratlite',
             type: 'item',
             classes: 'nav-item',
-            url: '/moratlite',
+            url: '/mortalite',
             icon: 'fas fa-skull'
           },
           {
@@ -238,7 +239,10 @@ const NavigationItems = [
 
 @Injectable()
 export class NavigationItem {
+
   get() {
     return NavigationItems;
   }
+
+  
 }

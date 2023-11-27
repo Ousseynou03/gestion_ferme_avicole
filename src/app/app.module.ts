@@ -46,6 +46,7 @@ import { MortaliteComponent } from './demo/elements/mortalite/mortalite.componen
 import { TresorerieComponent } from './demo/elements/tresorerie/tresorerie.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthInterceptor } from './demo/services/auth-interceptor.service';
+import { NotAutorizedComponent } from './demo/elements/not-autorized/not-autorized.component';
 
 @NgModule({
   declarations: [
@@ -74,12 +75,13 @@ import { AuthInterceptor } from './demo/services/auth-interceptor.service';
     BandeComponent,
     NutritionComponent,
     MortaliteComponent,
-    TresorerieComponent
+    TresorerieComponent,
+    NotAutorizedComponent,
   ],
   imports: [
-    BrowserModule, 
-    AppRoutingModule, 
-    SharedModule, 
+    BrowserModule,
+    AppRoutingModule,
+    SharedModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,

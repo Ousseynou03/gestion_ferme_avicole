@@ -11,7 +11,7 @@
         <th scope="col">Prix Unitaire</th>
         <th scope="col">Montant</th>
         <th scope="col">Tresorerie</th>
-        <th scope="col">Action</th>
+        <th scope="col" *ngIf="authService && authService.roles && authService.roles.includes('admin')">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -25,10 +25,10 @@
         <td>{{ vente.montant }}</td>
         <td>{{ vente.tresorerie.nom }}</td>
         <td>
-          <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
             <i class="fas fa-edit"></i>
           </button>
-          <button class="btn btn-link text-danger">
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger">
             <i class="fas fa-trash-alt"></i>
           </button>
         </td>

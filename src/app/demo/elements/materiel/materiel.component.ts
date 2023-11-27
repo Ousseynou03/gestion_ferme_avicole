@@ -28,7 +28,7 @@ export class MaterielComponent implements OnInit{
   });
 
   constructor(private materielService: MaterielService,
-              private authService: AuthService,
+              public authService: AuthService,
               private batimentService : BatimentService,
               private fournisseurService : FournisseurService,
               private fb : FormBuilder) {}
@@ -65,48 +65,6 @@ export class MaterielComponent implements OnInit{
 
     }
 
-/*
-//Ajout
-  addMateriel(){
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté...'
-      });
-      return;
-    }
-    const headers = { Authorization: `Bearer ${token}` };
-
-    // Effectuez la requête HTTP avec le token dans l'en-tête
-    this.materielService.addMteriel(this.materiel, headers).subscribe(
-      (response) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Enregistré',
-          text: 'Matériel ajouté avec succcés'
-        });
-
-        console.log('Matériel enregistré:', response);
-        this.loadMaterielList();
-
-      },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Enregistrement non autorisé',
-          text: "Vous n/'êtes pas autorisé à enregistrer un Matériel ."
-        });
-
-        console.error('Erreur lors de l\'enregistrement d\' un Matériel:', error);
-      }
-    );
-
-  }
-
-  */
 
   addMateriel() {
     if (this.materielForm.valid) {

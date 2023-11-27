@@ -14,6 +14,12 @@ import { DepenseComponent } from './demo/elements/depense/depense.component';
 import { BandeComponent } from './demo/elements/bande/bande.component';
 import { TresorerieComponent } from './demo/elements/tresorerie/tresorerie.component';
 import { AuthGuard } from './demo/services/auth-guard.service';
+import { NavRightComponent } from './theme/layout/admin/nav-bar/nav-right/nav-right.component';
+import { NutritionComponent } from './demo/elements/nutrition/nutrition.component';
+import { MortaliteComponent } from './demo/elements/mortalite/mortalite.component';
+import { OeufComponent } from './demo/elements/oeuf/oeuf.component';
+import { AuthorizationGuard } from './demo/services/authorization-guard.service';
+import { NotAutorizedComponent } from './demo/elements/not-autorized/not-autorized.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirection vers la page de connexion par défaut
@@ -27,8 +33,13 @@ const routes: Routes = [
         path: 'default',
         loadComponent: () => import('./demo/default/default.component')
       },
+      { path: 'user-profile/:id', component: NavRightComponent, canActivate: [AuthGuard] },
+
       {
         path: 'batiment', component : BatimentComponent
+      },
+      {
+        path: 'nutrition', component : NutritionComponent
       },
 
       {
@@ -53,14 +64,24 @@ const routes: Routes = [
         path: 'bande', component : BandeComponent
       },
       {
+        path: 'oeuf', component : OeufComponent
+      },
+      {
+        path: 'mortalite', component : MortaliteComponent
+      },
+ 
+      {
         path: 'tresorerie', component : TresorerieComponent
       },
       {
-        path: 'user', component : UserComponent
+        path: 'user', component : UserComponent, canActivate: [AuthorizationGuard], data : {role : "admin"}
       },
       {
         path: 'color',
         loadComponent: () => import('./demo/elements/element-color/element-color.component')
+      },
+      {
+        path: 'notAuthorized', component : NotAutorizedComponent
       },
       {
         path: 'sample-page',

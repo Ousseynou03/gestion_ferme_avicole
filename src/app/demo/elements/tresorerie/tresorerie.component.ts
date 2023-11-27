@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TresorerieService } from '../../services/tresorerie.service';
 import Swal from 'sweetalert2';
 import { Tresorerie } from '../../models/tresorerie.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-tresorerie',
@@ -13,7 +14,7 @@ export class TresorerieComponent implements OnInit{
 
   tresoreries : Tresorerie[];
 
-  constructor(private tresoreriService : TresorerieService){}
+  constructor(private tresoreriService : TresorerieService, public authService : AuthService){}
 
   ngOnInit() {
     const token = localStorage.getItem('token');

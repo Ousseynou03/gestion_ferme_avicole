@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Ouvrier } from '../../models/ouvrier.model';
 import { OuvrierService } from '../../services/ouvrier.service';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-ouvrier',
@@ -22,7 +23,8 @@ export class OuvrierComponent implements OnInit{
   };
   
 
-  constructor(private ouvrierService: OuvrierService) {}
+  constructor(private ouvrierService: OuvrierService,
+    public authService : AuthService) {}
 
   ngOnInit() {
     const token = localStorage.getItem('token');

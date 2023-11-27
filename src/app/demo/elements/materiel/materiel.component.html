@@ -8,7 +8,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addBandeModalLabel">Nouvelle Bande</h5>
+        <h5 class="modal-title" id="addBandeModalLabel">Nouveau Mateirel</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -61,7 +61,7 @@
         <th scope="col">quantite</th>
         <th scope="col">batiment</th>
         <th scope="col">fournisseur</th>
-        <th scope="col">Action</th>
+        <th scope="col" *ngIf="authService && authService.roles && authService.roles.includes('admin')">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -72,10 +72,13 @@
         <td>{{ materiel.batiment?.designation }}</td>
         <td>{{ materiel.fournisseur?.nom }}</td>
         <td>
-          <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button class="btn btn-link text-danger" (click)="deleteMateriel(materiel.id)">
+          <div>
+            <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+              <i class="fas fa-edit"></i>
+            </button>
+          </div>
+
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteMateriel(materiel.id)">
             <i class="fas fa-trash-alt"></i>
           </button>
         </td>

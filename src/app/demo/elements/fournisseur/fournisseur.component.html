@@ -61,7 +61,7 @@
         <th scope="col">nom</th>
         <th scope="col">numTel</th>
         <th scope="col">email</th>
-        <th scope="col">Action</th>
+        <th scope="col" *ngIf="authService && authService.roles && authService.roles.includes('admin')">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -72,10 +72,10 @@
         <td>{{ fournisseur.numTel }}</td>
         <td>{{ fournisseur.email }}</td>
         <td>
-          <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
             <i class="fas fa-edit"></i>
           </button>
-          <button class="btn btn-link text-danger" (click)="deleteFounisseur(fournisseur.id)">
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteFounisseur(fournisseur.id)">
             <i class="fas fa-trash-alt"></i>
           </button>
         </td>

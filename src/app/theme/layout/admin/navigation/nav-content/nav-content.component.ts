@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 
 // project import
 import { NavigationItem } from '../navigation';
+import { AuthService } from 'src/app/demo/services/auth.service';
 
 @Component({
   selector: 'app-nav-content',
@@ -12,6 +13,7 @@ import { NavigationItem } from '../navigation';
   styleUrls: ['./nav-content.component.scss']
 })
 export class NavContentComponent implements OnInit {
+
   // public props
   @Output() NavCollapsedMob: EventEmitter<any> = new EventEmitter();
 
@@ -19,6 +21,7 @@ export class NavContentComponent implements OnInit {
   currentApplicationVersion = environment.appVersion;
 
   navigation: any;
+  filteredNavigationItems: NavigationItem[];
   windowWidth = window.innerWidth;
 
   // Constructor
@@ -26,7 +29,8 @@ export class NavContentComponent implements OnInit {
     public nav: NavigationItem,
     private zone: NgZone,
     private location: Location,
-    private locationStrategy: LocationStrategy
+    private locationStrategy: LocationStrategy,
+    public authService : AuthService
   ) {
     this.navigation = this.nav.get();
   }
@@ -37,6 +41,19 @@ export class NavContentComponent implements OnInit {
       (document.querySelector('.coded-navbar') as HTMLDivElement).classList.add('menupos-static');
     }
   }
+
+  shouldDisplayItem(item: NavigationItem): boolean {
+    if (item.url === '/user' && this.authService && this.authService.roles && this.authService.roles.includes('admin')) {
+      return true;
+    }
+  
+    // Ajoutez d'autres conditions au besoin
+  
+    return false;
+  }
+
+
+
 
   fireOutClick() {
     let current_url = this.location.path();
@@ -68,4 +85,9 @@ export class NavContentComponent implements OnInit {
       this.NavCollapsedMob.emit();
     }
   }
+
+
+
+  
+  
 }

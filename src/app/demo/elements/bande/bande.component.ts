@@ -30,7 +30,7 @@ export class BandeComponent implements OnInit {
 
   constructor(
     private bandeService: BandeService,
-    private authService: AuthService,
+    public authService: AuthService,
     private batimentService: BatimentService,
     private fb: FormBuilder
   ) {}

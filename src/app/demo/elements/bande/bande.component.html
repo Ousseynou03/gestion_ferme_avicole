@@ -89,7 +89,7 @@
         <th scope="col">Date Fin</th>
         <th scope="col">Effectif depart</th>
         <th scope="col">Batiment</th>
-        <th scope="col">Action</th>
+        <th scope="col" *ngIf="authService && authService.roles && authService.roles.includes('admin')">Action</th>
 
       </tr>
     </thead>
@@ -103,10 +103,10 @@
         <td>{{ bande.effectifdepart }}</td>
         <td>{{ bande.batiment.designation }}</td>
         <td>
-          <button class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
             <i class="fas fa-edit"></i>
           </button>
-          <button class="btn btn-link text-danger" (click)="deleteBande(bande.id)">
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteBande(bande.id)">
             <i class="fas fa-trash-alt"></i>
           </button>
         </td>

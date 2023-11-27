@@ -36,12 +36,7 @@ export class BatimentService {
   const url = `${this.baseUrl}/batiment/delete/${id}`;
   return this.http.delete(url, { headers });
 }
-/*
-  getBatimentDesignation(id: number, headers: any): Observable<string> {
-    const url = `${this.baseUrl}/batiment/designation/${id}`;
-    return this.http.get<string>(url, { headers });
-  }
-*/
+
 
   //Récupération nombre de Batiment dans la ferme 
   countTotalBatiments(headers : any):Observable<number> {
