@@ -210,4 +210,19 @@ public class BandeServiceImpl implements BandeService {
         }
         return null;
     }
+
+    @Override
+    public Integer totalPouleRestant() {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
+                return bandeDao.totalPouleRestant();
+            }
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des poules restantes.", ex);
+        }
+        return null;
+    }
+
+
 }
+

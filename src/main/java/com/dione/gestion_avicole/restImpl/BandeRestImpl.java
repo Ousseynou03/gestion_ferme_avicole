@@ -93,4 +93,13 @@ public class BandeRestImpl implements BandeRest {
             throw new RuntimeException("Erreur lors du comptage des bandes.", ex);
         }
     }
+
+    @Override
+    public Integer totalPouleRestant() {
+        try {
+            return bandeService.totalPouleRestant();
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des poules restantes.", ex);
+        }
+    }
 }

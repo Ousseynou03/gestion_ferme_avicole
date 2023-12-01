@@ -22,6 +22,8 @@ public interface BandeService {
     ResponseEntity<List<Bande>> getLatestThreeBandes();
     Long countTotalBande();
 
+    Integer totalPouleRestant();
+
 
 
 

@@ -15,4 +15,6 @@ public interface MortaliteService {
     ResponseEntity<String> updateMortalite(Map<String, String> requestMap);
 
     ResponseEntity<String> deleteMortalite(Integer id);
+
+    Integer totalMortalite();
 }

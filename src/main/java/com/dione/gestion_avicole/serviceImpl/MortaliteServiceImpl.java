@@ -166,4 +166,17 @@ public class MortaliteServiceImpl implements MortaliteService {
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
-}
+
+    @Override
+    public Integer totalMortalite() {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
+                return mortaliteDao.totalMortalite();
+            }
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des mortalités.", ex);
+        }
+        return null;
+    }
+    }
+

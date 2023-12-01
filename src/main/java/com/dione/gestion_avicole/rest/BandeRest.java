@@ -38,4 +38,8 @@ public interface BandeRest {
 
     @GetMapping("/countAllBande")
     Long countTotalBande();
+
+
+    @GetMapping("/totalPouleRestant")
+    Integer totalPouleRestant();
 }

@@ -21,4 +21,7 @@ public interface MoratliteRest {
 
     @DeleteMapping("delete/{id}")
     ResponseEntity<String> deleteMortalite(@PathVariable Integer id);
+
+    @GetMapping("/totalMortalite")
+    Integer totalMortalite();
 }

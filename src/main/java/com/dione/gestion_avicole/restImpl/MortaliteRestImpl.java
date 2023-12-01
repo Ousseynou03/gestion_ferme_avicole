@@ -61,4 +61,13 @@ public class MortaliteRestImpl implements MoratliteRest {
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public Integer totalMortalite() {
+        try {
+            return mortaliteService.totalMortalite();
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des motalités.", ex);
+        }
+    }
 }
