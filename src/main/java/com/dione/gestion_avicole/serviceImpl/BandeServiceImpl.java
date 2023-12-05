@@ -9,10 +9,18 @@ import com.dione.gestion_avicole.dao.BatimentDao;
 import com.dione.gestion_avicole.service.BandeService;
 import com.dione.gestion_avicole.utils.AvicoleUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -224,5 +232,11 @@ public class BandeServiceImpl implements BandeService {
     }
 
 
+
+
+
+
+
 }
+
 

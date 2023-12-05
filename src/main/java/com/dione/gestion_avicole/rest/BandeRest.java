@@ -42,4 +42,7 @@ public interface BandeRest {
 
     @GetMapping("/totalPouleRestant")
     Integer totalPouleRestant();
+
+
+
 }

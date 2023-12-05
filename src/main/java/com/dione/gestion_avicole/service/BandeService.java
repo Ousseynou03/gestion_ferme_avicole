@@ -1,7 +1,6 @@
 package com.dione.gestion_avicole.service;
 
 import com.dione.gestion_avicole.POJO.Bande;
-import com.dione.gestion_avicole.POJO.Batiment;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -23,6 +22,8 @@ public interface BandeService {
     Long countTotalBande();
 
     Integer totalPouleRestant();
+
+
 
 
 

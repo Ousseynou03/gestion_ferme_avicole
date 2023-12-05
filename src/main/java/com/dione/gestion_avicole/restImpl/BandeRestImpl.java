@@ -7,6 +7,7 @@ import com.dione.gestion_avicole.service.BandeService;
 import com.dione.gestion_avicole.utils.AvicoleUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -102,4 +103,7 @@ public class BandeRestImpl implements BandeRest {
             throw new RuntimeException("Erreur lors du comptage des poules restantes.", ex);
         }
     }
+
+
+
 }

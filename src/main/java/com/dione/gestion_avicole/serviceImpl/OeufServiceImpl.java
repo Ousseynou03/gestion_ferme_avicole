@@ -60,6 +60,7 @@ public class OeufServiceImpl implements OeufService {
         }
         oeuf.setDesignation(requestMap.get("designation"));
         oeuf.setQuantite(requestMap.get("quantite"));
+        oeuf.setNbrPlateau(requestMap.get("nbrPlateau"));
         // Validation et ajout de l'id du batiment
         if (requestMap.containsKey("batiment")) {
             try {

@@ -1,5 +1,6 @@
 package com.dione.gestion_avicole.POJO;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @DynamicUpdate
 @DynamicInsert
@@ -14,18 +16,19 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Oeuf {
+public class Ramassage {
 
     private static final Long serialVersionUID=1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String designation;
+    private String observation;
     private String quantite;
-    private String nbrPlateau;
+    private double nbrOeufCasse;
+    private Date dateRamassage;
 
     @ManyToOne
-    @JoinColumn(name = "batiment_id_ponte")
-    private Batiment batiment;
+    @JoinColumn(name = "bande_id_ramassage")
+    private Bande bande;
 }
