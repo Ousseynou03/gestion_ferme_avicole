@@ -112,6 +112,7 @@ export class BandeComponent implements OnInit {
             title: 'Succès',
             text: 'La bande a été ajoutée avec succès.'
           });
+          this.bandeForm.reset();
           this.loadBandeList(headers);
         },
         (error) => {

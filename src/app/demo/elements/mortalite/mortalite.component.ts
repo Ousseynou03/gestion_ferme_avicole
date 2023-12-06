@@ -111,6 +111,7 @@ export class MortaliteComponent implements OnInit{
             text: 'Le Materiel a été ajoutée avec succès.'
           });
           this.loadMortaliteList(headers);
+          this.mortaliteForm.reset();
         },
         (error) => {
           console.error('Erreur lors de l\'ajout de la bande:', error);

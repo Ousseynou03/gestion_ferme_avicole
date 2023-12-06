@@ -47,6 +47,15 @@ import { TresorerieComponent } from './demo/elements/tresorerie/tresorerie.compo
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthInterceptor } from './demo/services/auth-interceptor.service';
 import { NotAutorizedComponent } from './demo/elements/not-autorized/not-autorized.component';
+import { OeufComponent } from './demo/elements/oeuf/oeuf.component';
+
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RamassageOeufComponent } from './demo/elements/ramassage-oeuf/ramassage-oeuf.component';
+import { AppartementComponent } from './demo/elements/appartement/appartement.component';
+import { PaiementComponent } from './demo/elements/paiement/paiement.component';
+import { LocataireComponent } from './demo/elements/locataire/locataire.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +76,7 @@ import { NotAutorizedComponent } from './demo/elements/not-autorized/not-autoriz
     ClientComponent,
     MaterielComponent,
     OuvrierComponent,
+    OeufComponent,
     FournisseurComponent,
     LoginComponent,
     UserComponent,
@@ -77,6 +87,10 @@ import { NotAutorizedComponent } from './demo/elements/not-autorized/not-autoriz
     MortaliteComponent,
     TresorerieComponent,
     NotAutorizedComponent,
+    RamassageOeufComponent,
+    AppartementComponent,
+    PaiementComponent,
+    LocataireComponent,
   ],
   imports: [
     BrowserModule,
@@ -90,10 +104,14 @@ import { NotAutorizedComponent } from './demo/elements/not-autorized/not-autoriz
     MatAutocompleteModule,
     ReactiveFormsModule,
     AsyncPipe,
-    MatInputModule,
     MatSelectModule,
     CommonModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    MatButtonModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    
 
   ],
   providers: [NavigationItem, AuthService,

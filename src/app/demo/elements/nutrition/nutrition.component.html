@@ -27,15 +27,15 @@
                 <input placeholder="Quantite" type="number" name="quantite" formControlName="quantite" required>
               </div>
               <div>
-                <label></label>
+                <label>Date d'entrée</label>
                 <input placeholder="Date Entree" type="date" name="dateEntree" formControlName="dateEntree" required>
               </div>
               <div>
-                <label></label>
+                <label>Date de Sortie</label>
                 <input placeholder="Date Sortie" type="date" name="dateSortie" formControlName="dateSortie" required>
               </div>
               <div>
-                <label></label>
+                
                 <input placeholder="Quantite Sortie" type="number" name="quantiteSortie" formControlName="quantiteSortie" required>
               </div>
               <div>
@@ -44,6 +44,17 @@
                 <option *ngFor="let batiment of batiments" [value]="batiment.id">{{ batiment?.designation }}</option>
               </select>
             </div>
+            <div>
+              <label for="bande">Bande:</label>
+            <select id="bande" formControlName="bande">
+              <option *ngFor="let bande of bandes" [value]="bande.id">{{ bande?.designation }}</option>
+            </select>
+          </div>
+          <label>Epuise:</label>
+          <select id="epuisee" formControlName="epuisee" required>
+            <option value="Oui">Oui</option>
+            <option value="Non">Non</option>
+          </select>
               <button type="submit">Enregistrer</button>
             </form>
           </div>
@@ -70,6 +81,8 @@
         <th scope="col">Date Sortie</th>
         <th scope="col">Quantite Sortie</th>
         <th scope="col">Batiment</th>
+        <th scope="col">Bande</th>
+        <th scope="col">Epuisé</th>
         <th scope="col" *ngIf="authService && authService.roles && authService.roles.includes('admin')">Action</th>
 
       </tr>
@@ -78,11 +91,13 @@
        <tr *ngFor="let nutrition of nutritions; let i = index">
         <td>{{ i + 1 }}</td>
         <td>{{ nutrition.designation }}</td>
-        <td>{{ nutrition.quantite }}</td>
+        <td>{{ nutrition.quantite }} sacs</td>
         <td>{{ nutrition.dateEntree | date:'yyyy-MM-dd' }}</td>
         <td>{{ nutrition.dateSortie | date:'yyyy-MM-dd' }}</td>
-        <td>{{ nutrition.quantiteSortie }}</td>
+        <td>{{ nutrition.quantiteSortie }} sacs</td>
         <td>{{ nutrition.batiment.designation }}</td>
+        <td>{{ nutrition.bande.designation }}</td>
+        <td>{{ nutrition.epuisee }}</td>
         <td>
           <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
             <i class="fas fa-edit"></i>

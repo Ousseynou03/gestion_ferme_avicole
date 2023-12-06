@@ -1,14 +1,14 @@
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#batimentModal">
   Ajouter un batiment
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="batimentModal" tabindex="-1" aria-labelledby="batimentModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Nouveau Batiment</h5>
+        <h5 class="modal-title" id="batimentModalLabel">Nouveau Batiment</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -17,23 +17,24 @@
             <div class="card-header">
               <span>Enregistrement d'un Batiment</span>
             </div>
-            <form (ngSubmit)="addBatiment()">
+            <!-- Utilisez le formulaire réactif dans le modèle -->
+            <form [formGroup]="batimentForm" (ngSubmit)="addBatiment()">
               <div>
-                <label></label>
-                <input placeholder="Code" type="text" [(ngModel)]="batiment.code" name="code" required >
+                <label for="code">Code:</label>
+                <!-- Utilisez formControlName avec le formulaire réactif -->
+                <input placeholder="Code" type="text" id="code" formControlName="code" required>
               </div>
               <div>
-                <label></label>
-                <input placeholder="Designation" type="text" [(ngModel)]="batiment.designation" name="designation" required>
+                <label for="designation">Designation:</label>
+                <input placeholder="Designation" type="text" id="designation" formControlName="designation" required>
               </div>
               <div>
-                <label></label>
-                <input placeholder="Capacite" type="text" [(ngModel)]="batiment.capacite" name="Capacite" required>
+                <label for="capacite">Capacite:</label>
+                <input placeholder="Capacite" type="text" id="capacite" formControlName="capacite" required>
               </div>
               <div>
-                <label>
-                </label>
-                <input placeholder="Dimension" type="text" [(ngModel)]="batiment.dimension" name="dimension" required>
+                <label for="dimension">Dimension:</label>
+                <input placeholder="Dimension" type="text" id="dimension" formControlName="dimension" required>
               </div>
               <button type="submit">Enregistrer</button>
             </form>
@@ -46,6 +47,7 @@
     </div>
   </div>
 </div>
+
 
 
 <!-- Liste des batiments -->
@@ -109,22 +111,24 @@
             <form (ngSubmit)="updateBatiment()">
               <div>
                 <label></label>
-                <input placeholder="Code" type="text" [(ngModel)]="selectedBatiment.code" name="code" required>
+                <input placeholder="Code" type="text" [(ngModel)]="editBatiment.code" name="code" required>
+                {{ editBatiment.code }}
               </div>
               <div>
                 <label></label>
-                <input placeholder="Designation" type="text" [(ngModel)]="selectedBatiment.designation" name="designation" required>
+                <input placeholder="Designation" type="text" [(ngModel)]="editBatiment.designation" name="designation" required>
               </div>
               <div>
                 <label></label>
-                <input placeholder="Capacite" type="text" [(ngModel)]="selectedBatiment.capacite" name="Capacite" required>
+                <input placeholder="Capacite" type="text" [(ngModel)]="editBatiment.capacite" name="capacite" required>
               </div>
               <div>
                 <label>
                 </label>
-                <input placeholder="Dimension" type="text" [(ngModel)]="selectedBatiment.dimension" name="dimension" required>
+                <input placeholder="Dimension" type="text"[(ngModel)]="editBatiment.dimension"  name="dimension" required>
               </div>
               <button type="submit">Modifier</button>
+
             </form>
           </div>
         </div>
@@ -135,4 +139,3 @@
     </div>
   </div>
 </div>
-

@@ -18,6 +18,7 @@ export class NutritionComponent implements OnInit{
 
   nutritions: Nutrition[];
   batiments: Batiment[];
+  bandes : Bande[];
 
 
   NutritionForm = this.fb.group({
@@ -26,14 +27,17 @@ export class NutritionComponent implements OnInit{
     dateEntree: ['', Validators.required],
     dateSortie: ['', Validators.required],
     quantiteSortie: [null, Validators.required],
-    batiment: [null,Validators.required]
+    batiment: [null,Validators.required],
+    bande: [null,Validators.required],
+    epuisee : ['', Validators.required],
   });
 
   constructor(
     private nutritionService : NutritionService,
     public authService: AuthService,
     private batimentService: BatimentService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private bandeService : BandeService
   ) {}
 
   ngOnInit() {
@@ -50,6 +54,7 @@ export class NutritionComponent implements OnInit{
     const headers = { Authorization: `Bearer ${token}` };
     this.loadBatimentList(headers);
     this.loadNutritionList(headers);
+    this.loadBandeList(headers);
   }
 
   loadNutritionList(headers: any) {
@@ -76,6 +81,22 @@ export class NutritionComponent implements OnInit{
     });
   }
 
+  loadBandeList(headers: any) {
+    this.bandeService.getAllBandes(headers).subscribe(
+      (data: Bande[]) => {
+        this.bandes = data;
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur de récupération',
+          text: 'Impossible de récupérer la liste des bandes.'
+        });
+  
+        console.error('Erreur lors de la récupération des bandes :', error);
+      }
+    );
+  }
   
 
   addNutrition() {
@@ -88,6 +109,8 @@ export class NutritionComponent implements OnInit{
         dateSortie: this.NutritionForm.value.dateSortie,
         quantiteSortie: this.NutritionForm.value.quantiteSortie,
         batiment: this.NutritionForm.value.batiment,
+        bande: this.NutritionForm.value.bande,
+        epuisee : this.NutritionForm.value.epuisee,
       };
   
       console.log('Valeur de batiment avant envoi:', this.NutritionForm.value.batiment);
@@ -114,6 +137,7 @@ export class NutritionComponent implements OnInit{
             text: 'La Nutrition a été ajoutée avec succès.'
           });
           this.loadNutritionList(headers);
+          this.NutritionForm.reset();
         },
         (error) => {
           console.error('Erreur lors de l\'ajout de la nutrition:', error);

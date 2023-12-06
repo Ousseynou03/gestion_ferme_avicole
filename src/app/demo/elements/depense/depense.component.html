@@ -1,3 +1,63 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#depenseModal">
+  Ajouter une Dépense
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="depenseModal" tabindex="-1" aria-labelledby="depenseModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="depenseModalLabel">Nouvelle Dépense</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="cards">
+          <div class="card-bodi">
+            <div class="card-header">
+              <span>Enregistrement d'une Dépense</span>
+            </div>
+            <form [formGroup]="depenseForm" (ngSubmit)="addDepense()">
+              <div>
+                <label for="dateDepense">Date de Dépense:</label>
+                <input type="date" id="dateDepense" formControlName="dateDepense" required>
+              </div>
+              <div>
+                <label for="categorie">Catégorie:</label>
+                <select id="categorie" formControlName="categorie" required>
+                  <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                </select>
+              </div>
+              <div>
+                <label for="quantite">Quantité:</label>
+                <input type="number" id="quantite" formControlName="quantite" required>
+              </div>
+              <div>
+                <label for="prixUnitaire">Prix Unitaire:</label>
+                <input type="number" id="prixUnitaire" formControlName="prixUnitaire" required>
+              </div>
+              <div>
+                <label for="description">Description:</label>
+                <textarea id="description" formControlName="description"></textarea>
+              </div>
+              <div>
+                <label for="bande">Bande:</label>
+                <select id="bande" formControlName="bande">
+                  <option *ngFor="let bande of bandes" [value]="bande.id">{{ bande.designation }}</option>
+                </select>
+              </div>
+              <button type="submit">Enregistrer</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+     
 
 
 

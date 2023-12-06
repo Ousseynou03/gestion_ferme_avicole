@@ -4,5 +4,6 @@ export interface Oeuf {
     id: number;
     designation: string;
     quantite: string;
+    nbrPlateau : string;
     batiment: Batiment;
 }

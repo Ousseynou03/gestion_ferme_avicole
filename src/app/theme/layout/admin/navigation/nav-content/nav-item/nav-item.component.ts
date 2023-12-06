@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 
 // Project import
 import { NavigationItem } from '../../navigation';
+import { AuthService } from 'src/app/demo/services/auth.service';
 
 @Component({
   selector: 'app-nav-item',
@@ -12,6 +13,9 @@ import { NavigationItem } from '../../navigation';
 export class NavItemComponent {
   // public props
   @Input() item!: NavigationItem;
+
+
+  constructor(public authService : AuthService){}
 
   // public method
   closeOtherMenu(event: any) {

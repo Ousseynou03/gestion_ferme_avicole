@@ -65,7 +65,7 @@
             <i class="text-white ti ti-credit-card"></i>
           </div>
           <div class="ms-2">
-            <h4 class="text-purple d-block fs-1 fw-bold my-2">1050.0 poules <i class="ti ti-arrow-up-right-circle opacity-50"></i></h4>
+            <h4 class="text-purple d-block fs-1 fw-bold my-2">{{totalPoules}} poules <i class="ti ti-arrow-up-right-circle opacity-50"></i></h4>
             <p class="mb-0 opacity-50 text-sm">Totale Poules</p>
           </div>
         </div>
@@ -156,7 +156,7 @@
             </div>
           </div>
         </div>
-        <span class="text-purple d-block fs-1 fw-bold my-2">1000 œufs <i class="fas fa-egg"></i></span>
+        <span class="text-purple d-block fs-1 fw-bold my-2">{{ totalOeufs }} œufs <i class="fas fa-egg"></i></span>
         <p class="mb-0 opacity-50"> Total Œufs</p>
         
       </div>
@@ -180,7 +180,7 @@
             </div>
           </div>
         </div>
-        <span class="text-purple d-block fs-1 fw-bold my-2">11.5 sacs <i class="fas fa-shopping-bag"></i></span>
+        <span class="text-purple d-block fs-1 fw-bold my-2">{{stockAliments}} sacs <i class="fas fa-shopping-bag"></i></span>
         <p class="mb-0 opacity-50"> Stock aliments</p>
         
       </div>
@@ -205,7 +205,7 @@
             </div>
           </div>
         </div>
-        <span class="text-purple d-block fs-1 fw-bold my-2">1.5 sacs <i class="fas fa-utensils"></i></span>
+        <span class="text-purple d-block fs-1 fw-bold my-2">{{alimentsConsommes}} sacs <i class="fas fa-utensils"></i></span>
         <p class="mb-0 opacity-50">Aliments consommés</p>
         
       </div>
@@ -226,10 +226,10 @@
           <div class="px-3 pt-3">
             <div class="row mb-1 align-items-start">
               <div class="col">
-                <h5 class="text-secondary mb-0">Totale Mortalité <i class="fas fa-shopping-cart"></i></h5>
+                <h5 class="text-secondary mb-0">Totale Mortalité <i class="fas fa-skull"></i></h5>
               </div>
               <div class="col-auto">
-                <h4 class="mb-0">30</h4>
+                <h4 class="mb-0">{{totalMoratlites}}</h4>
               </div>
               
             </div>

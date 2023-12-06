@@ -100,6 +100,7 @@ export class MaterielComponent implements OnInit{
             text: 'Le Materiel a été ajoutée avec succès.'
           });
           this.loadMaterielList(headers);
+          this.materielForm.reset();
         },
         (error) => {
           console.error('Erreur lors de l\'ajout de la bande:', error);

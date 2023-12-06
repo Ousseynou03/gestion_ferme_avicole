@@ -3,6 +3,7 @@ import { Ouvrier } from '../../models/ouvrier.model';
 import { OuvrierService } from '../../services/ouvrier.service';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-ouvrier',
@@ -12,6 +13,9 @@ import { AuthService } from '../../services/auth.service';
 export class OuvrierComponent implements OnInit{
 
   ouvriers: Ouvrier[] = [];
+
+  ouvrierForm: FormGroup;
+  
 
   ouvrier: Ouvrier = {
     id : null,
@@ -24,7 +28,16 @@ export class OuvrierComponent implements OnInit{
   
 
   constructor(private ouvrierService: OuvrierService,
-    public authService : AuthService) {}
+    public authService : AuthService,
+    private fb : FormBuilder) {
+      this.ouvrierForm = this.fb.group({
+        fonction: ['', Validators.required],
+        nom: ['', Validators.required],
+        numTel: ['', Validators.required],
+        ville: ['', Validators.required],
+        salaire: [0, Validators.required],
+      });
+    }
 
   ngOnInit() {
     const token = localStorage.getItem('token');
@@ -56,43 +69,48 @@ export class OuvrierComponent implements OnInit{
     }
 
 //Ajout
-    addOuvrier(){
-      const token = localStorage.getItem('token');
-  
-      if (!token) {
+addOuvrier() {
+  if (this.ouvrierForm.valid) {
+    const ouvrier = this.ouvrierForm.value;
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Vous devez être connecté...'
+      });
+      return;
+    }
+
+    const headers = { Authorization: `Bearer ${token}` };
+
+    this.ouvrierService.addOuvrier(ouvrier, headers).subscribe(
+      (response) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Enregistré',
+          text: 'Ouvrier ajouté avec succès'
+        });
+
+        console.log('Ouvrier enregistré:', response);
+        this.loadOuvrierList();
+        // Réinitialisez le formulaire après l'ajout réussi
+        this.ouvrierForm.reset();
+      },
+      (error) => {
         Swal.fire({
           icon: 'error',
-          title: 'Erreur',
-          text: 'Vous devez être connecté...'
+          title: 'Enregistrement non autorisé',
+          text: "Vous n'êtes pas autorisé à enregistrer un ouvrier."
         });
-        return;
+
+        console.error('Erreur lors de l\'enregistrement d\'un ouvrier:', error);
       }
-      const headers = { Authorization: `Bearer ${token}` };
-  
-      // Effectuez la requête HTTP avec le token dans l'en-tête
-      this.ouvrierService.addOuvrier(this.ouvrier, headers).subscribe(
-        (response) => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Enregistré',
-            text: 'Ouvrier ajouté avec succcés'
-          });
-  
-          console.log('Ouvrier enregistré:', response);
-          this.loadOuvrierList();
-                  
-        },
-        (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Enregistrement non autorisé',
-            text: "Vous n/'êtes pas autorisé à enregistrer un ouvrier ."
-          });
-  
-          console.error('Erreur lors de l\'enregistrement d\' un ouvrier:', error);
-        }
-      );
-    }
+    );
+  }
+}
     loadOuvrierList() {
       const token = localStorage.getItem('token');
       if (token) {

@@ -1,1 +1,80 @@
-<p>oeuf works!</p>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#addBandeModal">
+    Ajouter un stock d'oeuf
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="addBandeModal" tabindex="-1" aria-labelledby="addBandeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addBandeModalLabel">Nouveau stock d'oeuf</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="cards">
+            <div class="card-bodi">
+              <div class="card-header">
+                <span>Enregistrement d'un stock d'oeuf</span>
+              </div>
+              <form [formGroup]="oeufForm" (ngSubmit)="addOeuf()">
+                <div>
+                  <label></label>
+                  <input placeholder="Désignation" type="text"  name="designation" formControlName="designation" required>
+                </div>
+                <div>
+                  <label></label>
+                  <input placeholder="Quantite" type="number" name="quantite" formControlName="quantite" required>
+                </div>
+                <div>
+                  <label for="batiment">Batiment:</label>
+                <select id="batiment" formControlName="batiment">
+                  <option *ngFor="let batiment of batiments" [value]="batiment.id">{{ batiment?.designation }}</option>
+                </select>
+              </div>
+                <button type="submit">Enregistrer</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Liste de stock des oeufs -->
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">N°</th>
+        <th scope="col">Designation</th>
+        <th scope="col">Quantite</th>
+        <th scope="col">Nombre de Plateau</th>
+        <th scope="col">Batiment Stockage</th>
+        <th scope="col" *ngIf="authService && authService.roles && authService.roles.includes('admin')">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+       <tr *ngFor="let oeuf of oeufs; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ oeuf.designation }}</td>
+        <td>{{ oeuf.quantite }}</td>
+        <td>{{ oeuf.nbrPlateau }}</td>
+        <td>{{ oeuf.batiment?.designation }}</td>
+        <td>
+          <div>
+            <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+              <i class="fas fa-edit"></i>
+            </button>
+          </div>
+
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click) = "deleteOeuf(oeuf.id)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>

@@ -20,6 +20,10 @@ import { MortaliteComponent } from './demo/elements/mortalite/mortalite.componen
 import { OeufComponent } from './demo/elements/oeuf/oeuf.component';
 import { AuthorizationGuard } from './demo/services/authorization-guard.service';
 import { NotAutorizedComponent } from './demo/elements/not-autorized/not-autorized.component';
+import { RamassageOeufComponent } from './demo/elements/ramassage-oeuf/ramassage-oeuf.component';
+import { AppartementComponent } from './demo/elements/appartement/appartement.component';
+import { PaiementComponent } from './demo/elements/paiement/paiement.component';
+import { LocataireComponent } from './demo/elements/locataire/locataire.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirection vers la page de connexion par défaut
@@ -72,6 +76,18 @@ const routes: Routes = [
  
       {
         path: 'tresorerie', component : TresorerieComponent
+      },
+      {
+        path: 'appartement', component : AppartementComponent
+      },
+      {
+        path: 'paiement', component : PaiementComponent
+      },
+      {
+        path: 'locataire', component : LocataireComponent
+      },
+      {
+        path: 'ramassage-oeuf', component : RamassageOeufComponent
       },
       {
         path: 'user', component : UserComponent, canActivate: [AuthorizationGuard], data : {role : "admin"}

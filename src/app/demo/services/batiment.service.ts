@@ -28,7 +28,7 @@ export class BatimentService {
   // Mise à jour d'un bâtiment
   updateBatiment(batiment: Batiment, headers: any): Observable<any> {
     const url = `${this.baseUrl}/batiment/update`;
-    return this.http.put(url, batiment, { headers });
+    return this.http.post(url, batiment, { headers });
   }
 
   // Suppression

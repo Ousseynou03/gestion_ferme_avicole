@@ -3,6 +3,7 @@ import { BatimentService } from '../../services/batiment.service';
 import Swal from 'sweetalert2';
 import { Batiment } from '../../models/batiment.model';
 import { AuthService } from '../../services/auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-batiment',
@@ -12,6 +13,9 @@ import { AuthService } from '../../services/auth.service';
 export class BatimentComponent implements OnInit{
 
   batiments: Batiment[] = [];
+  batimentForm: FormGroup;
+
+  public editBatiment : any
 
   batiment: Batiment = {
     id : null,
@@ -21,9 +25,22 @@ export class BatimentComponent implements OnInit{
     dimension : ''
   };
 
-  constructor(private batimentService: BatimentService, public authService: AuthService) {}
+  
+
+  constructor(private batimentService: BatimentService, public authService: AuthService, private fb: FormBuilder) {
+    this.batimentForm = this.fb.group({
+      code: ['', Validators.required],
+      designation: ['', Validators.required],
+      capacite: ['', Validators.required],
+      dimension: ['', Validators.required],
+    });
+  }
 
   ngOnInit() {
+
+    this.editBatiment = { ...this.batiment };
+
+
     const token = localStorage.getItem('token');
     if (!token) {
       Swal.fire({
@@ -53,43 +70,55 @@ export class BatimentComponent implements OnInit{
     }
 
 //Ajout
-    addBatiment(){
-      const token = localStorage.getItem('token');
-  
-      if (!token) {
+addBatiment() {
+  if (this.batimentForm.valid) {
+    const batiment: Batiment = {
+      id: null,
+      code: this.batimentForm.value.code,
+      designation: this.batimentForm.value.designation,
+      capacite: this.batimentForm.value.capacite,
+      dimension: this.batimentForm.value.dimension,
+    };
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      // Gérer le cas où l'utilisateur n'est pas connecté
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Vous devez être connecté...'
+      });
+      return;
+    }
+
+    const headers = { Authorization: `Bearer ${token}` };
+
+    this.batimentService.addBatiment(batiment, headers).subscribe(
+      (response) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Enregistré',
+          text: 'Batiment ajouté avec succès'
+        });
+
+        console.log('Batiment enregistré:', response);
+        this.loadBatimentList();
+        this.batimentForm.reset();
+      },
+      (error) => {
         Swal.fire({
           icon: 'error',
-          title: 'Erreur',
-          text: 'Vous devez être connecté...'
+          title: 'Enregistrement non autorisé',
+          text: "Vous n'êtes pas autorisé à enregistrer un batiment."
         });
-        return;
+
+        console.error('Erreur lors de l\'enregistrement d\'un batiment:', error);
       }
-      const headers = { Authorization: `Bearer ${token}` };
-  
-      // Effectuez la requête HTTP avec le token dans l'en-tête
-      this.batimentService.addBatiment(this.batiment, headers).subscribe(
-        (response) => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Enregistré',
-            text: 'Batiment ajouté avec succcés'
-          });
-  
-          console.log('Batiment enregistré:', response);
-          this.loadBatimentList();
-                  
-        },
-        (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Enregistrement non autorisé',
-            text: "Vous n/'êtes pas autorisé à enregistrer un batiment ."
-          });
-  
-          console.error('Erreur lors de l\'enregistrement d\' un batiment:', error);
-        }
-      );
-    }
+    );
+  }
+}
+
     loadBatimentList() {
       const token = localStorage.getItem('token');
       if (token) {
@@ -106,14 +135,15 @@ export class BatimentComponent implements OnInit{
       }
     }
 
-    selectedBatiment: Batiment = {
+    /*
+    editBatiment: Batiment = {
       id : null,
       code : '',
       designation : '',
       capacite : '',
       dimension : ''
     };
-
+*/
 
 
   // Nouvelle méthode pour mettre à jour un bâtiment
@@ -126,7 +156,7 @@ export class BatimentComponent implements OnInit{
     const headers = { Authorization: `Bearer ${token}` };
 
     // Effectuez la requête HTTP avec le token dans l'en-tête
-    this.batimentService.updateBatiment(this.selectedBatiment, headers).subscribe(
+    this.batimentService.updateBatiment(this.editBatiment, headers).subscribe(
       (response) => {
         Swal.fire({
           icon: 'success',
@@ -148,12 +178,6 @@ export class BatimentComponent implements OnInit{
       }
     );
   }
-
-  // Nouvelle méthode pour pré-remplir le formulaire de mise à jour
-  editBatiment(batiment: Batiment) {
-    // Copiez les données du bâtiment à mettre à jour dans selectedBatiment
-    this.selectedBatiment = { ...batiment };
-  } 
 
 
 // Suppression

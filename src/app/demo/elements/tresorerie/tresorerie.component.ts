@@ -3,6 +3,7 @@ import { TresorerieService } from '../../services/tresorerie.service';
 import Swal from 'sweetalert2';
 import { Tresorerie } from '../../models/tresorerie.model';
 import { AuthService } from '../../services/auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-tresorerie',
@@ -14,7 +15,25 @@ export class TresorerieComponent implements OnInit{
 
   tresoreries : Tresorerie[];
 
-  constructor(private tresoreriService : TresorerieService, public authService : AuthService){}
+  tresorerieForm : FormGroup;
+
+  tresorerie : Tresorerie = {
+    id: 0,
+    type: '',
+    nom: '',
+    numero: '',
+    solde: 0
+  }
+
+  constructor(private tresoreriService : TresorerieService, public authService : AuthService,
+    private fb : FormBuilder){
+      this.tresorerieForm = this.fb.group({
+        type: ['', Validators.required],
+        nom: ['', Validators.required],
+        numero: ['', Validators.required],
+        solde: [0, Validators.required]
+      });
+    }
 
   ngOnInit() {
     const token = localStorage.getItem('token');
@@ -29,6 +48,49 @@ export class TresorerieComponent implements OnInit{
 
     const headers = { Authorization: `Bearer ${token}` };
     this.loadTresorerieList(headers);
+  }
+
+  addTresorerie() {
+    if (this.tresorerieForm.valid) {
+      const tresorerie = this.tresorerieForm.value;
+  
+      const token = localStorage.getItem('token');
+  
+      if (!token) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Vous devez être connecté...'
+        });
+        return;
+      }
+  
+      const headers = { Authorization: `Bearer ${token}` };
+  
+      this.tresoreriService.addTresorerie(tresorerie, headers).subscribe(
+        (response) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Enregistré',
+            text: 'Trésorerie ajoutée avec succès'
+          });
+  
+          console.log('Trésorerie enregistrée:', response);
+          this.loadTresorerieList(headers);
+          // Réinitialisez le formulaire après l'ajout réussi
+          this.tresorerieForm.reset();
+        },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Enregistrement non autorisé',
+            text: "Vous n'êtes pas autorisé à enregistrer une trésorerie."
+          });
+  
+          console.error('Erreur lors de l\'enregistrement d\'une trésorerie:', error);
+        }
+      );
+    }
   }
 
   loadTresorerieList(headers: any) {

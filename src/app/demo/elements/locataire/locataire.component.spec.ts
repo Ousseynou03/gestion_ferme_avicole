@@ -1,0 +1,21 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { LocataireComponent } from './locataire.component';
+
+describe('LocataireComponent', () => {
+  let component: LocataireComponent;
+  let fixture: ComponentFixture<LocataireComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [LocataireComponent]
+    });
+    fixture = TestBed.createComponent(LocataireComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

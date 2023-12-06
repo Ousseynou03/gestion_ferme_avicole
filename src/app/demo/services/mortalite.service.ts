@@ -36,4 +36,11 @@ export class MortaliteService {
   const url = `${this.baseUrl}/mortalite/delete/${id}`;
   return this.http.delete(url, { headers });
 }
+
+
+  //Récupération des mortalités totales 
+  totalMortalite(headers : any):Observable<number> {
+    const url = `${this.baseUrl}/mortalite/totalMortalite`;
+    return this.http.get<number>(url,{headers})
+  }
 }

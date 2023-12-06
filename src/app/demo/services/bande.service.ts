@@ -42,4 +42,10 @@ export class BandeService {
     const url = `${this.baseUrl}/bande/countAllBande`;
     return this.http.get<number>(url,{headers})
   }
+
+    //Récupération totale Poules 
+    totalPouleRestant(headers : any):Observable<number> {
+      const url = `${this.baseUrl}/bande/totalPouleRestant`;
+      return this.http.get<number>(url,{headers})
+    }
 }

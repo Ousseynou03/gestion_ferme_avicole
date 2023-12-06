@@ -1,3 +1,4 @@
+import { Bande } from "./bande.model";
 import { Batiment } from "./batiment.model";
 
 export interface Nutrition {
@@ -9,5 +10,7 @@ export interface Nutrition {
     dateSortie: string;
     quantiteSortie: number;
     batiment: Batiment;
+    bande : Bande;
+    epuisee : string;
     
 }

@@ -3,7 +3,7 @@ import { Categorie } from "./enums/categorie.enum";
 
 export interface Depense {
     id: number;
-    dateDepense: Date;
+    dateDepense: string;
     categorie: Categorie;
     quantite: number;
     prixUnitaire: number;

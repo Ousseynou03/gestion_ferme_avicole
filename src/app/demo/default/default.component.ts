@@ -1,5 +1,5 @@
 // Angular Import
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // project import
@@ -29,6 +29,9 @@ import { BandeService } from '../services/bande.service';
 import { TresorerieService } from '../services/tresorerie.service';
 import { VenteService } from '../services/vente.service';
 import { DepenseService } from '../services/depense.service';
+import { MortaliteService } from '../services/mortalite.service';
+import { NutritionService } from '../services/nutrition.service';
+import { RamassageOeufService } from '../services/ramassage-oeuf.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -59,9 +62,17 @@ export default class DefaultComponent {
   venteOeufs : number;
   totalDepenses : number;
   benefice: number;
+  totalMoratlites : number;
+  totalPoules: number;
+  stockAliments : number;
+  alimentsConsommes : number;
+  nbreTotalOeufRamassage : number;
+  nbreOeufPerdu : number;
+  nbrOeufVendu : number;
+  totalOeufs: number;
 
 
- 
+
 
 
 
@@ -82,101 +93,19 @@ export default class DefaultComponent {
     private batimentService : BatimentService,
     private bandeService : BandeService,
     private tresorerieService : TresorerieService,
-    private venteServiceService : VenteService,
-    private depenseService : DepenseService
+    private venteService : VenteService,
+    private depenseService : DepenseService,
+    private mortaliteService : MortaliteService,
+    private nutritionService : NutritionService,
+    private ramassageService : RamassageOeufService,
 
 
 
-  ) {
-    this.chartOptions = {
-      series: [
-        {
-          name: 'Investment',
-          data: [35, 125, 35, 35, 35, 80, 35, 20, 35, 45, 15, 75]
-        },
-        {
-          name: 'Loss',
-          data: [35, 15, 15, 35, 65, 40, 80, 25, 15, 85, 25, 75]
-        },
-        {
-          name: 'Profit',
-          data: [35, 145, 35, 35, 20, 105, 100, 10, 65, 45, 30, 10]
-        },
-        {
-          name: 'Maintenance',
-          data: [0, 0, 75, 0, 0, 115, 0, 0, 0, 0, 150, 0]
-        }
-      ],
-      dataLabels: {
-        enabled: false
-      },
-      chart: {
-        type: 'bar',
-        height: 480,
-        stacked: true,
-        toolbar: {
-          show: true
-        }
-      },
-      colors: ['#90caf9', '#1e88e5', '#673ab7', '#ede7f6'],
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            legend: {
-              position: 'bottom',
-              offsetX: -10,
-              offsetY: 0
-            }
-          }
-        }
-      ],
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: '50%'
-        }
-      },
-      xaxis: {
-        type: 'category',
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-      },
-      grid: {
-        strokeDashArray: 4
-      },
-      tooltip: {
-        theme: 'dark'
-      }
-    };
-    this.chartOptions1 = {
-      chart: {
-        type: 'area',
-        height: 95,
-        stacked: true,
-        sparkline: {
-          enabled: true
-        }
-      },
-      colors: ['#673ab7'],
-      stroke: {
-        curve: 'smooth',
-        width: 1
-      },
 
-      series: [
-        {
-          data: [0, 15, 10, 50, 30, 40, 25]
-        }
-      ]
-    };
-  }
+  ) {}
 
   // Life cycle events
   ngOnInit(): void {
-    setTimeout(() => {
-      this.monthChart = new ApexCharts(document.querySelector('#tab-chart-1'), this.monthOptions);
-      this.monthChart.render();
-    }, 500);
 
     this.countTotalBatiments();
     this.countTotalBandes();
@@ -185,9 +114,22 @@ export default class DefaultComponent {
     this.sommeTotalVenteOeuf();
     this.totalDepense();
     this.calculerBénéfice();
+    this.totalMortalite();
+    this.totalPouleRestant();
+    this.fetcStockAliments();
+    this.fetcAlimentsConsommes();
+    this.fetcnbreTotalOeufRamassage();
+    this.fetcnbrOeufVendu();
+    this.fetchtotalOeufs();
+
 
 
   }
+
+
+
+
+
 
      // Méthode pour calculer le bénéfice
      calculerBénéfice() {
@@ -217,6 +159,130 @@ export default class DefaultComponent {
               }
             }
 
+             
+
+fetcStockAliments() {
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    const headers = { Authorization: `Bearer ${token}` };
+
+    this.nutritionService.stockAliments(headers).subscribe(
+      (data: number) => {
+        this.stockAliments = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des stocks d\'aliments:', error);
+      }
+    );
+  }
+}
+
+fetcnbrOeufVendu() {
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    const headers = { Authorization: `Bearer ${token}` };
+
+    this.venteService.nbrOeufVendu(headers).subscribe(
+      (data: number) => {
+        this.nbrOeufVendu = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des oeufs vendus:', error);
+      }
+    );
+  }
+}
+
+fetchtotalOeufs() {
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    const headers = { Authorization: `Bearer ${token}` };
+
+    this.ramassageService.totalOeufs(headers).subscribe(
+      (data: number) => {
+        this.totalOeufs = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des oeufs totaux:', error);
+      }
+    );
+  }
+}
+
+fetcnbreTotalOeufRamassage() {
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    const headers = { Authorization: `Bearer ${token}` };
+
+    this.ramassageService.nbreTotalOeufRamassage(headers).subscribe(
+      (data: number) => {
+        this.nbreTotalOeufRamassage = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des oeufs total ramassés:', error);
+      }
+    );
+  }
+}
+
+fetcAlimentsConsommes() {
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    const headers = { Authorization: `Bearer ${token}` };
+
+    this.nutritionService.alimentConsommes(headers).subscribe(
+      (data: number) => {
+        this.alimentsConsommes = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des ventes de poulet:', error);
+      }
+    );
+  }
+}
+
+
+                       //Récupération totale poules
+                       totalPouleRestant() {
+                        const token = localStorage.getItem('token');
+                    
+                        if (token) {
+                          const headers = { Authorization: `Bearer ${token}` };
+                    
+                          this.bandeService.totalPouleRestant(headers).subscribe(
+                            (data: number) => {
+                              this.totalPoules = data;
+                            },
+                            (error) => {
+                              console.error('Erreur lors de la récupération des ventes de poulet:', error);
+                            }
+                          );
+                        }
+                      }
+
+                        //Récupération des ventes de Poulets
+                        totalMortalite() {
+                          const token = localStorage.getItem('token');
+                      
+                          if (token) {
+                            const headers = { Authorization: `Bearer ${token}` };
+                      
+                            this.mortaliteService.totalMortalite(headers).subscribe(
+                              (data: number) => {
+                                this.totalMoratlites = data;
+                              },
+                              (error) => {
+                                console.error('Erreur lors de la récupération des effectifs totals de mortalites:', error);
+                              }
+                            );
+                          }
+                        }
+
 
           //Récupération des ventes de Poulets
           sommeTotalVenteOeuf() {
@@ -225,7 +291,7 @@ export default class DefaultComponent {
             if (token) {
               const headers = { Authorization: `Bearer ${token}` };
         
-              this.venteServiceService.sommeTotalVenteOeuf(headers).subscribe(
+              this.venteService.sommeTotalVenteOeuf(headers).subscribe(
                 (data: number) => {
                   this.venteOeufs = data;
                 },
@@ -244,7 +310,7 @@ export default class DefaultComponent {
           if (token) {
             const headers = { Authorization: `Bearer ${token}` };
       
-            this.venteServiceService.sommeTotalVentePoulet(headers).subscribe(
+            this.venteService.sommeTotalVentePoulet(headers).subscribe(
               (data: number) => {
                 this.ventePoulets = data;
               },

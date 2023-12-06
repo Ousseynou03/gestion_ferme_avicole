@@ -3,6 +3,7 @@ import { Client } from '../../models/client.model';
 import { ClientService } from '../../services/client.service';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-client',
@@ -12,6 +13,7 @@ import Swal from 'sweetalert2';
 export class ClientComponent implements OnInit{
 
   clients: Client[] = [];
+  clientForm: FormGroup;
 
   client: Client = {
     id: null,
@@ -22,7 +24,14 @@ export class ClientComponent implements OnInit{
   
 
   constructor(private clientService: ClientService, 
-    public authService: AuthService) {}
+    public authService: AuthService,
+    private fb : FormBuilder) {
+      this.clientForm = this.fb.group({
+        nom: ['', Validators.required],
+        ville: ['', Validators.required],
+        numTel: ['', Validators.required],
+      });
+    }
 
   ngOnInit() {
     const token = localStorage.getItem('token');
@@ -30,7 +39,7 @@ export class ClientComponent implements OnInit{
       Swal.fire({
         icon: 'error',
         title: 'Erreur',
-        text: 'Vous devez être connecté pour récupérer la liste des bâtiments.'
+        text: 'Vous devez être connecté pour récupérer la liste des clients.'
       });
       return;
     }
@@ -52,42 +61,47 @@ export class ClientComponent implements OnInit{
     }
 
     //Ajout
-    addClient(){
-      const token = localStorage.getItem('token');
+    addClient() {
+      if (this.clientForm.valid) {
+        const client = this.clientForm.value;
   
-      if (!token) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: 'Vous devez être connecté...'
-        });
-        return;
-      }
-      const headers = { Authorization: `Bearer ${token}` };
+        const token = localStorage.getItem('token');
   
-      // Effectuez la requête HTTP avec le token dans l'en-tête
-      this.clientService.addClient(this.client, headers).subscribe(
-        (response) => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Enregistré',
-            text: 'Client ajouté avec succcés'
-          });
-  
-          console.log('Client enregistré:', response);
-          this.loadClientList();
-                  
-        },
-        (error) => {
+        if (!token) {
           Swal.fire({
             icon: 'error',
-            title: 'Enregistrement non autorisé',
-            text: "Vous n/'êtes pas autorisé à enregistrer un client ."
+            title: 'Erreur',
+            text: 'Vous devez être connecté...'
           });
-  
-          console.error('Erreur lors de l\'enregistrement d\' un client:', error);
+          return;
         }
-      );
+  
+        const headers = { Authorization: `Bearer ${token}` };
+  
+        this.clientService.addClient(client, headers).subscribe(
+          (response) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Enregistré',
+              text: 'Client ajouté avec succès'
+            });
+  
+            console.log('Client enregistré:', response);
+            this.loadClientList();
+            // Réinitialisez le formulaire après l'ajout réussi
+            this.clientForm.reset();
+          },
+          (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Enregistrement non autorisé',
+              text: "Vous n'êtes pas autorisé à enregistrer un client."
+            });
+  
+            console.error('Erreur lors de l\'enregistrement d\'un client:', error);
+          }
+        );
+      }
     }
     loadClientList() {
       const token = localStorage.getItem('token');

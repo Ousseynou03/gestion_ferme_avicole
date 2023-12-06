@@ -3,6 +3,7 @@ import { Fournisseur } from '../../models/fournisseur.model';
 import { FournisseurService } from '../../services/fournisseur.service';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-fournisseur',
@@ -12,6 +13,7 @@ import Swal from 'sweetalert2';
 export class FournisseurComponent implements OnInit{
 
   fournisseurs: Fournisseur[] = [];
+  fournisseurForm: FormGroup;
 
   fournisseur : Fournisseur = {
     id : null,
@@ -21,7 +23,16 @@ export class FournisseurComponent implements OnInit{
     email: ''
   }
 
-  constructor(private fournisseurService: FournisseurService, public authService: AuthService) {}
+
+  constructor(private fournisseurService: FournisseurService, public authService: AuthService,
+    private fb : FormBuilder){
+      this.fournisseurForm = this.fb.group({
+        type: ['Particulier', Validators.required],
+        nom: ['', Validators.required],
+        numTel: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+      });
+    }
 
 
   ngOnInit() {
@@ -60,42 +71,47 @@ export class FournisseurComponent implements OnInit{
 
 
   //Ajout
-  addFournisseur(){
-    const token = localStorage.getItem('token');
+  addFournisseur() {
+    if (this.fournisseurForm.valid) {
+      const fournisseur = this.fournisseurForm.value;
 
-    if (!token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté...'
-      });
-      return;
-    }
-    const headers = { Authorization: `Bearer ${token}` };
+      const token = localStorage.getItem('token');
 
-    // Effectuez la requête HTTP avec le token dans l'en-tête
-    this.fournisseurService.addFournisseur(this.fournisseur, headers).subscribe(
-      (response) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Enregistré',
-          text: 'Fournisseur ajouté avec succcés'
-        });
-
-        console.log('Fournisseur enregistré:', response);
-        this.loadFournisseurList();
-                
-      },
-      (error) => {
+      if (!token) {
         Swal.fire({
           icon: 'error',
-          title: 'Enregistrement non autorisé',
-          text: "Vous n/'êtes pas autorisé à enregistrer un fournisseur ."
+          title: 'Erreur',
+          text: 'Vous devez être connecté...'
         });
-
-        console.error('Erreur lors de l\'enregistrement d\' un fournisseur:', error);
+        return;
       }
-    );
+
+      const headers = { Authorization: `Bearer ${token}` };
+
+      this.fournisseurService.addFournisseur(fournisseur, headers).subscribe(
+        (response) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Enregistré',
+            text: 'Fournisseur ajouté avec succès'
+          });
+
+          console.log('Fournisseur enregistré:', response);
+          this.loadFournisseurList();
+          // Réinitialisez le formulaire après l'ajout réussi
+          this.fournisseurForm.reset();
+        },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Enregistrement non autorisé',
+            text: "Vous n'êtes pas autorisé à enregistrer un fournisseur."
+          });
+
+          console.error('Erreur lors de l\'enregistrement d\'un fournisseur:', error);
+        }
+      );
+    }
   }
   loadFournisseurList() {
     const token = localStorage.getItem('token');

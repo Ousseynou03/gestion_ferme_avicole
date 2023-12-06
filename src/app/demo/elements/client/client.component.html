@@ -1,47 +1,48 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Ajouter un Client
+</button>
 
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Ajouter un Client
-  </button>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Nouveau Client</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="cards">
-            <div class="card-bodi">
-              <div class="card-header">
-                <span>Enregistrement d'un Client</span>
-              </div>
-              <form (ngSubmit)="addClient()">
-                <div>
-                  <label></label>
-                  <input placeholder="Nom" type="text" [(ngModel)]="client.nom" name="nom" required >
-                </div>
-                <div>
-                  <label></label>
-                  <input placeholder="Ville" type="text" [(ngModel)]="client.ville" name="ville" required>
-                </div>
-                <div>
-                  <label></label>
-                  <input placeholder="Numero Téléphone" type="text" [(ngModel)]="client.numTel" name="numTel" required>
-                </div>
-                <button type="submit">Enregistrer</button>
-              </form>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nouveau Client</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="cards">
+          <div class="card-bodi">
+            <div class="card-header">
+              <span>Enregistrement d'un Client</span>
             </div>
+            <!-- Utilisez le formulaire réactif dans le modèle -->
+            <form [formGroup]="clientForm" (ngSubmit)="addClient()">
+              <div>
+                <label for="nom">Nom:</label>
+                <!-- Utilisez formControlName avec le formulaire réactif -->
+                <input placeholder="Nom" type="text" id="nom" formControlName="nom" required>
+              </div>
+              <div>
+                <label for="ville">Ville:</label>
+                <input placeholder="Ville" type="text" id="ville" formControlName="ville" required>
+              </div>
+              <div>
+                <label for="numTel">Numero Téléphone:</label>
+                <input placeholder="Numero Téléphone" type="text" id="numTel" formControlName="numTel" required>
+              </div>
+              <button type="submit">Enregistrer</button>
+            </form>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
+</div>
 
 <!-- Liste des batiments -->
 

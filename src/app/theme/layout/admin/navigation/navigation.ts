@@ -43,7 +43,7 @@ const NavigationItems = [
     children: [
       {
         id: 'elements',
-        title: 'Batilments du ferme',
+        title: 'Batiments du ferme',
         type: 'collapse',
         icon: 'fas fa-building',
         children: [
@@ -70,6 +70,14 @@ const NavigationItems = [
             classes: 'nav-item',
             url: '/nutrition',
             icon: 'fas fa-balance-scale'
+          },
+          {
+            id: 'Stock Oeuf',
+            title: 'Stock Oeuf',
+            type: 'item',
+            classes: 'nav-item',
+            url: '/oeuf',
+            icon: 'fas fa-egg'
           },
         ]
       },
@@ -197,37 +205,12 @@ const NavigationItems = [
             icon: 'fas fa-skull'
           },
           {
-            id: 'Oeuf',
-            title: 'Oeuf',
+            id: 'Ramassage Oeuf',
+            title: 'Ramassage Oeuf',
             type: 'item',
             classes: 'nav-item',
-            url: '/oeuf',
+            url: '/ramassage-oeuf',
             icon: 'fas fa-egg'
-          },
-        ]
-      },
-
-    ]
-  },
-  {
-    id: 'elements',
-    title: 'Gestion Locatif',
-    type: 'group',
-    icon: 'icon-navigation',
-    children: [
-      {
-        id: 'elements',
-        title: 'Location Appartement',
-        type: 'collapse',
-        icon: 'ti ti-key',
-        children: [
-          {
-            id: 'appartement',
-            title: 'Apartement',
-            type: 'item',
-            classes: 'nav-item',
-            url: '/appartement',
-            icon: 'fas fa-home'
           },
         ]
       },

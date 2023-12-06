@@ -1,3 +1,77 @@
+.btn-custom-purple {
+  background-color: #8e44ad;
+  color: #fff;
+  margin-bottom: 50px;
+}
+
+
+/* Style pour le formulaire */
+.cards {
+border-radius: 10px;
+border: 1px solid #ccc;
+padding: 20px;
+background-color: #fff;
+}
+
+.card-header {
+background-color: #f0f0f0;
+border-bottom: 1px solid #ccc;
+padding: 10px;
+text-align: center;
+font-weight: bold;
+}
+
+form {
+display: grid;
+grid-gap: 10px;
+}
+
+/* Style pour les labels */
+label {
+display: block;
+font-weight: bold;
+margin-bottom: 5px;
+}
+
+/* Style pour les champs de saisie */
+input {
+width: 100%;
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+/* Style pour le bouton "Enregistrer" */
+button[type="submit"] {
+background-color:  #ccc;
+color: #fff;
+border: none;
+border-radius: 5px;
+padding: 10px 20px;
+cursor: pointer;
+font-weight: bold;
+}
+
+button[type="submit"]:hover {
+background-color: #8e44ad;
+}
+
+/* Style pour le bouton "Close" */
+button.btn-secondary {
+background-color: #ccc;
+color: #000;
+border: none;
+border-radius: 5px;
+padding: 10px 20px;
+cursor: pointer;
+}
+
+button.btn-secondary:hover {
+background-color: #999;
+}
+
+
+
 /* Ajoutez ces styles pour mettre en surbrillance le total */
 .total-label {
     font-weight: bold;

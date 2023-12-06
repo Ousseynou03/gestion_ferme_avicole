@@ -1,0 +1,99 @@
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#addBandeModal">
+    Ajouter un ramassage
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="addBandeModal" tabindex="-1" aria-labelledby="addBandeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addBandeModalLabel">Nouveau Ramassage</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="cards">
+            <div class="card-bodi">
+              <div class="card-header">
+                <span>Enregistrement d'un Ramassage</span>
+              </div>
+              <form [formGroup]="ramassageForm" (ngSubmit)="addRamassage()">
+                <div>
+                  <label></label>
+                  <input placeholder="Observation" type="text"  name="observation" formControlName="observation" required>
+                </div>
+                <div>
+                  <label></label>
+                  <input placeholder="Date Ramassage" type="date" name="dateRamassage" formControlName="dateRamassage" required>
+                </div>
+                <div>
+                    <label></label>
+                    <input placeholder="Quantite" type="text" name="quantite" formControlName="quantite" required>
+                  </div>
+                  <div>
+                    <label></label>
+                    <input placeholder="Nobre Oeufs Cassés" type="number" name="nbrOeufCasse" formControlName="nbrOeufCasse" required>
+                  </div>
+                  <div>
+                    <label></label>
+                    <input placeholder="Nobre Oeufs Perdu" type="number" name="nbrOeufPerdu" formControlName="nbrOeufPerdu" required>
+                  </div>
+                <div>
+                  <label for="bande">Bande:</label>
+                <select id="bande" formControlName="bande">
+                  <option *ngFor="let bande of bandes" [value]="bande.id">{{ bande.designation }}</option>
+                </select>
+              </div>
+                <button type="submit">Enregistrer</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+<!-- Liste des Ramassages -->
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">N°</th>
+        <th scope="col">Bande</th>
+        <th scope="col">dateRamassage</th>
+        <th scope="col">observation</th>
+        <th scope="col">quantite</th>
+        <th scope="col">Nombre Oeufs Cassés</th>
+        <th scope="col">Nombre Oeufs perdus</th>
+        <th scope="col" *ngIf="authService && authService.roles && authService.roles.includes('admin')">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+       <tr *ngFor="let ramassage of ramassages; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ ramassage.bande.designation }}</td>
+        <td>{{ ramassage.dateRamassage | date:'yyyy-MM-dd'}}</td>
+        <td>{{ ramassage.observation  }}</td>
+        <td>{{ ramassage.quantite }}</td>
+        <td>{{ ramassage.nbrOeufCasse }}</td>
+        <td>{{ ramassage.nbrOeufPerdu }}</td>
+        <td>
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteRamassage(ramassage.id)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>

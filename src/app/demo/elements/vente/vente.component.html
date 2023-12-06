@@ -1,3 +1,92 @@
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#bandeModal">
+  Ajouter une vente
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="bandeModal" tabindex="-1" aria-labelledby="bandeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bandeModalLabel">Nouvelle Vente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="cards">
+          <div class="card-bodi">
+            <div class="card-header">
+              <span>Enregistrement d'une Vente</span>
+            </div>
+            <div class="py-4 overflow-hidden">
+              <div class="flex">
+                <!-- Selected agent form -->
+                <form [formGroup]="venteForm" (ngSubmit)="addVente()">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Quantité</mat-label>
+                    <input matInput formControlName="quantite">
+                  </mat-form-field>
+                
+                  <mat-form-field appearance="fill">
+                    <mat-label>Prix unitaire</mat-label>
+                    <input matInput formControlName="prixUnitaire">
+                  </mat-form-field>
+                
+                  <mat-form-field appearance="fill">
+                    <mat-label>Montant</mat-label>
+                    <input matInput formControlName="montant">
+                  </mat-form-field>
+                
+                  <mat-form-field appearance="fill">
+                    <mat-label>Description</mat-label>
+                    <input matInput formControlName="description">
+                  </mat-form-field>
+                
+                  <mat-form-field appearance="fill">
+                    <mat-label>Nom du client</mat-label>
+                    <input matInput formControlName="client" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayClient">
+                      <mat-option *ngFor="let client of filteredClients" [value]="client">
+                        {{ client.nom }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                
+                  <mat-form-field appearance="fill">
+                    <mat-label>Bande</mat-label>
+                    <mat-select formControlName="bande">
+                      <mat-option *ngFor="let bande of bandes" [value]="bande">
+                        {{ bande.designation }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                
+                  <mat-form-field appearance="fill">
+                    <mat-label>Trésorerie</mat-label>
+                    <mat-select formControlName="tresorerie">
+                      <mat-option *ngFor="let tresorerie of tresoreries" [value]="tresorerie">
+                        {{ tresorerie.nom }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                
+                  <button mat-raised-button color="primary" type="submit">Ajouter Vente</button>
+                </form>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- vente.component.html -->
 
 <table class="table table-striped">

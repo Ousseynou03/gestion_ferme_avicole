@@ -48,4 +48,9 @@ export class VenteService {
         const url = `${this.baseUrl}/vente/venteOeufs`;
         return this.http.get<number>(url,{headers})
       }
+
+      nbrOeufVendu(headers : any):Observable<number> {
+        const url = `${this.baseUrl}/vente/nbrOeufVendu`;
+        return this.http.get<number>(url,{headers})
+      }
 }

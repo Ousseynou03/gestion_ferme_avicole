@@ -1,56 +1,56 @@
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Ajouter un Ouvrier
-  </button>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Nouveau Ouvrier</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="cards">
-            <div class="card-bodi">
-              <div class="card-header">
-                <span>Enregistrement d'un Ouvrier</span>
-              </div>
-              <form (ngSubmit)="addOuvrier()">
-                <div>
-                  <label></label>
-                  <input placeholder="Fonction" type="text" [(ngModel)]="ouvrier.fonction" name="fonction" required >
-                </div>
-                <div>
-                  <label></label>
-                  <input placeholder="Nom" type="text" [(ngModel)]="ouvrier.nom" name="nom" required>
-                </div>
-                <div>
-                  <label></label>
-                  <input placeholder="Numero Téléphone" type="text" [(ngModel)]="ouvrier.numTel" name="numTel" required>
-                </div>
-                <div>
-                  <label>
-                  </label>
-                  <input placeholder="Ville" type="text" [(ngModel)]="ouvrier.ville" name="ville" required>
-                </div>
-                <div>
-                    <label>
-                    </label>
-                    <input placeholder="Salaire" type="text" [(ngModel)]="ouvrier.salaire" name="salaire" required>
-                  </div>
-                <button type="submit">Enregistrer</button>
-              </form>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Ajouter un Ouvrier
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nouveau Ouvrier</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="cards">
+          <div class="card-bodi">
+            <div class="card-header">
+              <span>Enregistrement d'un Ouvrier</span>
             </div>
+            <!-- Utilisez le formulaire réactif dans le modèle -->
+            <form [formGroup]="ouvrierForm" (ngSubmit)="addOuvrier()">
+              <div>
+                <label for="fonction">Fonction:</label>
+                <!-- Utilisez formControlName avec le formulaire réactif -->
+                <input placeholder="Fonction" type="text" id="fonction" formControlName="fonction" required>
+              </div>
+              <div>
+                <label for="nom">Nom:</label>
+                <input placeholder="Nom" type="text" id="nom" formControlName="nom" required>
+              </div>
+              <div>
+                <label for="numTel">Numéro Téléphone:</label>
+                <input placeholder="Numéro Téléphone" type="text" id="numTel" formControlName="numTel" required>
+              </div>
+              <div>
+                <label for="ville">Ville:</label>
+                <input placeholder="Ville" type="text" id="ville" formControlName="ville" required>
+              </div>
+              <div>
+                <label for="salaire">Salaire:</label>
+                <input placeholder="Salaire" type="text" id="salaire" formControlName="salaire" required>
+              </div>
+              <button type="submit">Enregistrer</button>
+            </form>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
+</div>
 
 
 <!-- Liste des batiments -->

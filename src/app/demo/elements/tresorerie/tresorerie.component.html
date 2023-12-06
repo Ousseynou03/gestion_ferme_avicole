@@ -1,3 +1,54 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Ajouter une Trésorerie
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nouvelle Trésorerie</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="cards">
+          <div class="card-bodi">
+            <div class="card-header">
+              <span>Enregistrement d'une Trésorerie</span>
+            </div>
+            <form [formGroup]="tresorerieForm" (ngSubmit)="addTresorerie()">
+              <div>
+                <label for="type">Type :</label>
+                <input placeholder="Type" type="text" formControlName="type" required>
+              </div>
+              <div>
+                <label for="nom">Nom :</label>
+                <input placeholder="Nom" type="text" formControlName="nom" required>
+              </div>
+              <div>
+                <label for="numero">Numéro :</label>
+                <input placeholder="Numéro" type="text" formControlName="numero" required>
+              </div>
+              <div>
+                <label for="solde">Solde :</label>
+                <input placeholder="Solde" type="text" formControlName="solde" required>
+              </div>
+              <!-- Le bouton de soumission -->
+              <button type="submit">Enregistrer</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- Liste des trésoreries -->
 
 <table class="table table-striped">

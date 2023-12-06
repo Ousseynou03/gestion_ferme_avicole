@@ -37,4 +37,14 @@ export class NutritionService {
   return this.http.delete(url, { headers });
 }
 
+stockAliments(headers : any):Observable<number> {
+  const url = `${this.baseUrl}/nutrition/stockAliments`;
+  return this.http.get<number>(url,{headers})
+}
+
+alimentConsommes(headers : any):Observable<number> {
+  const url = `${this.baseUrl}/nutrition/alimentConsommes`;
+  return this.http.get<number>(url,{headers})
+}
+
 }
