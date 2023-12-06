@@ -17,4 +17,12 @@ public interface RamassageService {
     ResponseEntity<String> updateRamassage(Map<String, String> requestMap);
 
     ResponseEntity<String> deleteRamassage(Integer id);
+
+    Integer nbreTotalOeufRamassage();
+
+    Integer NbreOeufPerdu();
+
+    Integer totalOeuf();
+
+
 }

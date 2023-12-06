@@ -190,5 +190,18 @@ public class VenteServiceImpl implements VenteService {
     }
 
 
+    @Override
+    public Integer nbrOeufVendu() {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
+                return venteDao.nbrOeufVendu();
+            }
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des oeufs vendus.", ex);
+        }
+        return null;
+    }
+
+
 
 }

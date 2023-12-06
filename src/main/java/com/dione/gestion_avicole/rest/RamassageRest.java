@@ -2,6 +2,7 @@ package com.dione.gestion_avicole.rest;
 
 import com.dione.gestion_avicole.POJO.Oeuf;
 import com.dione.gestion_avicole.POJO.Ramassage;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,4 +24,15 @@ public interface RamassageRest {
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteRamassage(@PathVariable Integer id);
+
+    @GetMapping("nbreTotalOeufRamassage")
+    Integer nbreTotalOeufRamassage();
+
+    @GetMapping("/nbreOeufPerdu")
+    Integer NbreOeufPerdu();
+
+    @GetMapping("/totalOeufs")
+    Integer totalOeuf();
+
+
 }

@@ -21,4 +21,6 @@ public interface VenteService {
 
     Integer sommeTotalVenteOeuf();
 
+    Integer nbrOeufVendu();
+
 }

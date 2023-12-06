@@ -26,6 +26,7 @@ public class Ramassage {
     private String observation;
     private String quantite;
     private double nbrOeufCasse;
+    private double nbrOeufPerdu;
     private Date dateRamassage;
 
     @ManyToOne

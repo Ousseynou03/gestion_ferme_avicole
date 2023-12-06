@@ -9,7 +9,7 @@ public interface MortaliteDao extends JpaRepository<Mortalite,Integer> {
     @Query(value = "SELECT SUM(m.effectif)\n" +
             "FROM mortalite m\n" +
             "JOIN bande b ON m.bande_id_mortalite = b.id\n" +
-            "WHERE b.cloture = false;\n", nativeQuery = true)
+            "WHERE b.cloture = 'Non';\n", nativeQuery = true)
     Integer totalMortalite();
 
 }

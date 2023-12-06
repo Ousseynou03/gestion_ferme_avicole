@@ -63,4 +63,33 @@ public class RamassageRestImpl implements RamassageRest {
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public Integer nbreTotalOeufRamassage() {
+        try {
+            return ramassageService.nbreTotalOeufRamassage();
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des ramassages.", ex);
+        }
+    }
+
+    @Override
+    public Integer NbreOeufPerdu() {
+        try {
+            return ramassageService.NbreOeufPerdu();
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage de ramassage des oeufs perdus.", ex);
+        }
+    }
+
+    @Override
+    public Integer totalOeuf() {
+        try {
+            return ramassageService.totalOeuf();
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des oeufs totaux.", ex);
+        }
+    }
+
+
 }

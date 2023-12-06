@@ -26,4 +26,10 @@ public interface NutritionRest {
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteNutrition(@PathVariable Integer id);
+
+    @GetMapping("/stockAliments")
+    Double stockAliment();
+
+    @GetMapping("/alimentConsommes")
+    public Double alimentsConsommes();
 }

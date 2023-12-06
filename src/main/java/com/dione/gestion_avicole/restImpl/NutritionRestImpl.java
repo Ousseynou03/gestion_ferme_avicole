@@ -62,4 +62,22 @@ public class NutritionRestImpl implements NutritionRest {
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public Double stockAliment() {
+        try {
+            return nutritionService.stockAliment();
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage de la quantite du stock.", ex);
+        }
+    }
+
+    @Override
+    public Double alimentsConsommes() {
+        try {
+            return nutritionService.alimentsConsommes();
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des aliments consommés.", ex);
+        }
+    }
 }

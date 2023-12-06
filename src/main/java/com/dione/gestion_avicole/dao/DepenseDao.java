@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface DepenseDao extends JpaRepository<Depense,Integer> {
 
-    @Query(value = "SELECT SUM(montant) FROM depense WHERE bande_id_depense IN (SELECT id FROM bande WHERE cloture = 'false')", nativeQuery = true)
+    @Query(value = "SELECT SUM(montant) FROM depense WHERE bande_id_depense IN (SELECT id FROM bande WHERE cloture = 'Non')", nativeQuery = true)
     Integer totalDepense();
 }

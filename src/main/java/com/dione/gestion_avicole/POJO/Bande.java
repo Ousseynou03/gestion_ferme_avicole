@@ -19,7 +19,7 @@ import java.util.List;
 
 @NamedQuery(name = "Bande.getLatestThreeBandes", query = "SELECT b FROM Bande b ORDER BY b.dateFin DESC")
 
-@NamedQuery(name = "Bande.countTotalBande", query = "SELECT COUNT(*) FROM Bande WHERE cloture='false'")
+@NamedQuery(name = "Bande.countTotalBande", query = "SELECT COUNT(*) FROM Bande WHERE cloture='Non'")
 
 
 

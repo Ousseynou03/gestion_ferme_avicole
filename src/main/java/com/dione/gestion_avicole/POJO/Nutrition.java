@@ -27,9 +27,14 @@ public class Nutrition {
     private Date dateEntree;
     private Date dateSortie;
     private double quantiteSortie;
+    private String epuisee;
 
 
     @ManyToOne
     @JoinColumn(name = "batiment_id_nutrition")
     private Batiment batiment;
+
+    @ManyToOne
+    @JoinColumn(name = "bande_id_nutrition")
+    private Bande bande;
 }

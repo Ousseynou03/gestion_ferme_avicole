@@ -17,6 +17,6 @@ public interface BandeDao extends JpaRepository<Bande,Integer> {
     @Query(value = "SELECT SUM(b.effectifdepart - COALESCE(m.effectif, 0)) AS total_effectif_restant\n" +
             "FROM bande b\n" +
             "LEFT JOIN mortalite m ON b.id = m.bande_id_mortalite\n" +
-            "WHERE b.cloture = false;\n", nativeQuery = true)
+            "WHERE b.cloture = 'Non';\n", nativeQuery = true)
     Integer totalPouleRestant();
 }

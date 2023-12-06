@@ -5,6 +5,7 @@ import com.dione.gestion_avicole.POJO.Bande;
 import com.dione.gestion_avicole.POJO.Batiment;
 import com.dione.gestion_avicole.POJO.Nutrition;
 import com.dione.gestion_avicole.constents.AvicoleConstants;
+import com.dione.gestion_avicole.dao.BandeDao;
 import com.dione.gestion_avicole.dao.BatimentDao;
 import com.dione.gestion_avicole.dao.NutritionDao;
 import com.dione.gestion_avicole.service.NutritionService;
@@ -24,11 +25,13 @@ public class NutritionServiceImpl implements NutritionService {
     private NutritionDao nutritionDao;
     private JwtFilter jwtFilter;
     private BatimentDao batimentDao;
+    private BandeDao bandeDao;
 
-    public NutritionServiceImpl(NutritionDao nutritionDao, JwtFilter jwtFilter, BatimentDao batimentDao) {
+    public NutritionServiceImpl(NutritionDao nutritionDao, JwtFilter jwtFilter, BatimentDao batimentDao, BandeDao bandeDao) {
         this.nutritionDao = nutritionDao;
         this.jwtFilter = jwtFilter;
         this.batimentDao = batimentDao;
+        this.bandeDao = bandeDao;
     }
 
     @Override
@@ -58,6 +61,7 @@ public class NutritionServiceImpl implements NutritionService {
             nutrition.setId(Integer.parseInt(requestMap.get("id")));
         }
         nutrition.setDesignation(requestMap.get("designation"));
+        nutrition.setEpuisee(requestMap.get("epuisee"));
 
         if (requestMap.containsKey("quantite") && requestMap.containsKey("quantiteSortie")) {
             try {
@@ -89,6 +93,17 @@ public class NutritionServiceImpl implements NutritionService {
                 Integer batimentId = Integer.parseInt(requestMap.get("batiment"));
                 Batiment batiment = batimentDao.findById(batimentId).orElse(null);
                 nutrition.setBatiment(batiment);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        // Validation de la relation "bande"
+        if (requestMap.containsKey("bande")) {
+            try {
+                Integer bandeId = Integer.parseInt(requestMap.get("bande"));
+                Bande bande = bandeDao.findById(bandeId).orElse(null);
+                nutrition.setBande(bande);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -164,4 +179,29 @@ public class NutritionServiceImpl implements NutritionService {
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public Double stockAliment() {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
+                return nutritionDao.stockAliment();
+            }
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des quantités.", ex);
+        }
+        return null;
+    }
+
+    @Override
+    public Double alimentsConsommes() {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
+                return nutritionDao.alimentsConsommes();
+            }
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des aliments consommés.", ex);
+        }
+        return null;
+    }
+
 }

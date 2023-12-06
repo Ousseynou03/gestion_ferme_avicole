@@ -75,6 +75,16 @@ public class RamassageServiceImpl implements RamassageService {
         }
 
         // Validation et ajout de nbrOeufCasse
+        if (requestMap.containsKey("nbrOeufPerdu")) {
+            try {
+                double nbrOeufPerdu = Double.parseDouble(requestMap.get("nbrOeufPerdu"));
+                ramassage.setNbrOeufCasse(nbrOeufPerdu);
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        // Validation et ajout de nbrOeufCasse
         if (requestMap.containsKey("nbrOeufCasse")) {
             try {
                 double nbrOeufCasse = Double.parseDouble(requestMap.get("nbrOeufCasse"));
@@ -169,4 +179,42 @@ public class RamassageServiceImpl implements RamassageService {
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public Integer nbreTotalOeufRamassage() {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
+                return ramassageDao.nbreTotalOeufRamassage();
+            }
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des ramassages.", ex);
+        }
+        return null;
+    }
+
+    @Override
+    public Integer NbreOeufPerdu() {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
+                return ramassageDao.NbreOeufPerdu();
+            }
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage de ramassages des oeufs perdus.", ex);
+        }
+        return null;
+    }
+
+    @Override
+    public Integer totalOeuf() {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
+                return ramassageDao.totalOeuf();
+            }
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des oeufs totaux.", ex);
+        }
+        return null;
+    }
+
+
 }

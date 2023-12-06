@@ -8,12 +8,17 @@ public interface VenteDao extends JpaRepository<Vente,Integer> {
 
     @Query(value = "SELECT SUM(montant)\n" +
             "FROM vente\n" +
-            "WHERE description = 'ACHAT_POULET' AND bande_id_vente IN (SELECT id FROM bande WHERE cloture = 'false')", nativeQuery = true)
+            "WHERE description = 'ACHAT_POULET' AND bande_id_vente IN (SELECT id FROM bande WHERE cloture = 'Non')", nativeQuery = true)
     Integer sommeTotalVentePoulet();
 
 
     @Query(value = "SELECT SUM(montant)\n" +
             "FROM vente\n" +
-            "WHERE description = 'ACHAT_OEUF' AND bande_id_vente IN (SELECT id FROM bande WHERE cloture = 'false')", nativeQuery = true)
+            "WHERE description = 'ACHAT_OEUF' AND bande_id_vente IN (SELECT id FROM bande WHERE cloture = 'Non ')", nativeQuery = true)
     Integer sommeTotalVenteOeuf();
+
+
+    @Query(value = "SELECT SUM(quantite) FROM Vente v JOIN Bande b ON v.bande_id_vente = b.id WHERE v.description = 'ACHAT_OEUF' AND b.cloture = 'Non'",
+            nativeQuery = true)
+    Integer nbrOeufVendu();
 }

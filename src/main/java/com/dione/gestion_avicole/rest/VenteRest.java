@@ -31,4 +31,7 @@ public interface VenteRest {
 
     @GetMapping("/venteOeufs")
     Integer sommeTotalVenteOeuf();
+
+    @GetMapping("/nbrOeufVendu")
+    Integer nbrOeufVendu();
 }

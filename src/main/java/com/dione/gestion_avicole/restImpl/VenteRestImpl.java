@@ -80,4 +80,14 @@ public class VenteRestImpl implements VenteRest {
             throw new RuntimeException("Erreur lors du comptage des ventes d'oeufs.", ex);
         }
     }
+
+
+    @Override
+    public Integer nbrOeufVendu() {
+        try {
+            return venteService.nbrOeufVendu();
+        }catch (Exception ex){
+            throw new RuntimeException("Erreur lors du comptage des oeufs vendus", ex);
+        }
+    }
 }

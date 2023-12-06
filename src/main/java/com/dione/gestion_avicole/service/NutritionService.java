@@ -17,4 +17,8 @@ public interface NutritionService {
     ResponseEntity<String> updateNutrition(Map<String, String> requestMap);
 
     ResponseEntity<String> deleteNutrition(Integer id);
+
+    Double stockAliment();
+
+    Double alimentsConsommes();
 }
