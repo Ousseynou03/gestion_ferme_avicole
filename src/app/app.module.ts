@@ -56,6 +56,7 @@ import { RamassageOeufComponent } from './demo/elements/ramassage-oeuf/ramassage
 import { AppartementComponent } from './demo/elements/appartement/appartement.component';
 import { PaiementComponent } from './demo/elements/paiement/paiement.component';
 import { LocataireComponent } from './demo/elements/locataire/locataire.component';
+import { ChangePasswordComponent } from './demo/elements/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { LocataireComponent } from './demo/elements/locataire/locataire.componen
     AppartementComponent,
     PaiementComponent,
     LocataireComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,

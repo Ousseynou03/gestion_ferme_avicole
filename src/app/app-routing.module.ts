@@ -24,6 +24,7 @@ import { RamassageOeufComponent } from './demo/elements/ramassage-oeuf/ramassage
 import { AppartementComponent } from './demo/elements/appartement/appartement.component';
 import { PaiementComponent } from './demo/elements/paiement/paiement.component';
 import { LocataireComponent } from './demo/elements/locataire/locataire.component';
+import { ChangePasswordComponent } from './demo/elements/change-password/change-password.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirection vers la page de connexion par défaut
@@ -88,6 +89,9 @@ const routes: Routes = [
       },
       {
         path: 'ramassage-oeuf', component : RamassageOeufComponent
+      },
+      {
+        path: 'change-password', component : ChangePasswordComponent
       },
       {
         path: 'user', component : UserComponent, canActivate: [AuthorizationGuard], data : {role : "admin"}

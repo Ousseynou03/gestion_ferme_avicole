@@ -2,38 +2,27 @@
   <ul class="list-unstyled">
     <li>
       <div class="dropdown pc-h-item header-user-profile" ngbDropdown>
-        <a *ngIf="authService.isAuthenticated==true"> Bienvenue dans votre espace utilisateur! {{this.authService.username}}</a>
-
-        <a
-          class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0"
-          data-bs-toggle="dropdown"
-          href="javascript:"
-          ngbDropdownToggle
-          (click)="logout()"
-          *ngIf="this.authService.isLoggedIn" 
-        >
-      
-          <i class="ti ti-logout"></i>
-          <span>Logout</span>
+        <a *ngIf="authService.isAuthenticated == true" class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0"
+           data-bs-toggle="dropdown"
+           href="javascript:"
+           ngbDropdownToggle>
+          <i class="ti ti-user"></i>
+          <span style="margin-right: 50px;">{{ this.authService.username }}</span>
         </a>
+
         <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown" ngbDropdownMenu>
           <div class="dropdown-header">
             <ng-scrollbar style="height: calc(100vh - 280px)" visibility="hover">
-          
-          
               <hr />
-              <a *ngIf="this.authService.isLoggedIn" class="dropdown-item">
-                
-                
-                <span>Account Profile</span>
+
+              <!-- Change Password -->
+              <a class="dropdown-item" routerLink="/change-password">
+                <i class="ti ti-lock"></i>
+                <span>Change Password</span>
               </a>
-              <a href="javascript:" class="dropdown-item">
-                <i class="ti ti-user"></i>
-                <span>Social Profile</span>
-              </a>
-              <a class="dropdown-item"     
-              (click)="logout()"
-              *ngIf="this.authService.isLoggedIn" >
+
+              <!-- Logout -->
+              <a class="dropdown-item" (click)="logout()">
                 <i class="ti ti-logout"></i>
                 <span>Logout</span>
               </a>

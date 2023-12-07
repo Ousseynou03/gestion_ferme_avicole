@@ -96,5 +96,21 @@ export class AuthService {
   }
 
 
+  getHeadersWithToken(): HttpHeaders {
+    const authToken = this.getToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`
+    });
+    return headers;
+  }
+
+changePassword(passwords: { oldPassword: string, newPassword: string }): Observable<any> {
+  const headers = this.getHeadersWithToken();
+  return this.http.post(`${this.baseUrl}/user/changePassword`, passwords, { headers });
+}
+
+
+
 
 }
