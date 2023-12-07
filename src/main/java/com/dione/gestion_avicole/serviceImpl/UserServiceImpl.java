@@ -197,21 +197,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<String> changePassword(Map<String, String> requestMap) {
         try {
-          User userobj = userDao.findByEmail(jwtFilter.getCurrentUser());
-          if (!userobj.equals(null)){
-              if (userobj.getPassword().equals(requestMap.get("oldPassword"))){
-                  userobj.setPassword(requestMap.get("newPassword"));
-                  userDao.save(userobj);
-                  return AvicoleUtils.getResponseEntity("Mot de passe modifié avec succés", HttpStatus.OK);
-              }
-              return AvicoleUtils.getResponseEntity("Ancien mot de passe incorret", HttpStatus.BAD_REQUEST);
-          }
-          return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG,HttpStatus.INTERNAL_SERVER_ERROR);
-        }catch (Exception ex){
+            User userobj = userDao.findByEmail(jwtFilter.getCurrentUser());
+            if (userobj != null) {
+                if (passwordEncoder.matches(requestMap.get("oldPassword"), userobj.getPassword())) {
+                    userobj.setPassword(passwordEncoder.encode(requestMap.get("newPassword")));
+                    userDao.save(userobj);
+                    return AvicoleUtils.getResponseEntity("Mot de passe modifié avec succès", HttpStatus.OK);
+                }
+                return AvicoleUtils.getResponseEntity("Ancien mot de passe incorrect", HttpStatus.BAD_REQUEST);
+            }
+            return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception ex) {
             ex.printStackTrace();
+            return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
 
     public UserDetails getAuthenticatedUser() {
