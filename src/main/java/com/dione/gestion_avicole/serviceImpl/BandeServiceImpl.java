@@ -68,7 +68,7 @@ public class BandeServiceImpl implements BandeService {
         }
         bande.setCode(requestMap.get("code"));
         bande.setDesignation(requestMap.get("designation"));
-        bande.setCloture("false");
+        bande.setCloture("Non");
 
         // Validation et ajout de effectifdepart
         if (requestMap.containsKey("effectifdepart")) {
@@ -114,10 +114,6 @@ public class BandeServiceImpl implements BandeService {
         }
         return bande;
     }
-
-
-
-
 
 
     private boolean validateBandeMap(Map<String, String> requestMap, Boolean validatId) {
