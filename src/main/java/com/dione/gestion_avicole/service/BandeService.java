@@ -12,7 +12,9 @@ public interface BandeService {
 
     ResponseEntity<List<Bande>> getAllBande();
 
-    ResponseEntity<String> updateBande(Map<String, String> requestMap);
+    //ResponseEntity<String> updateBande(Map<String, String> requestMap);
+    ResponseEntity<String> updateBande(Integer bandeId, Map<String, String> requestMap);
+
 
     ResponseEntity<String> deleteBande(Integer id);
 
@@ -22,6 +24,9 @@ public interface BandeService {
     Long countTotalBande();
 
     Integer totalPouleRestant();
+
+    public byte[] genererRapport(Integer bandeId);
+
 
 
 

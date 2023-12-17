@@ -3,26 +3,26 @@ package com.dione.gestion_avicole.serviceImpl;
 import com.dione.gestion_avicole.JWT.JwtFilter;
 import com.dione.gestion_avicole.POJO.Bande;
 import com.dione.gestion_avicole.POJO.Batiment;
+import com.dione.gestion_avicole.POJO.Depense;
 import com.dione.gestion_avicole.constents.AvicoleConstants;
 import com.dione.gestion_avicole.dao.BandeDao;
 import com.dione.gestion_avicole.dao.BatimentDao;
+import com.dione.gestion_avicole.dao.DepenseDao;
 import com.dione.gestion_avicole.service.BandeService;
 import com.dione.gestion_avicole.utils.AvicoleUtils;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -33,11 +33,13 @@ public class BandeServiceImpl implements BandeService {
     private JwtFilter jwtFilter;
 
     private BatimentDao batimentDao;
+    private DepenseDao depenseDao;
 
-    public BandeServiceImpl(BandeDao bandeDao, JwtFilter jwtFilter, BatimentDao batimentDao) {
+    public BandeServiceImpl(BandeDao bandeDao, JwtFilter jwtFilter, BatimentDao batimentDao, DepenseDao depenseDao) {
         this.bandeDao = bandeDao;
         this.jwtFilter = jwtFilter;
         this.batimentDao = batimentDao;
+        this.depenseDao = depenseDao;
     }
 
     @Override
@@ -136,7 +138,7 @@ public class BandeServiceImpl implements BandeService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateBande(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()){
@@ -157,7 +159,32 @@ public class BandeServiceImpl implements BandeService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+@Override
+public ResponseEntity<String> updateBande(Integer bandeId, Map<String, String> requestMap) {
+    try {
+        if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+            if (validateBandeMap(requestMap, true)){
+                Optional<Bande> optional = bandeDao.findById(bandeId);
+                if (optional.isPresent()){
+                    Bande updateBande = getBandesFromMap(requestMap, true);
+                    updateBande.setId(bandeId);
+                    bandeDao.save(updateBande);
+                    return AvicoleUtils.getResponseEntity("Bande modifié avec succès", HttpStatus.OK);
+                } else {
+                    return AvicoleUtils.getResponseEntity("Bande ID doesn't exist", HttpStatus.OK);
+                }
+            }
+            return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+        } else {
+            return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+    return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+}
+
 
     @Override
     public ResponseEntity<String> deleteBande(Integer id) {
@@ -226,6 +253,61 @@ public class BandeServiceImpl implements BandeService {
         }
         return null;
     }
+
+
+
+
+    // Génération de Rapport
+    @Override
+    public byte[] genererRapport(Integer bandeId) {
+        Document document = new Document();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        try {
+            PdfWriter.getInstance(document, baos);
+            document.open();
+
+            Bande bande = bandeDao.findById(bandeId).orElse(null);
+            if (bande != null) {
+                // Récupérer les données de la bande
+                String codeBande = bande.getCode();
+                String designationBande = bande.getDesignation();
+                String codeBatiment = bande.getBatiment().getCode();
+                String designationBatiment = bande.getBatiment().getDesignation();
+
+                // Ajouter les données de la bande au rapport
+                document.add(new Paragraph("Code de la bande: " + codeBande));
+                document.add(new Paragraph("Désignation de la bande: " + designationBande));
+                document.add(new Paragraph("Code du batiment: " + codeBatiment));
+                document.add(new Paragraph("Désignation du batiment: " + designationBatiment));
+
+                // Récupérer les dépenses liées à la bande
+                List<Depense> depenses = depenseDao.findByBandeId(bandeId);
+
+                // Si des dépenses sont trouvées, les ajouter au rapport
+                if (depenses != null && !depenses.isEmpty()) {
+                    List<String> categories = depenses.stream()
+                            .map(depense -> depense.getCategorie().toString())
+                            .collect(Collectors.toList());
+                    document.add(new Paragraph("\nCatégories de dépense: " + String.join(", ", categories)));
+
+                    List<String> quantites = depenses.stream()
+                            .map(depense -> String.valueOf(depense.getQuantite()))
+                            .collect(Collectors.toList());
+                    document.add(new Paragraph("Quantités: " + String.join(", ", quantites)));
+
+                    // Ajoutez d'autres données de dépense au besoin
+                }
+            }
+
+            document.close();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+
+        return baos.toByteArray();
+    }
+
 
 
 

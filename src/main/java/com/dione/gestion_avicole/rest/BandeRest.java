@@ -21,8 +21,12 @@ public interface BandeRest {
 
 
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateBande(@RequestBody(required = true) Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updateBande(@RequestBody(required = true) Map<String, String> requestMap);*/
+
+    @PutMapping("/update/{id}")
+    ResponseEntity<String> updateBande(@PathVariable Integer id, @RequestBody(required = true) Map<String, String> requestMap);
+
 
 
 
@@ -42,6 +46,10 @@ public interface BandeRest {
 
     @GetMapping("/totalPouleRestant")
     Integer totalPouleRestant();
+
+
+    @GetMapping("/rapport/pdf/{bandeId}")
+    ResponseEntity<byte[]> genererRapportPdf(@PathVariable Integer bandeId);
 
 
 

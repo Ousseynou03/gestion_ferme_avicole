@@ -5,8 +5,11 @@ import com.dione.gestion_avicole.constents.AvicoleConstants;
 import com.dione.gestion_avicole.rest.BandeRest;
 import com.dione.gestion_avicole.service.BandeService;
 import com.dione.gestion_avicole.utils.AvicoleUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,7 +49,7 @@ public class BandeRestImpl implements BandeRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateBande(Map<String, String> requestMap) {
         try {
             return bandeService.updateBande(requestMap);
@@ -54,7 +57,18 @@ public class BandeRestImpl implements BandeRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateBande(Integer id, Map<String, String> requestMap) {
+        try {
+            return bandeService.updateBande(id, requestMap);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteBande(Integer id) {
@@ -104,6 +118,18 @@ public class BandeRestImpl implements BandeRest {
         }
     }
 
+    @Override
+    public ResponseEntity<byte[]> genererRapportPdf(@PathVariable Integer bandeId) {
+        byte[] pdfBytes = bandeService.genererRapport(bandeId);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("inline", "rapport.pdf");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(pdfBytes);
+    }
 
 
 }
