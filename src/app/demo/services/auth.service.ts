@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { environment } from 'src/environments/environment';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 
@@ -25,8 +25,13 @@ export class AuthService {
 
   currentUser = {};
 
-  constructor(private http: HttpClient,
-    public router: Router) { }
+  constructor(private http: HttpClient, public router: Router) {
+    // Vérifiez si le token est présent lors de l'initialisation de l'application
+    if (this.isLoggedIn()) {
+      this.loadProfile({ token: this.getToken() });
+    }
+  }
+  
 
   signUp(user: User, headers: any) {
     const url = `${this.baseUrl}/user/signup`;
@@ -81,18 +86,20 @@ export class AuthService {
   }
 
 
-  //Charger les informations utilisateur authentifié
+  // Charger les informations utilisateur authentifié
+  loadProfile(data: any) {
+    this.isAuthenticated = true;
+    this.token = data['token'];
 
-  loadProfile(data : any){
-    this.isAuthenticated=true
-    this.token = data['token']
+    let decodedJWT: any = jwtDecode(this.token);
 
- //   let decodedJWT: any = jwtDecode(this.token)
- let decodedJWT: any = jwtDecode(this.getToken())
+    this.username = decodedJWT.sub;
+    this.roles = decodedJWT.role;
+  }
 
-    this.username = decodedJWT.sub
-    this.roles = decodedJWT.role
-
+  fetchRoles(): Observable<any> {
+    // Utilisez la fonction `of` pour retourner les rôles stockés
+    return of(this.roles);
   }
 
 

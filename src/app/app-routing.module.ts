@@ -26,10 +26,12 @@ import { PaiementComponent } from './demo/elements/paiement/paiement.component';
 import { LocataireComponent } from './demo/elements/locataire/locataire.component';
 import { ChangePasswordComponent } from './demo/elements/change-password/change-password.component';
 import { ContratLocationComponent } from './demo/elements/contrat-location/contrat-location.component';
+import DefaultComponent from './demo/default/default.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirection vers la page de connexion par défaut
+ // { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirection vers la page de connexion par défaut
   { path: 'login', component: LoginComponent },
+
   {
     path: '',
     component: AdminComponent,
@@ -40,6 +42,7 @@ const routes: Routes = [
         loadComponent: () => import('./demo/default/default.component')
       },
       { path: 'user-profile/:id', component: NavRightComponent, canActivate: [AuthGuard] },
+      { path: '**', redirectTo: '/default' },
 
       {
         path: 'batiment', component : BatimentComponent
