@@ -7,6 +7,8 @@ import Swal from 'sweetalert2';
 import { Batiment } from '../../models/batiment.model';
 import { FormBuilder, Validators } from '@angular/forms';
 import { switchMap } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { EditComponent } from './dialog/edit/edit.component';
 
 @Component({
   selector: 'app-bande',
@@ -17,6 +19,8 @@ export class BandeComponent implements OnInit {
 
   bandes: Bande[];
   batiments: Batiment[];
+
+  headers: any
 
 
   bandeForm = this.fb.group({
@@ -32,7 +36,8 @@ export class BandeComponent implements OnInit {
     private bandeService: BandeService,
     public authService: AuthService,
     private batimentService: BatimentService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _matDialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -46,9 +51,9 @@ export class BandeComponent implements OnInit {
       return;
     }
 
-    const headers = { Authorization: `Bearer ${token}` };
-    this.loadBandeList(headers);
-    this.loadBatimentList(headers);
+     this.headers = { Authorization: `Bearer ${token}` };
+    this.loadBandeList(this.headers);
+    this.loadBatimentList(this.headers);
   }
 
   loadBandeList(headers: any) {
@@ -175,4 +180,24 @@ export class BandeComponent implements OnInit {
     });
   }
   
+
+  openDialogEdit(bande: any) :void{
+    // Open the dialog
+    const dialogRef = this._matDialog.open(EditComponent, {
+      backdropClass: 'my-full-screen-dialog',
+      panelClass:'my-panelClass-dialog',
+      width:'50%',
+      data: bande,
+      disableClose: true
+  });
+
+  dialogRef.afterClosed()
+      .subscribe((result) => {
+          console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+          if(result == true){
+
+            this.loadBandeList(this.headers)
+          }
+      });
+  }
 }

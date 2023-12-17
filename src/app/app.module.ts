@@ -57,7 +57,11 @@ import { AppartementComponent } from './demo/elements/appartement/appartement.co
 import { PaiementComponent } from './demo/elements/paiement/paiement.component';
 import { LocataireComponent } from './demo/elements/locataire/locataire.component';
 import { ChangePasswordComponent } from './demo/elements/change-password/change-password.component';
-
+import {MatDialogModule} from '@angular/material/dialog';
+import { EditComponent } from './demo/elements/bande/dialog/edit/edit.component'
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatToolbarModule} from '@angular/material/toolbar';
 @NgModule({
   declarations: [
     AppComponent,
@@ -93,6 +97,7 @@ import { ChangePasswordComponent } from './demo/elements/change-password/change-
     PaiementComponent,
     LocataireComponent,
     ChangePasswordComponent,
+    EditComponent,
   ],
   imports: [
     BrowserModule,
@@ -113,8 +118,10 @@ import { ChangePasswordComponent } from './demo/elements/change-password/change-
     MatButtonModule,
     MatIconModule,
     MatTableModule,
-    
-
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatToolbarModule,
   ],
   providers: [NavigationItem, AuthService,
     {

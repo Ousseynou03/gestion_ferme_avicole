@@ -96,7 +96,7 @@
         <td>{{ bande.effectifdepart }}</td>
         <td>{{ bande.batiment.designation }}</td>
         <td>
-          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" (click)="openDialogEdit(bande)" data-bs-target="#exampleModalEdit">
             <i class="fas fa-edit"></i>
           </button>
           <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteBande(bande.id)">

@@ -18,7 +18,7 @@
             </div>
           </div>
         </div>
-        <span class="text-purple d-block fs-1 fw-bold my-2">{{soldeTotalTresoreries}}  FCFA <i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
+        <span class="text-purple d-block fs-1 fw-bold my-2">{{soldeTotalTresoreries | number}}  FCFA <i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
         <p class="mb-0 opacity-50">Solde des Comptes</p>
       </div>
     </div>
@@ -41,7 +41,7 @@
                 <ng-template ngbNavContent>
                   <div class="row">
                     
-                      <span class="text-purple d-block fs-1 fw-bold my-2">{{totalDepenses}}  FCFA <i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
+                      <span class="text-purple d-block fs-1 fw-bold my-2">{{totalDepenses | number}}  FCFA <i class="ti ti-arrow-up-right-circle opacity-50"></i></span>
                       <p class="mb-0 opacity-50"> Dépenses Avicole </p>
                     
                     
@@ -65,7 +65,7 @@
             <i class="text-white ti ti-credit-card"></i>
           </div>
           <div class="ms-2">
-            <h4 class="text-purple d-block fs-1 fw-bold my-2">{{totalPoules}} poules <i class="ti ti-arrow-up-right-circle opacity-50"></i></h4>
+            <h4 class="text-purple d-block fs-1 fw-bold my-2">{{totalPoules | number}} poules <i class="ti ti-arrow-up-right-circle opacity-50"></i></h4>
             <p class="mb-0 opacity-50 text-sm">Totale Poules</p>
           </div>
         </div>
@@ -107,7 +107,7 @@
             </div>
           </div>
         </div>
-        <span class="text-purple d-block fs-1 fw-bold my-2">{{ventePoulets}} FCFA <i class="fas fa-shopping-cart"></i></span>
+        <span class="text-purple d-block fs-1 fw-bold my-2">{{ventePoulets | number}} FCFA <i class="fas fa-shopping-cart"></i></span>
         <p class="mb-0 opacity-50 text-purple">Ventes Poules</p>
       </div>
     </div>
@@ -132,7 +132,7 @@
             </div>
           </div>
         </div>
-        <span class="text-purple d-block fs-1 fw-bold my-2">{{venteOeufs}} FCFA <i class="fas fa-shopping-cart"></i></span>
+        <span class="text-purple d-block fs-1 fw-bold my-2">{{venteOeufs | number}} FCFA <i class="fas fa-shopping-cart"></i></span>
         <p class="mb-0 opacity-50"> Ventes Oeufs</p>
       </div>
     </div>
@@ -156,7 +156,7 @@
             </div>
           </div>
         </div>
-        <span class="text-purple d-block fs-1 fw-bold my-2">{{ totalOeufs }} œufs <i class="fas fa-egg"></i></span>
+        <span class="text-purple d-block fs-1 fw-bold my-2">{{ totalOeufs | number}} œufs <i class="fas fa-egg"></i></span>
         <p class="mb-0 opacity-50"> Total Œufs</p>
         
       </div>
@@ -208,6 +208,7 @@
         <span class="text-purple d-block fs-1 fw-bold my-2">{{alimentsConsommes}} sacs <i class="fas fa-utensils"></i></span>
         <p class="mb-0 opacity-50">Aliments consommés</p>
         
+        
       </div>
     </div>
   </div>
@@ -229,7 +230,7 @@
                 <h5 class="text-secondary mb-0">Totale Mortalité <i class="fas fa-skull"></i></h5>
               </div>
               <div class="col-auto">
-                <h4 class="mb-0">{{totalMoratlites}}</h4>
+                <h4 class="mb-0">{{totalMoratlites | number}}</h4>
               </div>
               
             </div>
@@ -243,7 +244,7 @@
                 <h5 class="text-secondary mb-0">Bandes <i class="fas fa-chalkboard"></i></h5>
               </div>
               <div class="col-auto">
-                <h4 class="mb-0">{{ totalBandes }}</h4>
+                <h4 class="mb-0">{{ totalBandes | number}}</h4>
               </div>
             </div>
           </div>
@@ -256,7 +257,7 @@
                 <h5 class="text-secondary mb-0">Batiments <i class="fas fa-home"></i> </h5>
               </div>
               <div class="col-auto">
-                <h4 class="mb-0">{{ totalBatiments }}</h4>
+                <h4 class="mb-0">{{ totalBatiments | number }}</h4>
               </div>
               
             </div>

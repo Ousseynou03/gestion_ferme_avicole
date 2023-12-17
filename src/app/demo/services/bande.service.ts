@@ -25,9 +25,9 @@ export class BandeService {
   }
 
 
-  // Mise à jour d'un bâtiment
-  updateBande(bande: Bande, headers: any): Observable<any> {
-    const url = `${this.baseUrl}/bande/update`;
+  // Mise à jour d'un Bande
+  updateBande(id: any, bande: Bande, headers: any): Observable<any> {
+    const url = `${this.baseUrl}/bande/update/${id}`;
     return this.http.put(url, bande, { headers });
   }
 
