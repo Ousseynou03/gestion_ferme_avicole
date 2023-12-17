@@ -1,5 +1,6 @@
 // Angular import
 import { Component, EventEmitter, Output } from '@angular/core';
+import { AuthService } from 'src/app/demo/services/auth.service';
 
 @Component({
   selector: 'app-navigation',
@@ -11,6 +12,8 @@ export class NavigationComponent {
   @Output() NavCollapsedMob = new EventEmitter();
   navCollapsedMob = window.innerWidth;
   windowWidth: number;
+
+  constructor(public authService : AuthService){}
 
   // public method
   navCollapseMob() {

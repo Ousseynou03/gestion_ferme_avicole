@@ -25,6 +25,7 @@ import { AppartementComponent } from './demo/elements/appartement/appartement.co
 import { PaiementComponent } from './demo/elements/paiement/paiement.component';
 import { LocataireComponent } from './demo/elements/locataire/locataire.component';
 import { ChangePasswordComponent } from './demo/elements/change-password/change-password.component';
+import { ContratLocationComponent } from './demo/elements/contrat-location/contrat-location.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirection vers la page de connexion par défaut
@@ -92,6 +93,9 @@ const routes: Routes = [
       },
       {
         path: 'change-password', component : ChangePasswordComponent
+      },
+      {
+        path: 'contrat-location', component : ContratLocationComponent
       },
       {
         path: 'user', component : UserComponent, canActivate: [AuthorizationGuard], data : {role : "admin"}

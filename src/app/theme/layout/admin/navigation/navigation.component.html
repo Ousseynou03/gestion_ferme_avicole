@@ -13,7 +13,39 @@
   
     
   </div>
-
-  
 </nav>
+
+  <!-- Sidebar Menu -->
+<ul class="nav nav-pills flex-column mb-auto" *ngIf="authService && authService.roles && authService.roles.includes('admin')">
+  <li class="nav-item">
+    <a class="nav-link link-dark" data-bs-toggle="collapse"  role="button" aria-expanded="false" aria-controls="gestionLocatif">
+      <svg class="bi me-2" width="16" height="16"><use xlink:href="#house-door"/></svg>
+      Gestion Locatif
+    </a>
+    <!-- Sous-menu Gestion Locatif -->
+    <div class="collapse" id="gestionLocatif">
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a routerLink="/appartement" class="nav-link link-dark">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#house-door"/></svg>
+            Appartement
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/paiement" class="nav-link link-dark">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#credit-card"/></svg>
+            Paiement
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/locataire" class="nav-link link-dark">
+            <svg class="bi me-2" width="16" height="16"><use xlink:href="#person"/></svg>
+            Locataire
+          </a>
+        </li>
+      </ul>
+    </div>
+  </li>
+</ul>
+
 <!-- [ Sidebar Menu ] end -->

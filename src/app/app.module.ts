@@ -62,6 +62,11 @@ import { EditComponent } from './demo/elements/bande/dialog/edit/edit.component'
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { ContratLocationComponent } from './demo/elements/contrat-location/contrat-location.component';
+import { DialogComponent } from './demo/elements/locataire/dialog/dialog/dialog.component';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -98,6 +103,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     LocataireComponent,
     ChangePasswordComponent,
     EditComponent,
+    ContratLocationComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -122,6 +129,11 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatDatepickerModule,
     MatNativeDateModule,
     MatToolbarModule,
+    MatPaginatorModule,
+    MatSortModule
+
+    
+
   ],
   providers: [NavigationItem, AuthService,
     {

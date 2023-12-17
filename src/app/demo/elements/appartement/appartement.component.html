@@ -1,1 +1,132 @@
-<p>appartement works!</p>
+<!-- Bouton pour ouvrir le modal d'ajout -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#appartementModal">
+    Ajouter un appartement
+</button>
+
+<!-- Modal d'ajout -->
+<div class="modal fade" id="appartementModal" tabindex="-1" aria-labelledby="appartementModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="appartementModalLabel">Nouvel Appartement</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="cards">
+                    <div class="card-bodi">
+                        <div class="card-header">
+                            <span>Enregistrement d'un Appartement</span>
+                        </div>
+                        <div class="py-4 overflow-hidden">
+                            <div class="flex">
+                                <!-- Formulaire pour ajouter un nouvel appartement -->
+                                <form [formGroup]="appartementForm" (ngSubmit)="onSubmit()">
+                                    <div>
+                                        <label for="adresse">Adresse:</label>
+                                        <input placeholder="" type="text" id="adresse" formControlName="adresse">
+                                    </div>
+                                    <div>
+                                        <label for="nombrePieces">Nombre de pièces:</label>
+                                        <input placeholder="" type="text" id="nombrePieces" formControlName="nombrePieces">
+                                    </div>
+                                    <div>
+                                        <label for="surface">Surface:</label>
+                                        <input placeholder="" type="text" id="surface" formControlName="surface">
+                                    </div>
+                                    <div>
+                                        <label for="loyerMensuel">Loyer Mensuel:</label>
+                                        <input placeholder="" type="text" id="loyerMensuel" formControlName="loyerMensuel">
+                                    </div>
+                                    <button type="submit">Enregistrer</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de mise à jour -->
+<div class="modal fade" id="updateAppartementModal" tabindex="-1" aria-labelledby="updateAppartementModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateAppartementModalLabel">Mise à jour de l'Appartement</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="cards">
+                    <div class="card-bodi">
+                        <div class="card-header">
+                            <span>Mise à jour de l'Appartement</span>
+                        </div>
+                        <div class="py-4 overflow-hidden">
+                            <div class="flex">
+                                <!-- Formulaire pour mettre à jour un appartement -->
+                                <form [formGroup]="updateAppartementForm" (ngSubmit)="updateAppartement(currentAppartementForUpdate.id)">
+                                    <div>
+                                        <label for="adresse">Adresse:</label>
+                                        <input placeholder="" type="text" id="adresse" formControlName="adresse" [value]="currentAppartementForUpdate?.adresse">
+                                    </div>
+                                    <div>
+                                        <label for="nombrePieces">Nombre de pièces:</label>
+                                        <input placeholder="" type="text" id="nombrePieces" formControlName="nombrePieces" [value]="currentAppartementForUpdate?.nombrePieces">
+                                    </div>
+                                    <div>
+                                        <label for="surface">Surface:</label>
+                                        <input placeholder="" type="text" id="surface" formControlName="surface" [value]="currentAppartementForUpdate?.surface">
+                                    </div>
+                                    <div>
+                                        <label for="loyerMensuel">Loyer Mensuel:</label>
+                                        <input placeholder="" type="text" id="loyerMensuel" formControlName="loyerMensuel" [value]="currentAppartementForUpdate?.loyerMensuel">
+                                    </div>
+                                    <button type="submit">Enregistrer</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Liste des appartements -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">N°</th>
+            <th scope="col">Adresse</th>
+            <th scope="col">Nombre de pièces</th>
+            <th scope="col">Surface</th>
+            <th scope="col">Loyer Mensuel</th>
+            <th scope="col" *ngIf="authService && authService.roles && authService.roles.includes('admin')">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let appartement of appartements; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ appartement.adresse }}</td>
+            <td>{{ appartement.nombrePieces }}</td>
+            <td>{{ appartement.surface }}</td>
+            <td>{{ appartement.loyerMensuel }}</td>
+            <td>
+                <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" (click)="openUpdateModal(appartement)" data-bs-toggle="modal" data-bs-target="#updateAppartementModal">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteAppartement(appartement.id)">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
