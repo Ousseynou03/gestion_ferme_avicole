@@ -31,7 +31,7 @@ export class BatimentComponent implements OnInit{
 
   
 
-  constructor(private batimentService: BatimentService, public authService: AuthService, private fb: FormBuilder,private _matDialog: MatDialog,) {
+  constructor(private batimentService: BatimentService, public authService: AuthService, private fb: FormBuilder,private _matDialog: MatDialog) {
     this.batimentForm = this.fb.group({
       code: ['', Validators.required],
       designation: ['', Validators.required],

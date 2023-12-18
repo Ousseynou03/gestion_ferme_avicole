@@ -26,9 +26,9 @@ export class ClientService {
     }
   
   
-    // Mise à jour d'un bâtiment
-    updateClient(client: Client, headers: any): Observable<any> {
-      const url = `${this.baseUrl}/client/update`;
+    // Mise à jour d'un client
+    updateClient(id : any, client: Client, headers: any): Observable<any> {
+      const url = `${this.baseUrl}/client/update/${id}`;
       return this.http.put(url, client, { headers });
     }
   

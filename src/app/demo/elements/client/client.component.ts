@@ -4,6 +4,8 @@ import { ClientService } from '../../services/client.service';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { EditClientComponent } from './dialog/edit-client/edit-client.component';
 
 @Component({
   selector: 'app-client',
@@ -14,6 +16,7 @@ export class ClientComponent implements OnInit{
 
   clients: Client[] = [];
   clientForm: FormGroup;
+  headers: any
 
   client: Client = {
     id: null,
@@ -25,6 +28,7 @@ export class ClientComponent implements OnInit{
 
   constructor(private clientService: ClientService, 
     public authService: AuthService,
+    private _matDialog: MatDialog,
     private fb : FormBuilder) {
       this.clientForm = this.fb.group({
         nom: ['', Validators.required],
@@ -87,7 +91,7 @@ export class ClientComponent implements OnInit{
             });
   
             console.log('Client enregistré:', response);
-            this.loadClientList();
+            this.loadClientList(headers);
             // Réinitialisez le formulaire après l'ajout réussi
             this.clientForm.reset();
           },
@@ -103,7 +107,7 @@ export class ClientComponent implements OnInit{
         );
       }
     }
-    loadClientList() {
+    loadClientList(header : any) {
       const token = localStorage.getItem('token');
       if (token) {
         const headers = { Authorization: `Bearer ${token}` };
@@ -118,47 +122,6 @@ export class ClientComponent implements OnInit{
         );
       }
     }
-
-
-
-  // Méthode pour mettre à jour un bâtiment
-  updateClient(client: Client) {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté pour effectuer cette action.'
-      });
-      return;
-    }
-
-    // Créez un en-tête avec le token JWT
-    const headers = { Authorization: `Bearer ${token}` };
-
-    // Appelez la méthode de mise à jour du service
-    this.clientService.updateClient(client, headers).subscribe(
-      (response) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Mise à jour réussie',
-          text: 'Le client a été mis à jour avec succès.'
-        });
-
-        // Mettez à jour la liste des bâtiments (facultatif)
-        this.loadClientList();
-      },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur de mise à jour',
-          text: 'Impossible de mettre à jour le client.'
-        });
-
-        console.error('Erreur lors de la mise à jour du client:', error);
-      }
-    );
-  }
 
 
 
@@ -209,5 +172,26 @@ export class ClientComponent implements OnInit{
       }
     });
   }
+
+  openDialogEdit(batiment: any) :void{
+    // Open the dialog
+    const dialogRef = this._matDialog.open(EditClientComponent, {
+      backdropClass: 'my-full-screen-dialog',
+      panelClass:'my-panelClass-dialog',
+      width:'50%',
+      data: batiment,
+      disableClose: true
+  });
+
+  dialogRef.afterClosed()
+      .subscribe((result) => {
+          console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+          if(result == true){
+
+            this.loadClientList(this.headers)
+          }
+      });
+  }
+  
 
 }
