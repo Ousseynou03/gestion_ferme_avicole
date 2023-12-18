@@ -73,7 +73,7 @@
         <td>{{ materiel.fournisseur?.nom }}</td>
         <td>
           <div>
-            <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+            <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit" (click)="openDialogEdit(materiel)">
               <i class="fas fa-edit"></i>
             </button>
           </div>

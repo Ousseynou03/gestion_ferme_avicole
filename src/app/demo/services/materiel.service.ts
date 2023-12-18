@@ -26,8 +26,8 @@ export class MaterielService {
 
 
   // Mise à jour d'un mateiel
-  updateMateiel(materiel: Materiel, headers: any): Observable<any> {
-    const url = `${this.baseUrl}/materiel/update`;
+  updateMateiel(id:any, materiel: Materiel, headers: any): Observable<any> {
+    const url = `${this.baseUrl}/materiel/update/${id}`;
     return this.http.put(url, materiel, { headers });
   }
 

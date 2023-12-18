@@ -11,7 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogComponent } from './dialog/dialog/dialog.component';
+
 
 @Component({
   selector: 'app-locataire',
@@ -44,7 +44,6 @@ export class LocataireComponent implements OnInit{
     private appartementService : AppartementService,
     private fb : FormBuilder,
     public authService : AuthService,
-    private searchService: SearchService,
     public dialog: MatDialog){}
 
 
@@ -64,51 +63,6 @@ export class LocataireComponent implements OnInit{
      // this.loadAppartementList(headers);
     }
 
-    ngAfterViewInit() {
-      if(this.paginator === undefined){
-        this.dataSource.paginator = this.paginator;
-      }
-    }
-
-    //recherche
-    applyFilter(event: Event) {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-  
-      if (this.dataSource.paginator) {
-        this.dataSource.paginator.firstPage();
-      }
-    }
-
-
-    numLigne: number = 1;
-    ajouterEntree() {
-      this.numLigne++;
-    }
-    openDialog() {
-      const token = localStorage.getItem('token');
-      const headers = { Authorization: `Bearer ${token}` };
-      this.dialog.open(DialogComponent, {
-        width: '50%'
-      }).afterClosed().subscribe(val=>{
-        if(val === 'save'){
-          this.loadLocataireList(headers);
-        }
-      });
-    }
-  
-      editDialog(row : any) {
-        const token = localStorage.getItem('token');
-        const headers = { Authorization: `Bearer ${token}` };
-          this.dialog.open(DialogComponent, {
-            width: '50%',
-            data: row
-          }).afterClosed().subscribe(val=>{
-            if(val === 'update'){
-              this.loadLocataireList(headers);
-            }
-          });
-        }
     
   
     loadLocataireList(headers: any) {

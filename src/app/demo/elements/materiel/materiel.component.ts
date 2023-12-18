@@ -8,6 +8,8 @@ import {Fournisseur} from "../../models/fournisseur.model";
 import {BatimentService} from "../../services/batiment.service";
 import {FournisseurService} from "../../services/fournisseur.service";
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { EditMaterielComponent } from './dialog/edit-materiel/edit-materiel.component';
 
 @Component({
   selector: 'app-materiel',
@@ -19,6 +21,7 @@ export class MaterielComponent implements OnInit{
   materiels : Materiel[];
   batiments: Batiment[];
   fournisseurs : Fournisseur[];
+  headers: any;
 
   materielForm = this.fb.group({
     designation: ['', Validators.required],
@@ -31,7 +34,8 @@ export class MaterielComponent implements OnInit{
               public authService: AuthService,
               private batimentService : BatimentService,
               private fournisseurService : FournisseurService,
-              private fb : FormBuilder) {}
+              private fb : FormBuilder,
+              private _matDialog: MatDialog,) {}
 
   ngOnInit() {
     const token = localStorage.getItem('token');
@@ -212,5 +216,26 @@ export class MaterielComponent implements OnInit{
           );
         }
       });
+    }
+
+
+    openDialogEdit(materiel: any) :void{
+      // Open the dialog
+      const dialogRef = this._matDialog.open(EditMaterielComponent, {
+        backdropClass: 'my-full-screen-dialog',
+        panelClass:'my-panelClass-dialog',
+        width:'50%',
+        data: materiel,
+        disableClose: true
+    });
+  
+    dialogRef.afterClosed()
+        .subscribe((result) => {
+            console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+            if(result == true){
+  
+              this.loadMaterielList(this.headers)
+            }
+        });
     }
 }

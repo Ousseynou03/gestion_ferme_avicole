@@ -63,13 +63,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { ContratLocationComponent } from './demo/elements/contrat-location/contrat-location.component';
-import { DialogComponent } from './demo/elements/locataire/dialog/dialog/dialog.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { EditBatimentComponent } from './demo/elements/batiment/dialog/edit-batiment/edit-batiment.component';
 import { EditClientComponent } from './demo/elements/client/dialog/edit-client/edit-client.component';
 import { EditDepenseComponent } from './demo/elements/depense/dialog/edit-depense/edit-depense.component';
 import { EditFournisseurComponent } from './demo/elements/fournisseur/dialog/edit-fournisseur/edit-fournisseur.component';
+import { EditMaterielComponent } from './demo/elements/materiel/dialog/edit-materiel/edit-materiel.component';
 
 @NgModule({
   declarations: [
@@ -108,11 +108,11 @@ import { EditFournisseurComponent } from './demo/elements/fournisseur/dialog/edi
     ChangePasswordComponent,
     EditComponent,
     ContratLocationComponent,
-    DialogComponent,
     EditBatimentComponent,
     EditClientComponent,
     EditDepenseComponent,
     EditFournisseurComponent,
+    EditMaterielComponent,
   ],
   imports: [
     BrowserModule,
