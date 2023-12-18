@@ -42,7 +42,7 @@ const routes: Routes = [
         loadComponent: () => import('./demo/default/default.component')
       },
       { path: 'user-profile/:id', component: NavRightComponent, canActivate: [AuthGuard] },
-      { path: '**', redirectTo: '/default' },
+     // { path: '**', redirectTo: '/default' },
 
       {
         path: 'batiment', component : BatimentComponent

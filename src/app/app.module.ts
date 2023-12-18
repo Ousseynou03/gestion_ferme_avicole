@@ -66,6 +66,8 @@ import { ContratLocationComponent } from './demo/elements/contrat-location/contr
 import { DialogComponent } from './demo/elements/locataire/dialog/dialog/dialog.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { EditBatimentComponent } from './demo/elements/batiment/dialog/edit-batiment/edit-batiment.component';
+import { EditClientComponent } from './demo/elements/client/dialog/edit-client/edit-client.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +107,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     EditComponent,
     ContratLocationComponent,
     DialogComponent,
+    EditBatimentComponent,
+    EditClientComponent,
   ],
   imports: [
     BrowserModule,

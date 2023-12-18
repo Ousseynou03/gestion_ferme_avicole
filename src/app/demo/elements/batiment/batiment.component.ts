@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import { Batiment } from '../../models/batiment.model';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { EditBatimentComponent } from './dialog/edit-batiment/edit-batiment.component';
 
 @Component({
   selector: 'app-batiment',
@@ -14,8 +16,10 @@ export class BatimentComponent implements OnInit{
 
   batiments: Batiment[] = [];
   batimentForm: FormGroup;
+  headers : any;
 
-  public editBatiment : any
+
+
 
   batiment: Batiment = {
     id : null,
@@ -27,7 +31,7 @@ export class BatimentComponent implements OnInit{
 
   
 
-  constructor(private batimentService: BatimentService, public authService: AuthService, private fb: FormBuilder) {
+  constructor(private batimentService: BatimentService, public authService: AuthService, private fb: FormBuilder,private _matDialog: MatDialog,) {
     this.batimentForm = this.fb.group({
       code: ['', Validators.required],
       designation: ['', Validators.required],
@@ -37,8 +41,6 @@ export class BatimentComponent implements OnInit{
   }
 
   ngOnInit() {
-
-    this.editBatiment = { ...this.batiment };
 
 
     const token = localStorage.getItem('token');
@@ -103,7 +105,7 @@ addBatiment() {
         });
 
         console.log('Batiment enregistré:', response);
-        this.loadBatimentList();
+        this.loadBatimentList(headers);
         this.batimentForm.reset();
       },
       (error) => {
@@ -119,7 +121,7 @@ addBatiment() {
   }
 }
 
-    loadBatimentList() {
+    loadBatimentList(header : any) {
       const token = localStorage.getItem('token');
       if (token) {
         const headers = { Authorization: `Bearer ${token}` };
@@ -135,49 +137,10 @@ addBatiment() {
       }
     }
 
-    /*
-    editBatiment: Batiment = {
-      id : null,
-      code : '',
-      designation : '',
-      capacite : '',
-      dimension : ''
-    };
-*/
 
 
-  // Nouvelle méthode pour mettre à jour un bâtiment
-  updateBatiment() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      // Gérer le cas où l'utilisateur n'est pas connecté
-      return;
-    }
-    const headers = { Authorization: `Bearer ${token}` };
 
-    // Effectuez la requête HTTP avec le token dans l'en-tête
-    this.batimentService.updateBatiment(this.editBatiment, headers).subscribe(
-      (response) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Mise à jour',
-          text: 'Batiment mis à jour avec succès'
-        });
 
-        console.log('Batiment mis à jour:', response);
-        this.loadBatimentList();
-      },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Mise à jour non autorisée',
-          text: 'Vous n\'êtes pas autorisé à mettre à jour un bâtiment.'
-        });
-
-        console.error('Erreur lors de la mise à jour d\'un bâtiment:', error);
-      }
-    );
-  }
 
 
 // Suppression
@@ -229,6 +192,26 @@ addBatiment() {
   }
   
   
+
+  openDialogEdit(batiment: any) :void{
+    // Open the dialog
+    const dialogRef = this._matDialog.open(EditBatimentComponent, {
+      backdropClass: 'my-full-screen-dialog',
+      panelClass:'my-panelClass-dialog',
+      width:'50%',
+      data: batiment,
+      disableClose: true
+  });
+
+  dialogRef.afterClosed()
+      .subscribe((result) => {
+          console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+          if(result == true){
+
+            this.loadBatimentList(this.headers)
+          }
+      });
+  }
 
 
 

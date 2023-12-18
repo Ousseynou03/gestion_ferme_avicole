@@ -74,7 +74,7 @@
       <td>
         <!-- Edit Button -->
         <div *ngIf="authService.roles.includes('admin')">
-        <button  class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+        <button  class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit" (click)="openDialogEdit(batiment)">
           <i class="fas fa-edit"></i>
         </button>
       </div>
@@ -88,54 +88,3 @@
     </tr>
   </tbody>
 </table>
-
-
-
-
-
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Batiment</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="cards">
-          <div class="card-bodi">
-            <div class="card-header">
-              <span>Modifier un Batiment</span>
-            </div>
-            <form (ngSubmit)="updateBatiment()">
-              <div>
-                <label></label>
-                <input placeholder="Code" type="text" [(ngModel)]="editBatiment.code" name="code" required>
-                {{ editBatiment.code }}
-              </div>
-              <div>
-                <label></label>
-                <input placeholder="Designation" type="text" [(ngModel)]="editBatiment.designation" name="designation" required>
-              </div>
-              <div>
-                <label></label>
-                <input placeholder="Capacite" type="text" [(ngModel)]="editBatiment.capacite" name="capacite" required>
-              </div>
-              <div>
-                <label>
-                </label>
-                <input placeholder="Dimension" type="text"[(ngModel)]="editBatiment.dimension"  name="dimension" required>
-              </div>
-              <button type="submit">Modifier</button>
-
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
