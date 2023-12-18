@@ -173,13 +173,13 @@ export class ClientComponent implements OnInit{
     });
   }
 
-  openDialogEdit(batiment: any) :void{
+  openDialogEdit(client: any) :void{
     // Open the dialog
     const dialogRef = this._matDialog.open(EditClientComponent, {
       backdropClass: 'my-full-screen-dialog',
       panelClass:'my-panelClass-dialog',
       width:'50%',
-      data: batiment,
+      data: client,
       disableClose: true
   });
 

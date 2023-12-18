@@ -68,6 +68,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { EditBatimentComponent } from './demo/elements/batiment/dialog/edit-batiment/edit-batiment.component';
 import { EditClientComponent } from './demo/elements/client/dialog/edit-client/edit-client.component';
+import { EditDepenseComponent } from './demo/elements/depense/dialog/edit-depense/edit-depense.component';
 
 @NgModule({
   declarations: [
@@ -109,6 +110,7 @@ import { EditClientComponent } from './demo/elements/client/dialog/edit-client/e
     DialogComponent,
     EditBatimentComponent,
     EditClientComponent,
+    EditDepenseComponent,
   ],
   imports: [
     BrowserModule,

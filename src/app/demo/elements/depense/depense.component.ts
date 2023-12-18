@@ -7,6 +7,8 @@ import { Depense } from '../../models/depense.model';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Categorie } from '../../models/enums/categorie.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { EditDepenseComponent } from './dialog/edit-depense/edit-depense.component';
 
 @Component({
   selector: 'app-depense',
@@ -20,6 +22,7 @@ export class DepenseComponent implements OnInit{
   depenseForm: FormGroup;
   categories = Object.values(Categorie);
   bandes : Bande[];
+  headers: any
 
   depense : Depense = {
     id: 0,
@@ -35,7 +38,8 @@ export class DepenseComponent implements OnInit{
   constructor(private depenseService : DepenseService,
     private bandeService : BandeService,
     public authService : AuthService,
-    private fb : FormBuilder){
+    private fb : FormBuilder,
+    private _matDialog: MatDialog){
       this.depenseForm = this.fb.group({
         dateDepense: ['', Validators.required],
         categorie: [null, Validators.required],
@@ -141,6 +145,28 @@ export class DepenseComponent implements OnInit{
         }
       );
     }
+
+
+    openDialogEdit(depense: any) :void{
+      // Open the dialog
+      const dialogRef = this._matDialog.open(EditDepenseComponent, {
+        backdropClass: 'my-full-screen-dialog',
+        panelClass:'my-panelClass-dialog',
+        width:'50%',
+        data: depense,
+        disableClose: true
+    });
+  
+    dialogRef.afterClosed()
+        .subscribe((result) => {
+            console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+            if(result == true){
+  
+              this.loadDepenseList(this.headers)
+            }
+        });
+    }
+  
 
     
 }

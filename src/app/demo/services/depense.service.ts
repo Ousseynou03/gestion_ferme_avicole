@@ -26,8 +26,8 @@ export class DepenseService {
 
 
   // Mise à jour d'un bâtiment
-  updateDepense(depense: Depense, headers: any): Observable<any> {
-    const url = `${this.baseUrl}/depense/update`;
+  updateDepense(id:any, depense: Depense, headers: any): Observable<any> {
+    const url = `${this.baseUrl}/depense/update/${id}`;
     return this.http.put(url, depense, { headers });
   }
 
