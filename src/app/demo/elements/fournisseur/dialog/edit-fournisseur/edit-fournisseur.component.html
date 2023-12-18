@@ -8,32 +8,34 @@
         <form  [formGroup]="form">    
 
             <mat-form-field class="flex-auto w-10/12 pr-2">
+                <mat-label>Type</mat-label>
+                <input
+                matInput
+                [formControlName]="'type'">
+            </mat-form-field>
+
+
+            <mat-form-field class="flex-auto w-10/12 pr-2">
                 <mat-label>Nom</mat-label>
                 <input
                 matInput
                 [formControlName]="'nom'">
             </mat-form-field>
 
-
             <mat-form-field class="flex-auto w-10/12 pr-2">
-                <mat-label>Ville</mat-label>
-                <input
-                matInput
-                [formControlName]="'ville'">
-            </mat-form-field>
-
-            <mat-form-field class="flex-auto w-10/12 pr-2">
-                <mat-label class="font-bold">Num Telephone</mat-label>
+                <mat-label class="font-bold">Num Tel</mat-label>
                 <input
                 matInput
                 [formControlName]="'numTel'">
-            </mat-form-field>  
+            </mat-form-field>
+
+            <mat-form-field class="flex-auto w-10/12 pr-2">
+                <mat-label>Email</mat-label>
+                <input
+                matInput
+                [formControlName]="'email'">
+            </mat-form-field>    
         </form>
-
-
-        
-    
-        
          <div class="flex items-center mt-4 sm:mt-0 justify-between">
         
             <mat-toolbar>
@@ -51,7 +53,7 @@
             mat-flat-button
             [color]="'primary'"
             [disabled]="!form.valid"
-            (click)="updateClient()"
+            (click)="updateFournisseur()"
             >
                 Modifier
             </button>

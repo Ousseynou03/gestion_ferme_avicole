@@ -75,7 +75,7 @@
         <td>{{ fournisseur.numTel }}</td>
         <td>{{ fournisseur.email }}</td>
         <td>
-          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit" (click)="openDialogEdit(fournisseur)">
             <i class="fas fa-edit"></i>
           </button>
           <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteFounisseur(fournisseur.id)">

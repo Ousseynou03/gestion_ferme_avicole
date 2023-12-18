@@ -4,6 +4,8 @@ import { FournisseurService } from '../../services/fournisseur.service';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { EditFournisseurComponent } from './dialog/edit-fournisseur/edit-fournisseur.component';
 
 @Component({
   selector: 'app-fournisseur',
@@ -14,6 +16,7 @@ export class FournisseurComponent implements OnInit{
 
   fournisseurs: Fournisseur[] = [];
   fournisseurForm: FormGroup;
+  headers : any;
 
   fournisseur : Fournisseur = {
     id : null,
@@ -24,7 +27,7 @@ export class FournisseurComponent implements OnInit{
   }
 
 
-  constructor(private fournisseurService: FournisseurService, public authService: AuthService,
+  constructor(private fournisseurService: FournisseurService, public authService: AuthService,private _matDialog: MatDialog,
     private fb : FormBuilder){
       this.fournisseurForm = this.fb.group({
         type: ['Particulier', Validators.required],
@@ -176,6 +179,28 @@ export class FournisseurComponent implements OnInit{
         );
       }
     });
+  }
+
+
+
+  openDialogEdit(fournisseur: any) :void{
+    // Open the dialog
+    const dialogRef = this._matDialog.open(EditFournisseurComponent, {
+      backdropClass: 'my-full-screen-dialog',
+      panelClass:'my-panelClass-dialog',
+      width:'50%',
+      data: fournisseur,
+      disableClose: true
+  });
+
+  dialogRef.afterClosed()
+      .subscribe((result) => {
+          console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+          if(result == true){
+
+            this.loadFournisseurList();
+          }
+      });
   }
 
 }

@@ -27,8 +27,8 @@ export class FournisseurService {
   
 
     // Mise à jour d'un bâtiment
-  updateFournisseur(fournisseur: Fournisseur, headers: any): Observable<any> {
-      const url = `${this.baseUrl}/fournisseur/update`;
+  updateFournisseur(id:any, fournisseur: Fournisseur, headers: any): Observable<any> {
+      const url = `${this.baseUrl}/fournisseur/update/${id}`;
       return this.http.put(url, fournisseur, { headers });
     }
   
