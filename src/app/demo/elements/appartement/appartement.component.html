@@ -51,55 +51,6 @@
     </div>
 </div>
 
-<!-- Modal de mise à jour -->
-<div class="modal fade" id="updateAppartementModal" tabindex="-1" aria-labelledby="updateAppartementModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateAppartementModalLabel">Mise à jour de l'Appartement</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="cards">
-                    <div class="card-bodi">
-                        <div class="card-header">
-                            <span>Mise à jour de l'Appartement</span>
-                        </div>
-                        <div class="py-4 overflow-hidden">
-                            <div class="flex">
-                                <!-- Formulaire pour mettre à jour un appartement -->
-                                <form [formGroup]="updateAppartementForm" (ngSubmit)="updateAppartement(currentAppartementForUpdate.id)">
-                                    <div>
-                                        <label for="adresse">Adresse:</label>
-                                        <input placeholder="" type="text" id="adresse" formControlName="adresse" [value]="currentAppartementForUpdate?.adresse">
-                                    </div>
-                                    <div>
-                                        <label for="nombrePieces">Nombre de pièces:</label>
-                                        <input placeholder="" type="text" id="nombrePieces" formControlName="nombrePieces" [value]="currentAppartementForUpdate?.nombrePieces">
-                                    </div>
-                                    <div>
-                                        <label for="surface">Surface:</label>
-                                        <input placeholder="" type="text" id="surface" formControlName="surface" [value]="currentAppartementForUpdate?.surface">
-                                    </div>
-                                    <div>
-                                        <label for="loyerMensuel">Loyer Mensuel:</label>
-                                        <input placeholder="" type="text" id="loyerMensuel" formControlName="loyerMensuel" [value]="currentAppartementForUpdate?.loyerMensuel">
-                                    </div>
-                                    <button type="submit">Enregistrer</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <!-- Liste des appartements -->
 <table class="table table-striped">
     <thead>
@@ -120,7 +71,7 @@
             <td>{{ appartement.surface }}</td>
             <td>{{ appartement.loyerMensuel }}</td>
             <td>
-                <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" (click)="openUpdateModal(appartement)" data-bs-toggle="modal" data-bs-target="#updateAppartementModal">
+                <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" (click)="openDialogEdit(appartement)" data-bs-toggle="modal" data-bs-target="#updateAppartementModal">
                     <i class="fas fa-edit"></i>
                 </button>
                 <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteAppartement(appartement.id)">

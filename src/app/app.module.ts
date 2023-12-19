@@ -78,6 +78,8 @@ import { EditUserComponent } from './demo/user/dialog/edit-user/edit-user.compon
 import { EditTresorerieComponent } from './demo/elements/tresorerie/dialog/edit-tresorerie/edit-tresorerie.component';
 import { EditVenteComponent } from './demo/elements/vente/dialog/edit-vente/edit-vente.component';
 import { AddVenteComponent } from './demo/elements/vente/dialog/add-vente/add-vente.component';
+import { VeterinaireComponent } from './demo/elements/veterinaire/veterinaire.component';
+import { EditAppartementComponent } from './demo/elements/appartement/dialog/edit-appartement/edit-appartement.component';
 
 @NgModule({
   declarations: [
@@ -129,6 +131,8 @@ import { AddVenteComponent } from './demo/elements/vente/dialog/add-vente/add-ve
     EditTresorerieComponent,
     EditVenteComponent,
     AddVenteComponent,
+    VeterinaireComponent,
+    EditAppartementComponent,
   ],
   imports: [
     BrowserModule,

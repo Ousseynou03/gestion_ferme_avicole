@@ -27,6 +27,7 @@ import { LocataireComponent } from './demo/elements/locataire/locataire.componen
 import { ChangePasswordComponent } from './demo/elements/change-password/change-password.component';
 import { ContratLocationComponent } from './demo/elements/contrat-location/contrat-location.component';
 import DefaultComponent from './demo/default/default.component';
+import { VeterinaireComponent } from './demo/elements/veterinaire/veterinaire.component';
 
 const routes: Routes = [
  // { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirection vers la page de connexion par défaut
@@ -68,6 +69,9 @@ const routes: Routes = [
       },
       {
         path: 'depense', component : DepenseComponent
+      },
+      {
+        path: 'veto', component : VeterinaireComponent
       },
       {
         path: 'bande', component : BandeComponent

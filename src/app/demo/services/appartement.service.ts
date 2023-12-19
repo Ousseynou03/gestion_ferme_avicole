@@ -26,8 +26,8 @@ export class AppartementService {
 
 
   // Mise à jour 
-  updateAppartement(appartement: Appartement, headers: any): Observable<any> {
-    const url = `${this.baseUrl}/appartement/update`;
+  updateAppartement(id:any,appartement: Appartement, headers: any): Observable<any> {
+    const url = `${this.baseUrl}/appartement/update/${id}`;
     return this.http.put(url, appartement, { headers });
   }
 

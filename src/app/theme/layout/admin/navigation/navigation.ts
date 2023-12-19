@@ -129,6 +129,15 @@ const NavigationItems = [
             url: '/fournisseur',
             icon: 'fa fa-industry'
           },
+
+          {
+            id: 'veterinaire',
+            title: 'Veterinaire',
+            type: 'item',
+            classes: 'nav-item',
+            url: '/veto',
+            icon: 'fa fa-paw' // ou 'fa fa-medkit'
+          },
         ]
       },
 

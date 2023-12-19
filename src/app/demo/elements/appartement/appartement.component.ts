@@ -4,6 +4,8 @@ import { AppartementService } from '../../services/appartement.service';
 import Swal from 'sweetalert2';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EditAppartementComponent } from './dialog/edit-appartement/edit-appartement.component';
 
 @Component({
   selector: 'app-appartement',
@@ -13,6 +15,7 @@ import { AuthService } from '../../services/auth.service';
 export class AppartementComponent implements OnInit {
 
   appartements: Appartement[];
+  headers : any;
 
   appartementForm = this.fb.group({
     nom: ['', Validators.required],
@@ -29,6 +32,7 @@ export class AppartementComponent implements OnInit {
     private appartementService: AppartementService,
     private fb: FormBuilder,
     public authService : AuthService
+    ,private _matDialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -107,91 +111,6 @@ export class AppartementComponent implements OnInit {
       );
     }
   }
-
-  // Variable pour suivre si le modal est ouvert
-isUpdateModalVisible: boolean = false;
-// Variable pour stocker l'appartement actuel pour la mise à jour
-currentAppartementForUpdate: Appartement;
-
-// ...
-
-openUpdateModal(appartement: Appartement) {
-  this.currentAppartementForUpdate = appartement;
-
-  // Initialisez le formulaire de mise à jour avec les valeurs actuelles
-  this.updateAppartementForm.patchValue({
-    adresse: appartement.adresse,
-    nombrePieces: appartement.nombrePieces,
-    surface: appartement.surface,
-    loyerMensuel: appartement.loyerMensuel
-  });
-
-  this.isUpdateModalVisible = true;
-}
-
-
-
-// Créez un formulaire distinct pour la mise à jour
-updateAppartementForm = this.fb.group({
-  adresse: ['', Validators.required],
-  nombrePieces: [0, Validators.required],
-  surface: [null],
-  loyerMensuel: [0, Validators.required]
-});
-
-
-
-
-  updateAppartement(id: number) {
-    const appartementToUpdate = this.appartements.find(appartement => appartement.id === id);
-  
-    if (appartementToUpdate) {
-      this.appartementForm.patchValue({
-        adresse: appartementToUpdate.adresse,
-        nombrePieces: appartementToUpdate.nombrePieces,
-        surface: appartementToUpdate.surface,
-        loyerMensuel: appartementToUpdate.loyerMensuel
-      });
-  
-      const token = localStorage.getItem('token');
-      
-      if (!token) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: 'Vous devez être connecté pour effectuer cette action.'
-        });
-        return;
-      }
-  
-      const headers = { Authorization: `Bearer ${token}` };
-      console.log('Données à envoyer :', appartementToUpdate);
-      this.appartementService.updateAppartement(appartementToUpdate, headers).subscribe(
-        (response) => {
-          console.log('Réponse du serveur :', response);
-          Swal.fire({
-            icon: 'success',
-            title: 'Succès',
-            text: 'L\'appartement a été mis à jour avec succès.'
-          });
-          this.loadAppartementList(headers);
-          this.updateAppartementForm.reset();
-        },
-        (error) => {
-          console.error('Erreur lors de la mise à jour de l\'appartement:', error);
-          Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: 'Une erreur est survenue lors de la mise à jour de l\'appartement.'
-          });
-        }
-      );
-    }
-  }
-  
-
-  
-  
     // Suppression d'un appartement
     deleteAppartement(id: number) {
       Swal.fire({
@@ -237,5 +156,28 @@ updateAppartementForm = this.fb.group({
         }
       });
     }
+
+
+
+    openDialogEdit(appartement: any) :void{
+      // Open the dialog
+      const dialogRef = this._matDialog.open(EditAppartementComponent, {
+        backdropClass: 'my-full-screen-dialog',
+        panelClass:'my-panelClass-dialog',
+        width:'50%',
+        data: appartement,
+        disableClose: true
+    });
+  
+    dialogRef.afterClosed()
+        .subscribe((result) => {
+            console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+            if(result == true){
+  
+              this.loadAppartementList(this.headers)
+            }
+        });
+    }
+
   
 }
