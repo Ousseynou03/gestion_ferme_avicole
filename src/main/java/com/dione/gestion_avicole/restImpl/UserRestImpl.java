@@ -50,13 +50,13 @@ public class UserRestImpl implements UserRest {
     }
 
     @Override
-    public ResponseEntity<List<UserWrapper>> getAllUser() {
+    public ResponseEntity<List<User>> getAllUser() {
         try {
             return userService.getAllUser();
         }catch (Exception ex){
             ex.printStackTrace();
         }
-        return new ResponseEntity<List<UserWrapper>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<List<User>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 /*    @Override
@@ -69,7 +69,7 @@ public class UserRestImpl implements UserRest {
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }*/
     @Override
-    public ResponseEntity<String> updateUser(@PathVariable Integer userId, @RequestBody(required = true) Map<String, String> requestMap) {
+    public ResponseEntity<String> updateUser( Integer userId,Map<String, String> requestMap) {
         try {
             return userService.updateUser(userId, requestMap);
         } catch (Exception ex) {

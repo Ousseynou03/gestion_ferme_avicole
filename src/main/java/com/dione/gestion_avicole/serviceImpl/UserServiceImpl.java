@@ -3,6 +3,7 @@ package com.dione.gestion_avicole.serviceImpl;
 import com.dione.gestion_avicole.JWT.CustomerUsersDetailsService;
 import com.dione.gestion_avicole.JWT.JwtFilter;
 import com.dione.gestion_avicole.JWT.JwtUtil;
+import com.dione.gestion_avicole.POJO.Bande;
 import com.dione.gestion_avicole.POJO.Batiment;
 import com.dione.gestion_avicole.POJO.User;
 import com.dione.gestion_avicole.constents.AvicoleConstants;
@@ -81,7 +82,7 @@ public class UserServiceImpl implements UserService {
                     new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password"))
             );
             if (auth.isAuthenticated()) {
-                if (customerUsersDetailsService.getUserDetail().getStatus().equalsIgnoreCase("true")) {
+                if (customerUsersDetailsService.getUserDetail().getStatus().equalsIgnoreCase("actif")) {
                     return new ResponseEntity<String>("{\"token\":\"" + jwtUtil.generateToken(
                             customerUsersDetailsService.getUserDetail().getEmail(),
                             customerUsersDetailsService.getUserDetail().getRole())
@@ -122,7 +123,7 @@ public class UserServiceImpl implements UserService {
         user.setContactNumber(requestMap.get("contactNumber"));
         user.setEmail(requestMap.get("email"));
         user.setPassword(passwordEncoder.encode(requestMap.get("password")));
-        user.setStatus("true");
+        user.setStatus("actif");
         user.setRole("user");
         return user;
     }
@@ -131,14 +132,10 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public ResponseEntity<List<UserWrapper>> getAllUser() {
+    public ResponseEntity<List<User>> getAllUser() {
         try {
-            if (jwtFilter.isAdmin()){
-                return new ResponseEntity<>(userDao.getAllUser(), HttpStatus.OK);
-            }else {
-                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.UNAUTHORIZED);
-            }
-        }catch (Exception ex){
+            return new ResponseEntity<List<User>>(userDao.findAll(), HttpStatus.OK);
+        }catch(Exception ex){
             ex.printStackTrace();
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -168,14 +165,32 @@ public class UserServiceImpl implements UserService {
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }*/
 
+/*    @Override
+    public ResponseEntity<String> updateUser(Integer userId, Map<String, String> requestMap) {
+        try {
+            Optional<User> optional = userDao.findById(userId);
+            if (optional.isPresent()) {
+                User userToUpdate = getUserFromMap(requestMap);
+                userToUpdate.setId(userId); // Set the ID before saving
+                userDao.save(userToUpdate);
+                return AvicoleUtils.getResponseEntity("Utilisateur modifié avec succès", HttpStatus.OK);
+            } else {
+                return AvicoleUtils.getResponseEntity("Utilisateur ID n'existe pas", HttpStatus.OK);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
     @Override
     public ResponseEntity<String> updateUser(Integer userId, Map<String, String> requestMap) {
         try {
-            if (jwtFilter.isUser()){
+            if (jwtFilter.isAdmin()){
                 //Vérifions si l'utilisateur existe déjà
                 Optional<User> optional = userDao.findById(userId);
                 if (optional.isPresent()){
-                    userDao.updateStatus(requestMap.get("status"), userId);
+                    userDao.updateStatus(requestMap.get("status"), requestMap.get("role"), userId);
 
                     return AvicoleUtils.getResponseEntity("Statut de l'utilisateur mis à jour avec succès", HttpStatus.OK);
                 }
@@ -187,6 +202,8 @@ public class UserServiceImpl implements UserService {
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
 
 
     @Override

@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 @NamedQuery(name = "User.findEmailById", query = "select u from User u where u.email=:email")
 
-@NamedQuery(name = "User.getAllUser", query = "select new com.dione.gestion_avicole.wrapper.UserWrapper(u.id,u.name,u.email,u.contactNumber,u.status)  from User u where u.role='user'")
+//@NamedQuery(name = "User.getAllUser", query = "select new com.dione.gestion_avicole.wrapper.UserWrapper(u.id,u.name,u.email,u.contactNumber,u.role,u.status)  from User u where u.role='user'")
 
-@NamedQuery(name = "User.updateStatus", query = "update User u set u.status=:status where u.id=:id")
+@NamedQuery(name = "User.updateStatus", query = "update User u set u.status=:status, u.role=:role where u.id=:id")
 
 @NamedQuery(name = "User.getAllAdmin", query = "select u.email from User u where u.role='admin'")
 

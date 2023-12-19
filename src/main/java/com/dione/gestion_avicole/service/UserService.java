@@ -1,5 +1,6 @@
 package com.dione.gestion_avicole.service;
 
+import com.dione.gestion_avicole.POJO.Bande;
 import com.dione.gestion_avicole.POJO.User;
 import com.dione.gestion_avicole.wrapper.UserWrapper;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +14,12 @@ public interface UserService {
 
     ResponseEntity<String> signUp(Map<String, String> requestMap);
     ResponseEntity<String> login(Map<String, String> requestMap);
-    ResponseEntity<List<UserWrapper>> getAllUser();
+  //  ResponseEntity<List<UserWrapper>> getAllUser();
 
    // ResponseEntity<String> update(Map<String, String> requestMap);
 
     ResponseEntity<String> updateUser(Integer userId, Map<String, String> requestMap);
+    ResponseEntity<List<User>> getAllUser();
 
 
     ResponseEntity<String> deleteUser(Integer id);

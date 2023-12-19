@@ -19,7 +19,7 @@ public interface UserRest {
     ResponseEntity<String> login(@RequestBody Map<String, String> requestMap);
 
     @GetMapping("/get")
-    ResponseEntity<List<UserWrapper>> getAllUser();
+    ResponseEntity<List<User>> getAllUser();
 
 /*    @PostMapping("/update")
     ResponseEntity<String> update(@RequestBody Map<String, String> requestMap);*/

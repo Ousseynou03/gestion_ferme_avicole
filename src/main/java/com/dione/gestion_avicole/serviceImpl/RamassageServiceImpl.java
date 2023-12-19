@@ -78,7 +78,7 @@ public class RamassageServiceImpl implements RamassageService {
         if (requestMap.containsKey("nbrOeufPerdu")) {
             try {
                 double nbrOeufPerdu = Double.parseDouble(requestMap.get("nbrOeufPerdu"));
-                ramassage.setNbrOeufCasse(nbrOeufPerdu);
+                ramassage.setNbrOeufPerdu(nbrOeufPerdu);
             } catch (NumberFormatException ex) {
                 ex.printStackTrace();
             }
