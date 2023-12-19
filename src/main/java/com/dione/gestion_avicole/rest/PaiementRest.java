@@ -12,7 +12,7 @@ import java.util.Map;
 public interface PaiementRest {
 
     @PostMapping("/add")
-    ResponseEntity<String> ajoutPaiement(Map<String, String> requestMap);
+    ResponseEntity<String> ajoutPaiement(@RequestBody(required = true) Map<String, String> requestMap);
 
     @GetMapping("/all")
     ResponseEntity<List<Paiement>> getAllPaiement();
