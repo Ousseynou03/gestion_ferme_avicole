@@ -26,10 +26,11 @@ export class NutritionService {
 
 
   // Update Nutrition
-  updateNutrition(nutrition: Nutrition, headers: any): Observable<any> {
-    const url = `${this.baseUrl}/nutrition/update`;
+  updateNutrition(id: any, nutrition: Nutrition, headers: any): Observable<any> {
+    const url = `${this.baseUrl}/bande/update/${id}`;
     return this.http.put(url, nutrition, { headers });
   }
+
 
   // Suppression
   deleteNutrition(id: number, headers: any): Observable<any> {

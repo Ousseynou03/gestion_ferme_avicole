@@ -8,6 +8,8 @@ import { AuthService } from '../../services/auth.service';
 import { NutritionService } from '../../services/nutrition.service';
 import Swal from 'sweetalert2';
 import { Batiment } from '../../models/batiment.model';
+import { MatDialog } from '@angular/material/dialog';
+import { EditNutritionComponent } from './dialog/edit-nutrition/edit-nutrition.component';
 
 @Component({
   selector: 'app-nutrition',
@@ -19,6 +21,7 @@ export class NutritionComponent implements OnInit{
   nutritions: Nutrition[];
   batiments: Batiment[];
   bandes : Bande[];
+  headers: any;
 
 
   NutritionForm = this.fb.group({
@@ -37,7 +40,8 @@ export class NutritionComponent implements OnInit{
     public authService: AuthService,
     private batimentService: BatimentService,
     private fb: FormBuilder,
-    private bandeService : BandeService
+    private bandeService : BandeService,
+    private _matDialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -197,6 +201,26 @@ export class NutritionComponent implements OnInit{
         );
       }
     });
+  }
+
+  openDialogEdit(nutrition: any) :void{
+    // Open the dialog
+    const dialogRef = this._matDialog.open(EditNutritionComponent, {
+      backdropClass: 'my-full-screen-dialog',
+      panelClass:'my-panelClass-dialog',
+      width:'50%',
+      data: nutrition,
+      disableClose: true
+  });
+
+  dialogRef.afterClosed()
+      .subscribe((result) => {
+          console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+          if(result == true){
+
+            this.loadNutritionList(this.headers)
+          }
+      });
   }
 
 }

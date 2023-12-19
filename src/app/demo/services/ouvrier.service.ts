@@ -25,9 +25,9 @@ export class OuvrierService {
   }
 
 
-  // Mise à jour d'un bâtiment
-  updateOuvrier(ouvrier: Ouvrier, headers: any): Observable<any> {
-    const url = `${this.baseUrl}/ouvrier/update`;
+  // Mise à jour d'un ouvrier
+  updateOuvrier(id:any,ouvrier: Ouvrier, headers: any): Observable<any> {
+    const url = `${this.baseUrl}/ouvrier/update/${id}`;
     return this.http.put(url, ouvrier, { headers });
   }
 

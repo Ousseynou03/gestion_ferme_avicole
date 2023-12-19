@@ -99,7 +99,7 @@
         <td>{{ nutrition.bande.designation }}</td>
         <td>{{ nutrition.epuisee }}</td>
         <td>
-          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit" (click)="openDialogEdit(nutrition)">
             <i class="fas fa-edit"></i>
           </button>
           <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteNutrition(nutrition.id)">

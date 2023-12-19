@@ -4,6 +4,8 @@ import { OuvrierService } from '../../services/ouvrier.service';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { EditOuvrierComponent } from './dialog/edit-ouvrier/edit-ouvrier.component';
 
 @Component({
   selector: 'app-ouvrier',
@@ -15,6 +17,7 @@ export class OuvrierComponent implements OnInit{
   ouvriers: Ouvrier[] = [];
 
   ouvrierForm: FormGroup;
+  headers : any
   
 
   ouvrier: Ouvrier = {
@@ -28,7 +31,7 @@ export class OuvrierComponent implements OnInit{
   
 
   constructor(private ouvrierService: OuvrierService,
-    public authService : AuthService,
+    public authService : AuthService,private _matDialog: MatDialog,
     private fb : FormBuilder) {
       this.ouvrierForm = this.fb.group({
         fonction: ['', Validators.required],
@@ -127,50 +130,6 @@ addOuvrier() {
       }
     }
 
-
-
-
-  // Méthode pour mettre à jour un bâtiment
-  updateOuvrier(ouvrier: Ouvrier) {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté pour effectuer cette action.'
-      });
-      return;
-    }
-
-    // Créez un en-tête avec le token JWT
-    const headers = { Authorization: `Bearer ${token}` };
-
-    // Appelez la méthode de mise à jour du service
-    this.ouvrierService.updateOuvrier(ouvrier, headers).subscribe(
-      (response) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Mise à jour réussie',
-          text: 'L\' ouvrier a été mis à jour avec succès.'
-        });
-
-        // Mettez à jour la liste des bâtiments (facultatif)
-        this.loadOuvrierList();
-      },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur de mise à jour',
-          text: 'Impossible de mettre à jour l\' ouvrier.'
-        });
-
-        console.error('Erreur lors de la mise à jour du ouvrier:', error);
-      }
-    );
-  }
-
-
-
 // Suppression
   deleteOuvrier(id: number) {
     Swal.fire({
@@ -219,4 +178,27 @@ addOuvrier() {
     });
 
 }
+
+
+
+openDialogEdit(ouvrier: any) :void{
+  // Open the dialog
+  const dialogRef = this._matDialog.open(EditOuvrierComponent, {
+    backdropClass: 'my-full-screen-dialog',
+    panelClass:'my-panelClass-dialog',
+    width:'50%',
+    data: ouvrier,
+    disableClose: true
+});
+
+dialogRef.afterClosed()
+    .subscribe((result) => {
+        console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+        if(result == true){
+
+          this.loadOuvrierList();
+        }
+    });
+}
+
 }
