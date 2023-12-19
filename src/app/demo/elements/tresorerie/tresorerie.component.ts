@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import { Tresorerie } from '../../models/tresorerie.model';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { EditTresorerieComponent } from './dialog/edit-tresorerie/edit-tresorerie.component';
 
 @Component({
   selector: 'app-tresorerie',
@@ -16,6 +18,7 @@ export class TresorerieComponent implements OnInit{
   tresoreries : Tresorerie[];
 
   tresorerieForm : FormGroup;
+  headers : any;
 
   tresorerie : Tresorerie = {
     id: 0,
@@ -25,7 +28,7 @@ export class TresorerieComponent implements OnInit{
     solde: 0
   }
 
-  constructor(private tresoreriService : TresorerieService, public authService : AuthService,
+  constructor(private tresoreriService : TresorerieService, public authService : AuthService,private _matDialog: MatDialog,
     private fb : FormBuilder){
       this.tresorerieForm = this.fb.group({
         type: ['', Validators.required],
@@ -159,6 +162,28 @@ export class TresorerieComponent implements OnInit{
           );
         }
       });
+    }
+
+
+
+    openDialogEdit(tresorerie: any) :void{
+      // Open the dialog
+      const dialogRef = this._matDialog.open(EditTresorerieComponent, {
+        backdropClass: 'my-full-screen-dialog',
+        panelClass:'my-panelClass-dialog',
+        width:'50%',
+        data: tresorerie,
+        disableClose: true
+    });
+  
+    dialogRef.afterClosed()
+        .subscribe((result) => {
+            console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+            if(result == true){
+  
+              this.loadTresorerieList(this.headers)
+            }
+        });
     }
 
 }

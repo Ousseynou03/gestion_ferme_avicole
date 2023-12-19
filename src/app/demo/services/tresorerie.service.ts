@@ -26,8 +26,8 @@ export class TresorerieService {
 
 
   // Update
-  updateTresorerie(tresorerie: Tresorerie, headers: any): Observable<any> {
-    const url = `${this.baseUrl}/tresorerie/update`;
+  updateTresorerie(id:any,tresorerie: Tresorerie, headers: any): Observable<any> {
+    const url = `${this.baseUrl}/tresorerie/update/${id}`;
     return this.http.put(url, tresorerie, { headers });
   }
 
