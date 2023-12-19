@@ -27,7 +27,7 @@ export class VeterinaireService {
 
   // Update
   updateVeterinaire(id:any,veterinaire: Veterinaire, headers: any): Observable<any> {
-    const url = `${this.baseUrl}/mortalite/update/${id}`;
+    const url = `${this.baseUrl}/veto/update/${id}`;
     return this.http.put(url, veterinaire, { headers });
   }
 

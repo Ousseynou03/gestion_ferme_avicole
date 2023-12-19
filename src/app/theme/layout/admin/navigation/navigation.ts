@@ -71,6 +71,7 @@ const NavigationItems = [
             url: '/nutrition',
             icon: 'fas fa-balance-scale'
           },
+          /*
           {
             id: 'Stock Oeuf',
             title: 'Stock Oeuf',
@@ -79,6 +80,7 @@ const NavigationItems = [
             url: '/oeuf',
             icon: 'fas fa-egg'
           },
+          */
         ]
       },
 

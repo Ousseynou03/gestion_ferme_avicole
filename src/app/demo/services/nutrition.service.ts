@@ -27,7 +27,7 @@ export class NutritionService {
 
   // Update Nutrition
   updateNutrition(id: any, nutrition: Nutrition, headers: any): Observable<any> {
-    const url = `${this.baseUrl}/bande/update/${id}`;
+    const url = `${this.baseUrl}/nutrition/update/${id}`;
     return this.http.put(url, nutrition, { headers });
   }
 

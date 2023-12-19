@@ -1,1 +1,98 @@
-<p>veterinaire works!</p>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#bandeModal">
+    Ajouter un vétérinaire
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="bandeModal" tabindex="-1" aria-labelledby="bandeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bandeModalLabel">Nouveau Vétérinaire</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="cards">
+            <div class="card-bodi">
+              <div class="card-header">
+                <span>Enregistrement d'un Vétérinaire</span>
+              </div>
+              <div class="py-4 overflow-hidden">
+                <div class="flex">
+                  <!-- Selected agent form -->
+                  <form [formGroup]="veterinaireForm" (ngSubmit)="onSubmit()">
+                    <div>
+                      <label for="code">Nom Veterinaire:</label>
+                      <input placeholder="" type="text" id="nomVeterinaire" formControlName="nomVeterinaire">
+                    </div>
+                    <div>
+                      <label for="designation">Traitement:</label>
+                      <input placeholder="" type="text" id="traitement" formControlName="traitement">
+                    </div>
+                    <div>
+                      <label for="dateDebut">Date:</label>
+                      <input placeholder="" type="date" id="date" formControlName="date">
+                    </div>
+                    <div>
+                      <label for="dateFin">Posologie</label>
+                      <input placeholder="" type="text" id="posologie" formControlName="posologie">
+                    </div>
+            
+                  <div>
+                    <label for="bande">Bande:</label>
+                  <select id="bande" formControlName="bande">
+                    <option *ngFor="let bande of bandes" [value]="bande.id">{{ bande.designation }}</option>
+                  </select>
+                </div>
+                    <button type="submit">Enregistrer</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+<!-- Liste des vetos -->
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">N°</th>
+        <th scope="col">Nom Veterinaire</th>
+        <th scope="col">Traitement</th>
+        <th scope="col">Date</th>
+        <th scope="col">Posologie</th>
+        <th scope="col">Bande</th>
+        <th scope="col" *ngIf="authService && authService.roles && authService.roles.includes('admin')">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+       <tr *ngFor="let veterinaire of veterinaires; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ veterinaire.nomVeterinaire }}</td>
+        <td>{{ veterinaire.traitement }}</td>
+        <td>{{ veterinaire.date | date:'yyyy-MM-dd' }}</td>
+        <td>{{ veterinaire.posologie }}</td>
+        <td>{{ veterinaire.bande.designation }}</td>
+        <td>
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" (click)="openDialogEdit(veterinaire)" data-bs-target="#exampleModalEdit">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteVeterinaire(veterinaire.id)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
