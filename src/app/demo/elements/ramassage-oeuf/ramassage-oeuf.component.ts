@@ -6,6 +6,8 @@ import { AuthService } from '../../services/auth.service';
 import { Ramassage } from '../../models/ramassage.model';
 import { Bande } from '../../models/bande.model';
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { EditRamassageOeufComponent } from './dialog/edit-ramassage-oeuf/edit-ramassage-oeuf.component';
 
 @Component({
   selector: 'app-ramassage-oeuf',
@@ -17,6 +19,7 @@ export class RamassageOeufComponent implements OnInit{
 
   ramassages: Ramassage[];
   bandes: Bande[];
+  headers : any;
 
 
   ramassageForm = this.fb.group({
@@ -32,7 +35,8 @@ export class RamassageOeufComponent implements OnInit{
     private ramassageService : RamassageOeufService,
     private bandeService: BandeService,
     private fb: FormBuilder,
-    public authService : AuthService
+    public authService : AuthService,
+    private _matDialog: MatDialog,
   ) {}
 
 
@@ -176,6 +180,27 @@ export class RamassageOeufComponent implements OnInit{
           );
         }
       });
+    }
+
+
+    openDialogEdit(ramassage: any) :void{
+      // Open the dialog
+      const dialogRef = this._matDialog.open(EditRamassageOeufComponent, {
+        backdropClass: 'my-full-screen-dialog',
+        panelClass:'my-panelClass-dialog',
+        width:'50%',
+        data: ramassage,
+        disableClose: true
+    });
+  
+    dialogRef.afterClosed()
+        .subscribe((result) => {
+            console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+            if(result == true){
+  
+              this.loadRamassageList(this.headers)
+            }
+        });
     }
 
 }

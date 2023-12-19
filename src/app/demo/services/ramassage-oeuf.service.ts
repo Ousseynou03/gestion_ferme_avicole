@@ -26,8 +26,8 @@ export class RamassageOeufService {
 
 
   // Mise à jour d'un ramassage
-  updateRamassage(ramassage: Ramassage, headers: any): Observable<any> {
-    const url = `${this.baseUrl}/ramassage/update`;
+  updateRamassage(id:any,ramassage: Ramassage, headers: any): Observable<any> {
+    const url = `${this.baseUrl}/ramassage/update/${id}`;
     return this.http.put(url, ramassage, { headers });
   }
 

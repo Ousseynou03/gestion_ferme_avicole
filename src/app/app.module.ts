@@ -73,6 +73,7 @@ import { EditMaterielComponent } from './demo/elements/materiel/dialog/edit-mate
 import { EditMortaliteComponent } from './demo/elements/mortalite/dialog/edit-mortalite/edit-mortalite.component';
 import { EditNutritionComponent } from './demo/elements/nutrition/dialog/edit-nutrition/edit-nutrition.component';
 import { EditOuvrierComponent } from './demo/elements/ouvrier/dialog/edit-ouvrier/edit-ouvrier.component';
+import { EditRamassageOeufComponent } from './demo/elements/ramassage-oeuf/dialog/edit-ramassage-oeuf/edit-ramassage-oeuf.component';
 
 @NgModule({
   declarations: [
@@ -119,6 +120,7 @@ import { EditOuvrierComponent } from './demo/elements/ouvrier/dialog/edit-ouvrie
     EditMortaliteComponent,
     EditNutritionComponent,
     EditOuvrierComponent,
+    EditRamassageOeufComponent,
   ],
   imports: [
     BrowserModule,
