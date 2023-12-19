@@ -13,6 +13,9 @@ import { AuthService } from '../../services/auth.service';
 import { ClientService } from '../../services/client.service';
 import { TresorerieService } from '../../services/tresorerie.service';
 import { BandeService } from '../../services/bande.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EditVenteComponent } from './dialog/edit-vente/edit-vente.component';
+import { AddVenteComponent } from './dialog/add-vente/add-vente.component';
 
 @Component({
   selector: 'app-vente',
@@ -27,6 +30,7 @@ export class VenteComponent implements OnInit {
   filteredClients: Client[] = [];
   bandes: Bande[];
   totalMontant: number = 0;
+  headers : any;
 
   constructor(
     private venteService: VenteService,
@@ -34,7 +38,8 @@ export class VenteComponent implements OnInit {
     private tresoreriService: TresorerieService,
     private bandeService: BandeService,
     public authService: AuthService,
-    private clientService: ClientService
+    private clientService: ClientService,
+    private _matDialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -63,135 +68,8 @@ export class VenteComponent implements OnInit {
       bande: new FormControl(),
       tresorerie: new FormControl()
     });
-
-    this.venteForm
-      .get('client')
-      .valueChanges.pipe(startWith(''), map((value) => this._filterClients(value)))
-      .subscribe((filteredClients) => {
-        this.filteredClients = filteredClients.slice(0, 10);
-      });
   }
 
-  private _filterClients(value: string): Client[] {
-    const filterValue = value.toLowerCase();
-    return this.clients.filter((client) => client.nom.toLowerCase().includes(filterValue));
-  }
-
-  displayClient(client: Client): string {
-    return client && client.nom ? client.nom : '';
-  }
-
-  addClient() {
-    const selectedClient = this.venteForm.get('client').value;
-
-    // Vérifiez si le client sélectionné existe déjà dans la liste
-    const existingClient = this.clients.find((client) => client.id === selectedClient?.id);
-
-    if (!existingClient) {
-      // Si le client n'existe pas, ajoutez-le à la liste
-      this.clientService.addClient(selectedClient, {}).subscribe(
-        (response) => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Enregistré',
-            text: 'Client ajouté avec succès'
-          });
-
-          console.log('Client enregistré:', response);
-          this.loadClientList();
-        },
-        (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Enregistrement non autorisé',
-            text: "Vous n'êtes pas autorisé à enregistrer un client."
-          });
-
-          console.error('Erreur lors de l\'enregistrement d\'un client:', error);
-        }
-      );
-    }
-  }
-
-  addVente() {
-    const venteData = this.venteForm.value;
-
-    // Vérifiez si le client sélectionné existe déjà dans la liste
-    const existingClient = this.clients.find((client) => client.id === venteData.client?.id);
-
-    if (!existingClient) {
-      // Si le client n'existe pas, ajoutez-le à la liste
-      this.clientService.addClient(venteData.client, {}).subscribe(
-        (response) => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Enregistré',
-            text: 'Client ajouté avec succès'
-          });
-
-          console.log('Client enregistré:', response);
-          this.loadClientList();
-
-          // Continuez ici avec l'ajout de la vente après avoir ajouté le client
-          this.venteService.addVente(venteData, {}).subscribe(
-            (response) => {
-              Swal.fire({
-                icon: 'success',
-                title: 'Enregistré',
-                text: 'Vente ajoutée avec succès'
-              });
-
-              console.log('Vente enregistrée:', response);
-              this.loadVenteList({});
-            },
-            (error) => {
-              Swal.fire({
-                icon: 'error',
-                title: 'Enregistrement non autorisé',
-                text: "Vous n'êtes pas autorisé à enregistrer une vente."
-              });
-
-              console.error('Erreur lors de l\'enregistrement d\'une vente:', error);
-            }
-          );
-        },
-        (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Enregistrement non autorisé',
-            text: "Vous n'êtes pas autorisé à enregistrer un client."
-          });
-
-          console.error('Erreur lors de l\'enregistrement d\'un client:', error);
-        }
-      );
-    } else {
-      // Le client existe déjà, continuez avec l'ajout de la vente
-      // ...
-
-      this.venteService.addVente(venteData, {}).subscribe(
-        (response) => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Enregistré',
-            text: 'Vente ajoutée avec succès'
-          });
-
-          console.log('Vente enregistrée:', response);
-          this.loadVenteList({});
-        },
-        (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Enregistrement non autorisé',
-            text: "Vous n'êtes pas autorisé à enregistrer une vente."
-          });
-
-          console.error('Erreur lors de l\'enregistrement d\'une vente:', error);
-        }
-      );
-    }
-  }
 
   loadClientList() {
     const token = localStorage.getItem('token');
@@ -263,6 +141,47 @@ export class VenteComponent implements OnInit {
 
   private calculateTotalMontant(): void {
     this.totalMontant = this.ventes.reduce((total, vente) => total + vente.montant, 0);
+  }
+
+
+
+  openDialogEdit(vente: any) :void{
+    // Open the dialog
+    const dialogRef = this._matDialog.open(EditVenteComponent, {
+      backdropClass: 'my-full-screen-dialog',
+      panelClass:'my-panelClass-dialog',
+      width:'50%',
+      data: vente,
+      disableClose: true
+  });
+
+  dialogRef.afterClosed()
+      .subscribe((result) => {
+          console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+          if(result == true){
+
+            this.loadVenteList(this.headers)
+          }
+      });
+  }
+
+
+  openAddDialog(): void {
+    // Ouvrez le dialogue
+    const dialogRef = this._matDialog.open(AddVenteComponent, {
+      backdropClass: 'my-full-screen-dialog',
+      panelClass: 'my-panelClass-dialog',
+      width: '50%',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed()
+      .subscribe((result) => {
+        console.log("Result from dialog:", result);
+        if (result === true) {
+          this.loadVenteList(this.headers);
+        }
+      });
   }
 
 }

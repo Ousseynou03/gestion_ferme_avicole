@@ -76,6 +76,8 @@ import { EditOuvrierComponent } from './demo/elements/ouvrier/dialog/edit-ouvrie
 import { EditRamassageOeufComponent } from './demo/elements/ramassage-oeuf/dialog/edit-ramassage-oeuf/edit-ramassage-oeuf.component';
 import { EditUserComponent } from './demo/user/dialog/edit-user/edit-user.component';
 import { EditTresorerieComponent } from './demo/elements/tresorerie/dialog/edit-tresorerie/edit-tresorerie.component';
+import { EditVenteComponent } from './demo/elements/vente/dialog/edit-vente/edit-vente.component';
+import { AddVenteComponent } from './demo/elements/vente/dialog/add-vente/add-vente.component';
 
 @NgModule({
   declarations: [
@@ -125,6 +127,8 @@ import { EditTresorerieComponent } from './demo/elements/tresorerie/dialog/edit-
     EditRamassageOeufComponent,
     EditUserComponent,
     EditTresorerieComponent,
+    EditVenteComponent,
+    AddVenteComponent,
   ],
   imports: [
     BrowserModule,

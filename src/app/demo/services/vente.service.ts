@@ -26,8 +26,8 @@ export class VenteService {
   
   
     // Mise à jour
-    updateVente(vente: Vente, headers: any): Observable<any> {
-      const url = `${this.baseUrl}/vente/update`;
+    updateVente(id:any,vente: Vente, headers: any): Observable<any> {
+      const url = `${this.baseUrl}/vente/update/${id}`;
       return this.http.put(url, vente, { headers });
     }
   
