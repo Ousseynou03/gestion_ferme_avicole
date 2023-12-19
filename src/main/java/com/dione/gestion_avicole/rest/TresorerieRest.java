@@ -17,8 +17,13 @@ public interface TresorerieRest {
     @GetMapping("/all")
     ResponseEntity<List<Tresorerie>> getAllTresorerie();
 
+/*
     @PostMapping("/update")
     ResponseEntity<String> updateTresorerie(@RequestBody(required = true) Map<String, String> requestMap);
+*/
+    @PutMapping("/update/{tresorerieId}")
+    ResponseEntity<String> updateTresorerie(@PathVariable Integer tresorerieId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
 
     @DeleteMapping("/delete/{id}")

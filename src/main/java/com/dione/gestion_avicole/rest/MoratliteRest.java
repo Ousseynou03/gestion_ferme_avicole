@@ -16,8 +16,11 @@ public interface MoratliteRest {
     @GetMapping("/all")
     ResponseEntity<List<Mortalite>> getAllMortalite();
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateMortalite(@RequestBody(required = true) Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updateMortalite(@RequestBody(required = true) Map<String, String> requestMap);*/
+    @PutMapping("/update/{mortaliteId}")
+    ResponseEntity<String> updateMortalite(@PathVariable Integer mortaliteId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
     @DeleteMapping("delete/{id}")
     ResponseEntity<String> deleteMortalite(@PathVariable Integer id);

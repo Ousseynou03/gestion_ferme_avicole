@@ -29,11 +29,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BandeServiceImpl implements BandeService {
 
-    private BandeDao bandeDao;
-    private JwtFilter jwtFilter;
+    private final BandeDao bandeDao;
+    private final JwtFilter jwtFilter;
 
-    private BatimentDao batimentDao;
-    private DepenseDao depenseDao;
+    private final BatimentDao batimentDao;
+    private final DepenseDao depenseDao;
 
     public BandeServiceImpl(BandeDao bandeDao, JwtFilter jwtFilter, BatimentDao batimentDao, DepenseDao depenseDao) {
         this.bandeDao = bandeDao;
@@ -165,10 +165,10 @@ public ResponseEntity<String> updateBande(Integer bandeId, Map<String, String> r
     try {
         if (jwtFilter.isAdmin() || jwtFilter.isUser()){
             if (validateBandeMap(requestMap, true)){
-                Optional<Bande> optional = bandeDao.findById(bandeId);
-                if (optional.isPresent()){
+                Optional<Bande> bande = bandeDao.findById(bandeId);
+                if (bande.isPresent()){
                     Bande updateBande = getBandesFromMap(requestMap, true);
-                    updateBande.setId(bandeId);
+                  //  updateBande.setId(bandeId);
                     bandeDao.save(updateBande);
                     return AvicoleUtils.getResponseEntity("Bande modifié avec succès", HttpStatus.OK);
                 } else {

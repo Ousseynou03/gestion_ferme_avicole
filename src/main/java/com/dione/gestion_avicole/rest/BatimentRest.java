@@ -17,8 +17,12 @@ public interface BatimentRest {
     @GetMapping("/all")
     ResponseEntity<List<Batiment>> getAllBatiment();
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateBatiment(@RequestBody(required = true) Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updateBatiment(@RequestBody(required = true) Map<String, String> requestMap);*/
+
+    @PutMapping("/update/{batimentId}")
+    ResponseEntity<String> updateBatiment(@PathVariable Integer batimentId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
 
 

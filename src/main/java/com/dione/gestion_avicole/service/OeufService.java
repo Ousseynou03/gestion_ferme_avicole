@@ -12,7 +12,8 @@ public interface OeufService {
 
     ResponseEntity<List<Oeuf>> getAllOeuf();
 
-    ResponseEntity<String> updateOeuf(Map<String, String> requestMap);
+   // ResponseEntity<String> updateOeuf(Map<String, String> requestMap);
+   ResponseEntity<String> updateOeuf(Integer oeufId, Map<String, String> requestMap);
 
     ResponseEntity<String> deleteOeuf(Integer id);
 }

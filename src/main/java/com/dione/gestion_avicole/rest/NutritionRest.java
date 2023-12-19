@@ -20,8 +20,11 @@ public interface NutritionRest {
     ResponseEntity<List<Nutrition>> getAllNutrition();
 
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateNutrition(@RequestBody(required = true) Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updateNutrition(@RequestBody(required = true) Map<String, String> requestMap);*/
+    @PutMapping("/update/{nutritionId}")
+    ResponseEntity<String> updateNutrition(@PathVariable Integer nutritionId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
 
     @DeleteMapping("/delete/{id}")

@@ -7,6 +7,8 @@ import com.dione.gestion_avicole.service.VenteService;
 import com.dione.gestion_avicole.utils.AvicoleUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ import java.util.Map;
 @RestController
 public class VenteRestImpl implements VenteRest {
 
-    private VenteService venteService;
+    private final VenteService venteService;
 
     public VenteRestImpl(VenteService venteService) {
         this.venteService = venteService;
@@ -43,7 +45,7 @@ public class VenteRestImpl implements VenteRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateVente(Map<String, String> requestMap) {
         try {
             return venteService.updateVente(requestMap);
@@ -51,7 +53,18 @@ public class VenteRestImpl implements VenteRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateVente(@PathVariable Integer venteId, @RequestBody(required = true) Map<String, String> requestMap) {
+        try {
+            return venteService.updateVente(venteId, requestMap);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteVente(Integer id) {

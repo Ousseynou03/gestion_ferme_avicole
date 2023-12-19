@@ -13,7 +13,8 @@ public interface AppartementService {
 
     ResponseEntity<List<Appartement>> getAllAppartement();
 
-    ResponseEntity<String> updateAppartement(Map<String, String> requestMap);
+   // ResponseEntity<String> updateAppartement(Map<String, String> requestMap);
+   ResponseEntity<String> updateAppartement(Integer appartementId, Map<String, String> requestMap);
 
     ResponseEntity<String> deleteAppartement(Integer id);
 }

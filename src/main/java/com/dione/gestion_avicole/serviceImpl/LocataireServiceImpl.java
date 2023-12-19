@@ -104,7 +104,7 @@ public class LocataireServiceImpl implements LocataireService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateLocataire(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin()){
@@ -125,7 +125,33 @@ public class LocataireServiceImpl implements LocataireService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateLocataire(Integer locataireId, Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin()){
+                if (validateLocataireMap(requestMap, true)){
+                    Optional<Locataire> optional = locataireDao.findById(locataireId);
+                    if (optional.isPresent()){
+                        Locataire locataireToUpdate = getLocatairesFromMap(requestMap, true);
+                        locataireToUpdate.setId(locataireId); // Set the ID before saving
+                        locataireDao.save(locataireToUpdate);
+                        return AvicoleUtils.getResponseEntity("Locataire modifié avec succès", HttpStatus.OK);
+                    } else {
+                        return AvicoleUtils.getResponseEntity("Locataire ID doesn't exist", HttpStatus.OK);
+                    }
+                }
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            } else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteLocataire(Integer id) {

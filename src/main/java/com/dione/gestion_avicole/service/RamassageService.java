@@ -14,7 +14,8 @@ public interface RamassageService {
 
     ResponseEntity<List<Ramassage>> getAllRamassage();
 
-    ResponseEntity<String> updateRamassage(Map<String, String> requestMap);
+   // ResponseEntity<String> updateRamassage(Map<String, String> requestMap);
+   ResponseEntity<String> updateRamassage(Integer ramassageId, Map<String, String> requestMap);
 
     ResponseEntity<String> deleteRamassage(Integer id);
 

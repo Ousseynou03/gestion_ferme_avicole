@@ -14,7 +14,8 @@ public interface NutritionService {
 
     ResponseEntity<List<Nutrition>> getAllNutrition();
 
-    ResponseEntity<String> updateNutrition(Map<String, String> requestMap);
+   // ResponseEntity<String> updateNutrition(Map<String, String> requestMap);
+   ResponseEntity<String> updateNutrition(Integer nutritionId, Map<String, String> requestMap);
 
     ResponseEntity<String> deleteNutrition(Integer id);
 

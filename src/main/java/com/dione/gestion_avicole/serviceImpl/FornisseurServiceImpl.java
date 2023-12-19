@@ -23,8 +23,8 @@ import java.util.Optional;
 @Slf4j
 public class FornisseurServiceImpl implements FournisseurService {
 
-    private FournisseurDao fournisseurDao;
-    private JwtFilter jwtFilter;
+    private final FournisseurDao fournisseurDao;
+    private final JwtFilter jwtFilter;
 
     public FornisseurServiceImpl(FournisseurDao fournisseurDao, JwtFilter jwtFilter) {
         this.fournisseurDao = fournisseurDao;
@@ -85,7 +85,7 @@ public class FornisseurServiceImpl implements FournisseurService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateFournisseur(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()){
@@ -106,7 +106,33 @@ public class FornisseurServiceImpl implements FournisseurService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateFournisseur(Integer fournisseurId, Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+                if (validateFournisseurMap(requestMap, true)){
+                    Optional<Fournisseur> optional = fournisseurDao.findById(fournisseurId);
+                    if (optional.isPresent()){
+                        Fournisseur fournisseurToUpdate = getFournisseurFromMap(requestMap, true);
+                        fournisseurToUpdate.setId(fournisseurId); // Set the ID before saving
+                        fournisseurDao.save(fournisseurToUpdate);
+                        return AvicoleUtils.getResponseEntity("Fournisseur modifié avec succès", HttpStatus.OK);
+                    } else {
+                        return AvicoleUtils.getResponseEntity("Fournisseur ID doesn't exist", HttpStatus.OK);
+                    }
+                }
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            } else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteFournisseur(Integer id) {

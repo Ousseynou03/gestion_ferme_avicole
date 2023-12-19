@@ -13,7 +13,8 @@ public interface DepenseService {
 
     ResponseEntity<List<Depense>> getAllDepense();
 
-    ResponseEntity<String> updateDepense(Map<String, String> requestMap);
+   // ResponseEntity<String> updateDepense(Map<String, String> requestMap);
+   ResponseEntity<String> updateDepense(Integer depenseId, Map<String, String> requestMap);
 
     ResponseEntity<String> deleteDepense(Integer id);
 

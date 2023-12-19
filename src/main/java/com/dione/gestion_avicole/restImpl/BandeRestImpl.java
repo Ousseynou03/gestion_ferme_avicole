@@ -20,7 +20,7 @@ import java.util.Map;
 @RestController
 public class BandeRestImpl implements BandeRest {
 
-    private BandeService bandeService;
+    private final BandeService bandeService;
 
     public BandeRestImpl(BandeService bandeService) {
         this.bandeService = bandeService;

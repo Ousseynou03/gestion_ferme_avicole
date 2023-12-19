@@ -121,7 +121,7 @@ public class DepenseServiceImpl implements DepenseService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateDepense(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()){
@@ -142,7 +142,33 @@ public class DepenseServiceImpl implements DepenseService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateDepense(Integer depenseId, Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+                if (validateDepenseMap(requestMap, true)){
+                    Optional<Depense> optional = depenseDao.findById(depenseId);
+                    if (optional.isPresent()){
+                        Depense depenseToUpdate = getDepensesFromMap(requestMap, true);
+                        depenseToUpdate.setId(depenseId); // Set the ID before saving
+                        depenseDao.save(depenseToUpdate);
+                        return AvicoleUtils.getResponseEntity("Dépense modifié avec succès", HttpStatus.OK);
+                    } else {
+                        return AvicoleUtils.getResponseEntity("Dépense ID doesn't exist", HttpStatus.OK);
+                    }
+                }
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            } else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteDepense(Integer id) {

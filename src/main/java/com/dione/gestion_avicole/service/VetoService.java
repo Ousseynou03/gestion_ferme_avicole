@@ -13,7 +13,10 @@ public interface VetoService {
 
     ResponseEntity<List<Veterinaire>> getAllVeto();
 
-    ResponseEntity<String> updateVeto(Map<String, String> requestMap);
+   // ResponseEntity<String> updateVeto(Map<String, String> requestMap);
+
+    ResponseEntity<String> updateVeto(Integer vetoId, Map<String, String> requestMap);
+
 
     ResponseEntity<String> deleteVeto(Integer id);
 

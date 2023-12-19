@@ -15,7 +15,8 @@ public interface TresorerieService {
 
     ResponseEntity<List<Tresorerie>> getAllTresorerie();
 
-    ResponseEntity<String> updateTresorerie(@RequestBody(required = true) Map<String, String> requestMap);
+   // ResponseEntity<String> updateTresorerie(@RequestBody(required = true) Map<String, String> requestMap);
+   ResponseEntity<String> updateTresorerie(Integer tresorerieId, Map<String, String> requestMap);
 
     ResponseEntity<String> deleteTresorerie(@PathVariable Integer id);
 

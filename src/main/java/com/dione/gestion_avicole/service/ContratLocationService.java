@@ -14,7 +14,10 @@ public interface ContratLocationService {
 
     ResponseEntity<List<ContratLocation>> getAllContratLocation();
 
-    ResponseEntity<String> updateContratLocation(Map<String, String> requestMap);
+   // ResponseEntity<String> updateContratLocation(Map<String, String> requestMap);
+
+    ResponseEntity<String> updateContratLocation(Integer contratId, Map<String, String> requestMap);
+
 
     ResponseEntity<String> deleteContratLocation(Integer id);
 }

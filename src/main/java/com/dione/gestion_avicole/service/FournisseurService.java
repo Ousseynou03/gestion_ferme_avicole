@@ -13,7 +13,9 @@ public interface FournisseurService {
 
     ResponseEntity<List<Fournisseur>> getAllFournisseur();
 
-    ResponseEntity<String> updateFournisseur(Map<String, String> requestMap);
+   // ResponseEntity<String> updateFournisseur(Map<String, String> requestMap);
+   ResponseEntity<String> updateFournisseur(Integer fournisseurId, Map<String, String> requestMap);
+
 
     ResponseEntity<String> deleteFournisseur(Integer id);
 }

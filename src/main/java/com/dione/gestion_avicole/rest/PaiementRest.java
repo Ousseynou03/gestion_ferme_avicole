@@ -3,10 +3,7 @@ package com.dione.gestion_avicole.rest;
 
 import com.dione.gestion_avicole.POJO.Paiement;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -20,8 +17,11 @@ public interface PaiementRest {
     @GetMapping("/all")
     ResponseEntity<List<Paiement>> getAllPaiement();
 
-    @PostMapping("/update")
-    ResponseEntity<String> updatePaiement(Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updatePaiement(Map<String, String> requestMap);*/
+    @PutMapping("/update/{paiementId}")
+    ResponseEntity<String> updatePaiement(@PathVariable Integer paiementId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deletePaiement(Integer id);

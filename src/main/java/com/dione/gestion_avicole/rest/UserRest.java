@@ -21,8 +21,12 @@ public interface UserRest {
     @GetMapping("/get")
     ResponseEntity<List<UserWrapper>> getAllUser();
 
-    @PostMapping("/update")
-    ResponseEntity<String> update(@RequestBody Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> update(@RequestBody Map<String, String> requestMap);*/
+
+    @PutMapping("/update/{userId}")
+    ResponseEntity<String> updateUser(@PathVariable Integer userId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteUser(@PathVariable Integer id);

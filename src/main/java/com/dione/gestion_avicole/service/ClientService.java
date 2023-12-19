@@ -13,7 +13,9 @@ public interface ClientService {
 
     ResponseEntity<List<Client>> getAllClient();
 
-    ResponseEntity<String> updateClient(Map<String, String> requestMap);
+ //   ResponseEntity<String> updateClient(Map<String, String> requestMap);
+    ResponseEntity<String> updateClient(Integer clientId, Map<String, String> requestMap);
+
 
     ResponseEntity<String> deleteClient(Integer id);
 }

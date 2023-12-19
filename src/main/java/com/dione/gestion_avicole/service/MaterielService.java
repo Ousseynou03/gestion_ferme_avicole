@@ -13,7 +13,8 @@ public interface MaterielService {
 
     ResponseEntity<List<Materiel>> getAllMateriel();
 
-    ResponseEntity<String> updateMateriel(Map<String, String> requestMap);
+   // ResponseEntity<String> updateMateriel(Map<String, String> requestMap);
+   ResponseEntity<String> updateMateriel(Integer materielId, Map<String, String> requestMap);
 
     ResponseEntity<String> deleteMateriel(Integer id);
 }

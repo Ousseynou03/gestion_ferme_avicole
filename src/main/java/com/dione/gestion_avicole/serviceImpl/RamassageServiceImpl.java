@@ -22,9 +22,9 @@ import java.util.*;
 @Slf4j
 public class RamassageServiceImpl implements RamassageService {
 
-    private RamassageDao ramassageDao;
-    private BandeDao bandeDao;
-    private JwtFilter jwtFilter;
+    private final RamassageDao ramassageDao;
+    private final BandeDao bandeDao;
+    private final JwtFilter jwtFilter;
 
     public RamassageServiceImpl(RamassageDao ramassageDao, BandeDao bandeDao, JwtFilter jwtFilter) {
         this.ramassageDao = ramassageDao;
@@ -136,7 +136,7 @@ public class RamassageServiceImpl implements RamassageService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateRamassage(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()){
@@ -157,7 +157,33 @@ public class RamassageServiceImpl implements RamassageService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateRamassage(Integer ramassageId, Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+                if (validateRamassageMap(requestMap, true)){
+                    Optional<Ramassage> optional = ramassageDao.findById(ramassageId);
+                    if (optional.isPresent()){
+                        Ramassage ramassageToUpdate = getRamassagesFromMap(requestMap, true);
+                        ramassageToUpdate.setId(ramassageId); // Set the ID before saving
+                        ramassageDao.save(ramassageToUpdate);
+                        return AvicoleUtils.getResponseEntity("Ramassage modifié avec succès", HttpStatus.OK);
+                    } else {
+                        return AvicoleUtils.getResponseEntity("Ramassage ID n'existe pas", HttpStatus.OK);
+                    }
+                }
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            } else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteRamassage(Integer id) {

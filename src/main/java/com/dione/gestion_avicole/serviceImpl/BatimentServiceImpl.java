@@ -84,6 +84,32 @@ public class BatimentServiceImpl implements BatimentService {
     }
 
     @Override
+    public ResponseEntity<String> updateBatiment(Integer batimentId, Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+                if (validateBatimentMap(requestMap, true)){
+                    Optional<Batiment> optional = batimentDao.findById(batimentId);
+                    if (optional.isPresent()){
+                        Batiment batimentToUpdate = getBatimentsFromMap(requestMap, true);
+                        batimentToUpdate.setId(batimentId); // Set the ID before saving
+                        batimentDao.save(batimentToUpdate);
+                        return AvicoleUtils.getResponseEntity("Batiment modifié avec succès", HttpStatus.OK);
+                    } else {
+                        return AvicoleUtils.getResponseEntity("Batiment ID doesn't exist", HttpStatus.OK);
+                    }
+                }
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            } else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+/*    @Override
     public ResponseEntity<String> updateBatiment(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()) {
@@ -104,7 +130,7 @@ public class BatimentServiceImpl implements BatimentService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    }*/
 
     @Override
     public ResponseEntity<String> deleteBatiment(Integer id) {

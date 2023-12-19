@@ -79,7 +79,7 @@ public class ClientServiceImpl implements ClientService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateClient(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()){
@@ -100,7 +100,32 @@ public class ClientServiceImpl implements ClientService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+@Override
+public ResponseEntity<String> updateClient(Integer clientId, Map<String, String> requestMap) {
+    try {
+        if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+            if (validateClientMap(requestMap, true)){
+                Optional<Client> optional = clientDao.findById(clientId);
+                if (optional.isPresent()){
+                    Client clientToUpdate = getClientsFromMap(requestMap, true);
+                    clientToUpdate.setId(clientId); // Set the ID before saving
+                    clientDao.save(clientToUpdate);
+                    return AvicoleUtils.getResponseEntity("Client modifié avec succès", HttpStatus.OK);
+                } else {
+                    return AvicoleUtils.getResponseEntity("Client ID doesn't exist", HttpStatus.OK);
+                }
+            }
+            return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+        } else {
+            return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+    return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+}
+
 
     @Override
     public ResponseEntity<String> deleteClient(Integer id) {

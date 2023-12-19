@@ -118,7 +118,7 @@ public class ContratLocationServiceImpl implements ContratLocationService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateContratLocation(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin()) {
@@ -138,7 +138,33 @@ public class ContratLocationServiceImpl implements ContratLocationService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateContratLocation(Integer contratId, Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin()) {
+                if (validateContrtatLocationMap(requestMap, true)) {
+                    Optional<ContratLocation> optional = contratLocationDao.findById(contratId);
+                    if (optional.isPresent()) {
+                        ContratLocation contratToUpdate = getContratLocationsFromMap(requestMap, true);
+                        contratToUpdate.setId(contratId); // Set the ID before saving
+                        contratLocationDao.save(contratToUpdate);
+                        return AvicoleUtils.getResponseEntity("Contrat modifié avec succès", HttpStatus.OK);
+                    } else {
+                        return AvicoleUtils.getResponseEntity("Contrat ID doesn't exist", HttpStatus.OK);
+                    }
+                }
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            } else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteContratLocation(Integer id) {

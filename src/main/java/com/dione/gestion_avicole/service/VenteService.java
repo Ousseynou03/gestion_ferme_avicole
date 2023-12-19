@@ -13,7 +13,8 @@ public interface VenteService {
 
     ResponseEntity<List<Vente>> getAllVente();
 
-    ResponseEntity<String> updateVente(Map<String, String> requestMap);
+   // ResponseEntity<String> updateVente(Map<String, String> requestMap);
+   ResponseEntity<String> updateVente(Integer venteId, Map<String, String> requestMap);
 
     ResponseEntity<String> deleteVente(Integer id);
 

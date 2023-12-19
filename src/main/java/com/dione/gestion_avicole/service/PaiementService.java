@@ -13,7 +13,9 @@ public interface PaiementService {
 
     ResponseEntity<List<Paiement>> getAllPaiement();
 
-    ResponseEntity<String> updatePaiement(Map<String, String> requestMap);
+   // ResponseEntity<String> updatePaiement(Map<String, String> requestMap);
+
+    ResponseEntity<String> updatePaiement(Integer paiementId, Map<String, String> requestMap);
 
     ResponseEntity<String> deletePaiement(Integer id);
 }

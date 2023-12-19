@@ -42,7 +42,7 @@ public class LocataireRestImpl implements LocataireRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateLocataire(Map<String, String> requestMap) {
         try {
             return locataireService.updateLocataire(requestMap);
@@ -50,7 +50,18 @@ public class LocataireRestImpl implements LocataireRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateLocataire(Integer locataireId, Map<String, String> requestMap) {
+        try {
+            return locataireService.updateLocataire(locataireId, requestMap);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteLocataire(Integer id) {

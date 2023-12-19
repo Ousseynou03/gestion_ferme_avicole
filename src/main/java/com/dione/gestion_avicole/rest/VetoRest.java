@@ -18,8 +18,11 @@ public interface VetoRest {
     @GetMapping("/all")
     ResponseEntity<List<Veterinaire>> getAllVeto();
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateVeto(@RequestBody(required = true) Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updateVeto(@RequestBody(required = true) Map<String, String> requestMap);*/
+    @PutMapping("/update/{vetoId}")
+    ResponseEntity<String> updateVeto(@PathVariable Integer vetoId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteVeto(@PathVariable Integer id);

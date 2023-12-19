@@ -19,8 +19,12 @@ public interface RamassageRest {
     @GetMapping("/all")
     ResponseEntity<List<Ramassage>> getAllRamassage();
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateRamassage(@RequestBody(required = true) Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updateRamassage(@RequestBody(required = true) Map<String, String> requestMap);*/
+
+    @PutMapping("/update/{ramassageId}")
+    ResponseEntity<String> updateRamassage(@PathVariable Integer ramassageId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteRamassage(@PathVariable Integer id);

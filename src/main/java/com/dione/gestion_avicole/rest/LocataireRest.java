@@ -16,8 +16,12 @@ public interface LocataireRest {
     @GetMapping("/all")
     ResponseEntity<List<Locataire>> getAllLocataire();
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateLocataire(@RequestBody(required = true) Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updateLocataire(@RequestBody(required = true) Map<String, String> requestMap);*/
+
+    @PutMapping("/update/{locataireId}")
+    ResponseEntity<String> updateLocataire(@PathVariable Integer locataireId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteLocataire(@PathVariable Integer id);

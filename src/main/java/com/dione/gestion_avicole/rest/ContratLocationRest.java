@@ -17,8 +17,11 @@ public interface ContratLocationRest {
     @GetMapping("/all")
     ResponseEntity<List<ContratLocation>> getAllContratLocation();
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateContratLocation(@RequestBody(required = true) Map<String, String> requestMap);
+ /*   @PostMapping("/update")
+    ResponseEntity<String> updateContratLocation(@RequestBody(required = true) Map<String, String> requestMap);*/
+     @PutMapping("/update/{contratId}")
+     ResponseEntity<String> updateContratLocation(@PathVariable Integer contratId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteContratLocation(@PathVariable Integer id);

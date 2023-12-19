@@ -17,7 +17,7 @@ import java.util.Map;
 public class NutritionRestImpl implements NutritionRest {
 
 
-    private NutritionService nutritionService;
+    private final NutritionService nutritionService;
 
     public NutritionRestImpl(NutritionService nutritionService) {
         this.nutritionService = nutritionService;
@@ -43,7 +43,7 @@ public class NutritionRestImpl implements NutritionRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateNutrition(Map<String, String> requestMap) {
         try {
             return nutritionService.updateNutrition(requestMap);
@@ -51,7 +51,17 @@ public class NutritionRestImpl implements NutritionRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+@Override
+public ResponseEntity<String> updateNutrition(Integer nutritionId, Map<String, String> requestMap) {
+    try {
+        return nutritionService.updateNutrition(nutritionId, requestMap);
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+    return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+}
+
 
     @Override
     public ResponseEntity<String> deleteNutrition(Integer id) {

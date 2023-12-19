@@ -43,7 +43,7 @@ public class MaterielRestImpl implements MaterielRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateMateriel(Map<String, String> requestMap) {
         try {
             return materielService.updateMateriel(requestMap);
@@ -51,7 +51,17 @@ public class MaterielRestImpl implements MaterielRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+@Override
+public ResponseEntity<String> updateMateriel(Integer materielId, Map<String, String> requestMap) {
+    try {
+        return materielService.updateMateriel(materielId, requestMap);
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+    return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+}
+
 
     @Override
     public ResponseEntity<String> deleteMateriel(Integer id) {

@@ -49,7 +49,7 @@ public class BatimentRestImpl implements BatimentRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateBatiment(Map<String, String> requestMap) {
         try {
             return batimentService.updateBatiment(requestMap);
@@ -57,7 +57,18 @@ public class BatimentRestImpl implements BatimentRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateBatiment(Integer batimentId, Map<String, String> requestMap) {
+        try {
+            return batimentService.updateBatiment(batimentId, requestMap);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteBatiment(Integer id) {

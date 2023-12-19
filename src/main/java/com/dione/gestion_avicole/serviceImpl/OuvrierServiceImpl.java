@@ -22,8 +22,8 @@ import java.util.Optional;
 @Slf4j
 public class OuvrierServiceImpl implements OuvrierSerice {
 
-    private OuvrierDao ouvrierDao;
-    private JwtFilter jwtFilter;
+    private final OuvrierDao ouvrierDao;
+    private final JwtFilter jwtFilter;
 
     public OuvrierServiceImpl(OuvrierDao ouvrierDao, JwtFilter jwtFilter) {
         this.ouvrierDao = ouvrierDao;
@@ -91,7 +91,7 @@ public class OuvrierServiceImpl implements OuvrierSerice {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateOuvrier(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin()){
@@ -112,7 +112,33 @@ public class OuvrierServiceImpl implements OuvrierSerice {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateOuvrier(Integer ouvrierId, Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin()){
+                if (validateOuvrierMap(requestMap, true)){
+                    Optional<Ouvrier> optional = ouvrierDao.findById(ouvrierId);
+                    if (optional.isPresent()){
+                        Ouvrier ouvrierToUpdate = getOuvrierFromMap(requestMap, true);
+                        ouvrierToUpdate.setId(ouvrierId); // Set the ID before saving
+                        ouvrierDao.save(ouvrierToUpdate);
+                        return AvicoleUtils.getResponseEntity("Ouvrier modifié avec succès", HttpStatus.OK);
+                    } else {
+                        return AvicoleUtils.getResponseEntity("Ouvrier ID n'existe pas", HttpStatus.OK);
+                    }
+                }
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            } else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteOuvrier(Integer id) {

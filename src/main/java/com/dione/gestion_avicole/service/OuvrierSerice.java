@@ -13,7 +13,9 @@ public interface OuvrierSerice {
 
     ResponseEntity<List<Ouvrier>> getAllOuvrier();
 
-    ResponseEntity<String> updateOuvrier(Map<String, String> requestMap);
+   // ResponseEntity<String> updateOuvrier(Map<String, String> requestMap);
+   ResponseEntity<String> updateOuvrier(Integer ouvrierId, Map<String, String> requestMap);
+
 
     ResponseEntity<String> deleteOuvrier(Integer id);
 

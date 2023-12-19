@@ -43,7 +43,7 @@ public class ClientRestImpl implements ClientRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateClient(Map<String, String> requestMap) {
         try {
             return clientService.updateClient(requestMap);
@@ -51,7 +51,18 @@ public class ClientRestImpl implements ClientRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateClient(Integer clientId, Map<String, String> requestMap) {
+        try {
+            return clientService.updateClient(clientId, requestMap);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteClient(Integer id) {

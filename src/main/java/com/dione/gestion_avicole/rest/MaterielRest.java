@@ -19,8 +19,12 @@ public interface MaterielRest {
     ResponseEntity<List<Materiel>> getAllMateriel();
 
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateMateriel(@RequestBody(required = true) Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updateMateriel(@RequestBody(required = true) Map<String, String> requestMap);*/
+
+    @PutMapping("/update/{materielId}")
+    ResponseEntity<String> updateMateriel(@PathVariable Integer materielId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
 
     @DeleteMapping("/delete/{id}")

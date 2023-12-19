@@ -22,10 +22,10 @@ import java.util.*;
 public class NutritionServiceImpl implements NutritionService {
 
 
-    private NutritionDao nutritionDao;
-    private JwtFilter jwtFilter;
-    private BatimentDao batimentDao;
-    private BandeDao bandeDao;
+    private final NutritionDao nutritionDao;
+    private final JwtFilter jwtFilter;
+    private final BatimentDao batimentDao;
+    private final BandeDao bandeDao;
 
     public NutritionServiceImpl(NutritionDao nutritionDao, JwtFilter jwtFilter, BatimentDao batimentDao, BandeDao bandeDao) {
         this.nutritionDao = nutritionDao;
@@ -136,7 +136,7 @@ public class NutritionServiceImpl implements NutritionService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateNutrition(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()){
@@ -157,7 +157,33 @@ public class NutritionServiceImpl implements NutritionService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateNutrition(Integer nutritionId, Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+                if (validateNutritionMap(requestMap, true)){
+                    Optional<Nutrition> optional = nutritionDao.findById(nutritionId);
+                    if (optional.isPresent()){
+                        Nutrition nutritionToUpdate = getNutritionsFromMap(requestMap, true);
+                        nutritionToUpdate.setId(nutritionId); // Set the ID before saving
+                        nutritionDao.save(nutritionToUpdate);
+                        return AvicoleUtils.getResponseEntity("Nutrition modifiée avec succès", HttpStatus.OK);
+                    } else {
+                        return AvicoleUtils.getResponseEntity("Nutrition ID n'existe pas", HttpStatus.OK);
+                    }
+                }
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            } else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteNutrition(Integer id) {

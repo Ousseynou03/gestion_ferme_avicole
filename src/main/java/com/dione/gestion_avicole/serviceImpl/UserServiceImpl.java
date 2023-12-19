@@ -29,13 +29,13 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserDao userDao;
-    private AuthenticationManager authenticationManager;
-    private CustomerUsersDetailsService customerUsersDetailsService;
-    private JwtUtil jwtUtil;
-    private JwtFilter jwtFilter;
+    private final UserDao userDao;
+    private final AuthenticationManager authenticationManager;
+    private final CustomerUsersDetailsService customerUsersDetailsService;
+    private final JwtUtil jwtUtil;
+    private final JwtFilter jwtFilter;
 
-    private  PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     public UserServiceImpl(UserDao userDao, AuthenticationManager authenticationManager, CustomerUsersDetailsService customerUsersDetailsService, JwtUtil jwtUtil, JwtFilter jwtFilter, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.authenticationManager = authenticationManager;
@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
 
 
     //Update User
-    @Override
+/*    @Override
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isUser()){
@@ -166,7 +166,28 @@ public class UserServiceImpl implements UserService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateUser(Integer userId, Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isUser()){
+                //Vérifions si l'utilisateur existe déjà
+                Optional<User> optional = userDao.findById(userId);
+                if (optional.isPresent()){
+                    userDao.updateStatus(requestMap.get("status"), userId);
+
+                    return AvicoleUtils.getResponseEntity("Statut de l'utilisateur mis à jour avec succès", HttpStatus.OK);
+                }
+            } else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteUser(Integer id) {

@@ -42,7 +42,7 @@ public class FournisseurRestImpl implements FournisseurRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateFournisseur(Map<String, String> requestMap) {
         try {
             return fournisseurService.updateFournisseur(requestMap);
@@ -50,7 +50,17 @@ public class FournisseurRestImpl implements FournisseurRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+@Override
+public ResponseEntity<String> updateFournisseur(Integer fournisseurId, Map<String, String> requestMap) {
+    try {
+        return fournisseurService.updateFournisseur(fournisseurId, requestMap);
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+    return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+}
+
 
     @Override
     public ResponseEntity<String> deleteFournisseur(Integer id) {

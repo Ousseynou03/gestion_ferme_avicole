@@ -20,9 +20,9 @@ import java.util.Optional;
 public class TresorerieSeviceImpl implements TresorerieService {
 
 
-    private TresorerieDao tresorerieDao;
+    private final TresorerieDao tresorerieDao;
 
-    private JwtFilter jwtFilter;
+    private final JwtFilter jwtFilter;
 
     public TresorerieSeviceImpl(TresorerieDao tresorerieDao, JwtFilter jwtFilter) {
         this.tresorerieDao = tresorerieDao;
@@ -90,7 +90,7 @@ public class TresorerieSeviceImpl implements TresorerieService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateTresorerie(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin()){
@@ -111,7 +111,32 @@ public class TresorerieSeviceImpl implements TresorerieService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+@Override
+public ResponseEntity<String> updateTresorerie(Integer tresorerieId, Map<String, String> requestMap) {
+    try {
+        if (jwtFilter.isAdmin()){
+            if (validateTresorerieMap(requestMap, true)){
+                Optional<Tresorerie> optional = tresorerieDao.findById(tresorerieId);
+                if (optional.isPresent()){
+                    Tresorerie tresorerieToUpdate = getTresoreriesFromMap(requestMap, true);
+                    tresorerieToUpdate.setId(tresorerieId); // Set the ID before saving
+                    tresorerieDao.save(tresorerieToUpdate);
+                    return AvicoleUtils.getResponseEntity("Solde modifié avec succès", HttpStatus.OK);
+                } else {
+                    return AvicoleUtils.getResponseEntity("Solde ID n'existe pas", HttpStatus.OK);
+                }
+            }
+            return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+        } else {
+            return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+    return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+}
+
 
     @Override
     public ResponseEntity<String> deleteTresorerie(Integer id) {

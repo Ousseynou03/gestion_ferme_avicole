@@ -16,8 +16,11 @@ public interface OuvrierRest {
     @GetMapping("/all")
     ResponseEntity<List<Ouvrier>> getAllOuvrier();
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateOuvrier(@RequestBody(required = true) Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updateOuvrier(@RequestBody(required = true) Map<String, String> requestMap);*/
+    @PutMapping("/update/{ouvrierId}")
+    ResponseEntity<String> updateOuvrier(@PathVariable Integer ouvrierId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteOuvrier(@PathVariable Integer id);

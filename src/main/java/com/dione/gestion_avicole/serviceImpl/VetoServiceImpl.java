@@ -19,9 +19,9 @@ import java.util.*;
 @Service
 public class VetoServiceImpl implements VetoService {
 
-    private VeterinaireDao veterinaireDao;
+    private final VeterinaireDao veterinaireDao;
     private final JwtFilter jwtFilter;
-    private BandeDao bandeDao;
+    private final BandeDao bandeDao;
 
     public VetoServiceImpl(VeterinaireDao veterinaireDao, JwtFilter jwtFilter, BandeDao bandeDao) {
         this.veterinaireDao = veterinaireDao;
@@ -107,7 +107,7 @@ public class VetoServiceImpl implements VetoService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateVeto(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()){
@@ -128,7 +128,33 @@ public class VetoServiceImpl implements VetoService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateVeto(Integer vetoId, Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+                if (validateVetoMap(requestMap, true)){
+                    Optional<Veterinaire> optional = veterinaireDao.findById(vetoId);
+                    if (optional.isPresent()){
+                        Veterinaire vetoToUpdate = getVetosFromMap(requestMap, true);
+                        vetoToUpdate.setId(vetoId); // Set the ID before saving
+                        veterinaireDao.save(vetoToUpdate);
+                        return AvicoleUtils.getResponseEntity("Véto modifié avec succès", HttpStatus.OK);
+                    } else {
+                        return AvicoleUtils.getResponseEntity("Véto ID n'existe pas", HttpStatus.OK);
+                    }
+                }
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            } else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteVeto(Integer id) {

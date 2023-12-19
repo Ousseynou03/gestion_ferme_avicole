@@ -22,9 +22,9 @@ import java.util.Optional;
 @Service
 public class OeufServiceImpl implements OeufService {
 
-    private OeufDao oeufDao;
-    private JwtFilter jwtFilter;
-    private BatimentDao batimentDao;
+    private final OeufDao oeufDao;
+    private final JwtFilter jwtFilter;
+    private final BatimentDao batimentDao;
 
     public OeufServiceImpl(OeufDao oeufDao, JwtFilter jwtFilter, BatimentDao batimentDao) {
         this.oeufDao = oeufDao;
@@ -103,7 +103,7 @@ public class OeufServiceImpl implements OeufService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateOeuf(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()){
@@ -124,7 +124,32 @@ public class OeufServiceImpl implements OeufService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+@Override
+public ResponseEntity<String> updateOeuf(Integer oeufId, Map<String, String> requestMap) {
+    try {
+        if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+            if (validateOeufMap(requestMap, true)){
+                Optional<Oeuf> optional = oeufDao.findById(oeufId);
+                if (optional.isPresent()){
+                    Oeuf oeufToUpdate = getOeufsFromMap(requestMap, true);
+                    oeufToUpdate.setId(oeufId); // Set the ID before saving
+                    oeufDao.save(oeufToUpdate);
+                    return AvicoleUtils.getResponseEntity("Ponte modifiée avec succès", HttpStatus.OK);
+                } else {
+                    return AvicoleUtils.getResponseEntity("Ponte ID n'existe pas", HttpStatus.OK);
+                }
+            }
+            return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+        } else {
+            return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+    return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+}
+
 
     @Override
     public ResponseEntity<String> deleteOeuf(Integer id) {

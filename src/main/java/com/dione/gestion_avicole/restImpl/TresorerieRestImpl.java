@@ -18,7 +18,7 @@ import java.util.Map;
 public class TresorerieRestImpl implements TresorerieRest {
 
 
-    private TresorerieService tresorerieService;
+    private final TresorerieService tresorerieService;
 
     public TresorerieRestImpl(TresorerieService tresorerieService) {
         this.tresorerieService = tresorerieService;
@@ -45,7 +45,7 @@ public class TresorerieRestImpl implements TresorerieRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateTresorerie(Map<String, String> requestMap) {
         try {
             return tresorerieService.updateTresorerie(requestMap);
@@ -53,7 +53,17 @@ public class TresorerieRestImpl implements TresorerieRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+@Override
+public ResponseEntity<String> updateTresorerie(Integer tresorerieId, Map<String, String> requestMap) {
+    try {
+        return tresorerieService.updateTresorerie(tresorerieId, requestMap);
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+    return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+}
+
 
     @Override
     public ResponseEntity<String> deleteTresorerie(Integer id) {

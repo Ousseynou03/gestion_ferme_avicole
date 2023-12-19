@@ -18,8 +18,13 @@ public interface AppartementRest {
     @GetMapping("/all")
     ResponseEntity<List<Appartement>> getAllAppartement();
 
+/*
     @PostMapping("/update")
     ResponseEntity<String> updateAppartement(@RequestBody(required = true) Map<String, String> requestMap);
+*/
+    @PutMapping("/update/{appartementId}")
+    ResponseEntity<String> updateAppartement(@PathVariable Integer appartementId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteAppartement(@PathVariable Integer id);

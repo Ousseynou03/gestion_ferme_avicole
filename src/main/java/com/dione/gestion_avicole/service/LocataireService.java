@@ -13,7 +13,8 @@ public interface LocataireService {
 
     ResponseEntity<List<Locataire>> getAllLocataire();
 
-    ResponseEntity<String> updateLocataire(Map<String, String> requestMap);
+   // ResponseEntity<String> updateLocataire(Map<String, String> requestMap);
+   ResponseEntity<String> updateLocataire(Integer locataireId, Map<String, String> requestMap);
 
     ResponseEntity<String> deleteLocataire(Integer id);
 }

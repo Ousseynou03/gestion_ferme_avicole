@@ -23,11 +23,11 @@ import java.util.*;
 @Service
 public class VenteServiceImpl implements VenteService {
 
-    private VenteDao venteDao;
-    private JwtFilter jwtFilter;
-    private BandeDao bandeDao;
-    private ClientDao clientDao;
-    private TresorerieDao tresorerieDao;
+    private final VenteDao venteDao;
+    private final JwtFilter jwtFilter;
+    private final BandeDao bandeDao;
+    private final ClientDao clientDao;
+    private final TresorerieDao tresorerieDao;
 
     public VenteServiceImpl(VenteDao venteDao, JwtFilter jwtFilter, BandeDao bandeDao, ClientDao clientDao, TresorerieDao tresorerieDao) {
         this.venteDao = venteDao;
@@ -121,7 +121,7 @@ public class VenteServiceImpl implements VenteService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateVente(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()){
@@ -142,7 +142,33 @@ public class VenteServiceImpl implements VenteService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateVente(Integer venteId, Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+                if (validateVenteMap(requestMap, true)){
+                    Optional<Vente> optional = venteDao.findById(venteId);
+                    if (optional.isPresent()){
+                        Vente venteToUpdate = getVentesFromMap(requestMap, true);
+                        venteToUpdate.setId(venteId); // Set the ID before saving
+                        venteDao.save(venteToUpdate);
+                        return AvicoleUtils.getResponseEntity("Vente modifiée avec succès", HttpStatus.OK);
+                    } else {
+                        return AvicoleUtils.getResponseEntity("Vente ID n'existe pas", HttpStatus.OK);
+                    }
+                }
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            } else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteVente(Integer id) {

@@ -23,9 +23,9 @@ import java.util.*;
 @Slf4j
 public class MortaliteServiceImpl implements MortaliteService {
 
-    private MortaliteDao mortaliteDao;
-    private JwtFilter jwtFilter;
-    private BandeDao bandeDao;
+    private final MortaliteDao mortaliteDao;
+    private final JwtFilter jwtFilter;
+    private final BandeDao bandeDao;
 
     public MortaliteServiceImpl(MortaliteDao mortaliteDao, JwtFilter jwtFilter, BandeDao bandeDao) {
         this.mortaliteDao = mortaliteDao;
@@ -123,7 +123,7 @@ public class MortaliteServiceImpl implements MortaliteService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateMortalite(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()){
@@ -144,7 +144,33 @@ public class MortaliteServiceImpl implements MortaliteService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateMortalite(Integer mortaliteId, Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+                if (validateMortaliteMap(requestMap, true)){
+                    Optional<Mortalite> optional = mortaliteDao.findById(mortaliteId);
+                    if (optional.isPresent()){
+                        Mortalite mortaliteToUpdate = getMortalitesFromMap(requestMap, true);
+                        mortaliteToUpdate.setId(mortaliteId); // Set the ID before saving
+                        mortaliteDao.save(mortaliteToUpdate);
+                        return AvicoleUtils.getResponseEntity("Mortalité modifiée avec succès", HttpStatus.OK);
+                    } else {
+                        return AvicoleUtils.getResponseEntity("Mortalité ID n'existe pas", HttpStatus.OK);
+                    }
+                }
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            } else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteMortalite(Integer id) {

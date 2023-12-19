@@ -20,8 +20,11 @@ public interface VenteRest {
     ResponseEntity<List<Vente>> getAllVente();
 
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateVente(@RequestBody(required = true) Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updateVente(@RequestBody(required = true) Map<String, String> requestMap);*/
+    @PutMapping("/update/{venteId}")
+    ResponseEntity<String> updateVente(@PathVariable Integer venteId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteVente(@PathVariable Integer id);

@@ -20,8 +20,8 @@ import java.util.Optional;
 @Service
 public class AppartementServiceImpl implements AppartementService {
 
-    private AppartementDao appartementDao;
-    private JwtFilter jwtFilter;
+    private final AppartementDao appartementDao;
+    private final JwtFilter jwtFilter;
 
     public AppartementServiceImpl(AppartementDao appartementDao, JwtFilter jwtFilter) {
         this.appartementDao = appartementDao;
@@ -92,7 +92,7 @@ public class AppartementServiceImpl implements AppartementService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateAppartement(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin()) {
@@ -112,7 +112,29 @@ public class AppartementServiceImpl implements AppartementService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+@Override
+public ResponseEntity<String> updateAppartement(Integer appartementId, Map<String, String> requestMap) {
+    try {
+        if (jwtFilter.isAdmin()) {
+            Optional<Appartement> optional = appartementDao.findById(appartementId);
+            if (optional.isPresent()) {
+                Appartement appartementToUpdate = getAppartementsFromMap(requestMap, true);
+                appartementToUpdate.setId(appartementId); // Set the ID before saving
+                appartementDao.save(appartementToUpdate);
+                return AvicoleUtils.getResponseEntity("Appartement modifié avec succès", HttpStatus.OK);
+            } else {
+                return AvicoleUtils.getResponseEntity("Appartement ID n'existe pas", HttpStatus.OK);
+            }
+        } else {
+            return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+    return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+}
+
 
     @Override
     public ResponseEntity<String> deleteAppartement(Integer id) {

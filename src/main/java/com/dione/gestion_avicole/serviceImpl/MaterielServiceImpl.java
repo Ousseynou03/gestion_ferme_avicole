@@ -24,11 +24,11 @@ import java.util.Optional;
 @Service
 public class MaterielServiceImpl implements MaterielService {
 
-    private MaterielDao materielDao;
-    private JwtFilter jwtFilter;
-    private BatimentDao batimentDao;
+    private final MaterielDao materielDao;
+    private final JwtFilter jwtFilter;
+    private final BatimentDao batimentDao;
 
-    private FournisseurDao fournisseurDao;
+    private final FournisseurDao fournisseurDao;
 
     public MaterielServiceImpl(MaterielDao materielDao, JwtFilter jwtFilter, BatimentDao batimentDao, FournisseurDao fournisseurDao) {
         this.materielDao = materielDao;
@@ -127,7 +127,7 @@ public class MaterielServiceImpl implements MaterielService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateMateriel(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin() || jwtFilter.isUser()){
@@ -148,7 +148,32 @@ public class MaterielServiceImpl implements MaterielService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+@Override
+public ResponseEntity<String> updateMateriel(Integer materielId, Map<String, String> requestMap) {
+    try {
+        if (jwtFilter.isAdmin() || jwtFilter.isUser()){
+            if (validateMaterielMap(requestMap, true)){
+                Optional<Materiel> optional = materielDao.findById(materielId);
+                if (optional.isPresent()){
+                    Materiel materielToUpdate = getMaterielsFromMap(requestMap, true);
+                    materielToUpdate.setId(materielId); // Set the ID before saving
+                    materielDao.save(materielToUpdate);
+                    return AvicoleUtils.getResponseEntity("Matériel modifié avec succès", HttpStatus.OK);
+                } else {
+                    return AvicoleUtils.getResponseEntity("Matériel ID doesn't exist", HttpStatus.OK);
+                }
+            }
+            return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+        } else {
+            return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+        }
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+    return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+}
+
 
     @Override
     public ResponseEntity<String> deleteMateriel(Integer id) {

@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 public class AppartementRestImpl implements AppartementRest {
 
-    private AppartementService appartementService;
+    private final AppartementService appartementService;
 
     public AppartementRestImpl(AppartementService appartementService) {
         this.appartementService = appartementService;
@@ -43,7 +43,7 @@ public class AppartementRestImpl implements AppartementRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateAppartement(Map<String, String> requestMap) {
         try {
             return appartementService.updateAppartement(requestMap);
@@ -51,7 +51,17 @@ public class AppartementRestImpl implements AppartementRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+@Override
+public ResponseEntity<String> updateAppartement(Integer appartementId, Map<String, String> requestMap) {
+    try {
+        return appartementService.updateAppartement(appartementId, requestMap);
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+    return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+}
+
 
     @Override
     public ResponseEntity<String> deleteAppartement(Integer id) {

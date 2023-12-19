@@ -16,16 +16,16 @@ import java.util.Map;
 @RestController
 public class OuvrierRestImpl implements OuvrierRest {
 
-    private OuvrierSerice ouvrierSerice;
+    private final OuvrierSerice ouvrierService;
 
     public OuvrierRestImpl(OuvrierSerice ouvrierSerice) {
-        this.ouvrierSerice = ouvrierSerice;
+        this.ouvrierService = ouvrierSerice;
     }
 
     @Override
     public ResponseEntity<String> ajoutOuvrier(Map<String, String> requestMap) {
         try {
-            return ouvrierSerice.ajoutOuvrier(requestMap);
+            return ouvrierService.ajoutOuvrier(requestMap);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -35,14 +35,14 @@ public class OuvrierRestImpl implements OuvrierRest {
     @Override
     public ResponseEntity<List<Ouvrier>> getAllOuvrier() {
         try {
-            return ouvrierSerice.getAllOuvrier();
+            return ouvrierService.getAllOuvrier();
         }catch (Exception ex){
             ex.printStackTrace();
         }
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateOuvrier(Map<String, String> requestMap) {
         try {
             return ouvrierSerice.updateOuvrier(requestMap);
@@ -50,12 +50,23 @@ public class OuvrierRestImpl implements OuvrierRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateOuvrier(Integer ouvrierId, Map<String, String> requestMap) {
+        try {
+            return ouvrierService.updateOuvrier(ouvrierId, requestMap);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteOuvrier(Integer id) {
         try {
-            return ouvrierSerice.deleteOuvrier(id);
+            return ouvrierService.deleteOuvrier(id);
         }catch (Exception ex){
             ex.printStackTrace();
         }

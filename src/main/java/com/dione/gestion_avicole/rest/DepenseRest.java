@@ -19,8 +19,12 @@ public interface DepenseRest {
     ResponseEntity<List<Depense>> getAllDepense();
 
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateDepense(@RequestBody(required = true) Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updateDepense(@RequestBody(required = true) Map<String, String> requestMap);*/
+
+    @PutMapping("/update/{depenseId}")
+    ResponseEntity<String> updateDepense(@PathVariable Integer depenseId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteDepense(@PathVariable Integer id);

@@ -43,7 +43,7 @@ public class DepenseRestImpl implements DepenseRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateDepense(Map<String, String> requestMap) {
         try {
             return depenseService.updateDepense(requestMap);
@@ -51,7 +51,18 @@ public class DepenseRestImpl implements DepenseRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateDepense(Integer depenseId, Map<String, String> requestMap) {
+        try {
+            return depenseService.updateDepense(depenseId, requestMap);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteDepense(Integer id) {

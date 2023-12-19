@@ -7,6 +7,8 @@ import com.dione.gestion_avicole.service.VetoService;
 import com.dione.gestion_avicole.utils.AvicoleUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ public class VetoRestImpl implements VetoRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateVeto(Map<String, String> requestMap) {
         try {
             return vetoService.updateVeto(requestMap);
@@ -51,7 +53,17 @@ public class VetoRestImpl implements VetoRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+@Override
+public ResponseEntity<String> updateVeto(Integer vetoId, Map<String, String> requestMap) {
+    try {
+        return vetoService.updateVeto(vetoId, requestMap);
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+    return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+}
+
 
     @Override
     public ResponseEntity<String> deleteVeto(Integer id) {

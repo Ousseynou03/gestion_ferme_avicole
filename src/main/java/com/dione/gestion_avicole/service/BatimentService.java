@@ -13,7 +13,8 @@ public interface BatimentService {
 
     ResponseEntity<List<Batiment>> getAllBatiment();
 
-    ResponseEntity<String> updateBatiment(Map<String, String> requestMap);
+   // ResponseEntity<String> updateBatiment(Map<String, String> requestMap);
+    ResponseEntity<String> updateBatiment(Integer batimentId, Map<String, String> requestMap);
 
     ResponseEntity<String> deleteBatiment(Integer id);
 

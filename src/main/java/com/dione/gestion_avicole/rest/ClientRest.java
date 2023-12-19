@@ -16,8 +16,11 @@ public interface ClientRest {
     @GetMapping("/all")
     ResponseEntity<List<Client>> getAllClient();
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateClient(@RequestBody(required = true) Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updateClient(@RequestBody(required = true) Map<String, String> requestMap);*/
+    @PutMapping("/update/{clientId}")
+    ResponseEntity<String> updateClient(@PathVariable Integer clientId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteClient(@PathVariable Integer id);

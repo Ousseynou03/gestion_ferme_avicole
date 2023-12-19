@@ -16,7 +16,7 @@ import java.util.Map;
 @RestController
 public class PaiementRestImpl implements PaiementRest {
 
-    private PaiementService paiementService;
+    private final PaiementService paiementService;
 
     public PaiementRestImpl(PaiementService paiementService) {
         this.paiementService = paiementService;
@@ -42,7 +42,7 @@ public class PaiementRestImpl implements PaiementRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+ /*   @Override
     public ResponseEntity<String> updatePaiement(Map<String, String> requestMap) {
         try {
             return paiementService.updatePaiement(requestMap);
@@ -50,7 +50,17 @@ public class PaiementRestImpl implements PaiementRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    }*/
+ @Override
+ public ResponseEntity<String> updatePaiement(Integer paiementId, Map<String, String> requestMap) {
+     try {
+         return paiementService.updatePaiement(paiementId, requestMap);
+     } catch (Exception ex) {
+         ex.printStackTrace();
+     }
+     return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+ }
+
 
     @Override
     public ResponseEntity<String> deletePaiement(Integer id) {

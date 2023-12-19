@@ -17,8 +17,12 @@ public interface FournisseurRest {
     @GetMapping("/all")
     ResponseEntity<List<Fournisseur>> getAllFournisseur();
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateFournisseur(@RequestBody(required = true) Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updateFournisseur(@RequestBody(required = true) Map<String, String> requestMap);*/
+
+    @PutMapping("/update/{fournisseurId}")
+    ResponseEntity<String> updateFournisseur(@PathVariable Integer fournisseurId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteFournisseur(@PathVariable Integer id);

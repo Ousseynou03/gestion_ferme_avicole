@@ -20,9 +20,9 @@ import java.util.*;
 @Service
 public class PaiementServiceImpl implements PaiementService {
 
-    private PaiementDao paiementDao;
-    private LocataireDao locataireDao;
-    private JwtFilter jwtFilter;
+    private final PaiementDao paiementDao;
+    private final LocataireDao locataireDao;
+    private final JwtFilter jwtFilter;
 
     public PaiementServiceImpl(PaiementDao paiementDao, LocataireDao locataireDao, JwtFilter jwtFilter) {
         this.paiementDao = paiementDao;
@@ -120,7 +120,7 @@ public class PaiementServiceImpl implements PaiementService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updatePaiement(Map<String, String> requestMap) {
         try {
             if (jwtFilter.isAdmin()){
@@ -141,7 +141,33 @@ public class PaiementServiceImpl implements PaiementService {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updatePaiement(Integer paiementId, Map<String, String> requestMap) {
+        try {
+            if (jwtFilter.isAdmin()){
+                if (validatePaiementMap(requestMap, true)){
+                    Optional<Paiement> optional = paiementDao.findById(paiementId);
+                    if (optional.isPresent()){
+                        Paiement paiementToUpdate = getPaiementsFromMap(requestMap, true);
+                        paiementToUpdate.setId(paiementId); // Set the ID before saving
+                        paiementDao.save(paiementToUpdate);
+                        return AvicoleUtils.getResponseEntity("Paiement modifié avec succès", HttpStatus.OK);
+                    } else {
+                        return AvicoleUtils.getResponseEntity("Paiement ID n'existe pas", HttpStatus.OK);
+                    }
+                }
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+            } else {
+                return AvicoleUtils.getResponseEntity(AvicoleConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deletePaiement(Integer id) {

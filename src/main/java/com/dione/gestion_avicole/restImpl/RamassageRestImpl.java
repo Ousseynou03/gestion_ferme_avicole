@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 public class RamassageRestImpl implements RamassageRest {
 
-    private RamassageService ramassageService;
+    private final RamassageService ramassageService;
 
     public RamassageRestImpl(RamassageService ramassageService) {
         this.ramassageService = ramassageService;
@@ -44,7 +44,7 @@ public class RamassageRestImpl implements RamassageRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateRamassage(Map<String, String> requestMap) {
         try {
             return ramassageService.updateRamassage(requestMap);
@@ -52,7 +52,18 @@ public class RamassageRestImpl implements RamassageRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateRamassage(Integer ramassageId, Map<String, String> requestMap) {
+        try {
+            return ramassageService.updateRamassage(ramassageId, requestMap);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteRamassage(Integer id) {

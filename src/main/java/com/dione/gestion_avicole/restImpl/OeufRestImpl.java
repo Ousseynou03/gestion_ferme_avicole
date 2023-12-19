@@ -17,7 +17,7 @@ import java.util.Map;
 @RestController
 public class OeufRestImpl implements OeufRest {
 
-    private OeufService oeufService;
+    private final OeufService oeufService;
 
     public OeufRestImpl(OeufService oeufService) {
         this.oeufService = oeufService;
@@ -43,7 +43,7 @@ public class OeufRestImpl implements OeufRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateOeuf(Map<String, String> requestMap) {
         try {
             return oeufService.updateOeuf(requestMap);
@@ -51,7 +51,17 @@ public class OeufRestImpl implements OeufRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+@Override
+public ResponseEntity<String> updateOeuf(Integer oeufId, Map<String, String> requestMap) {
+    try {
+        return oeufService.updateOeuf(oeufId, requestMap);
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
+    return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+}
+
 
     @Override
     public ResponseEntity<String> deleteOeuf(Integer id) {

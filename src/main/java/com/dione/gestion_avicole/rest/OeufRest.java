@@ -18,8 +18,12 @@ public interface OeufRest {
     @GetMapping("/all")
     ResponseEntity<List<Oeuf>> getAllOeuf();
 
-    @PostMapping("/update")
-    ResponseEntity<String> updateOeuf(@RequestBody(required = true) Map<String, String> requestMap);
+/*    @PostMapping("/update")
+    ResponseEntity<String> updateOeuf(@RequestBody(required = true) Map<String, String> requestMap);*/
+
+    @PutMapping("/update/{oeufId}")
+    ResponseEntity<String> updateOeuf(@PathVariable Integer oeufId, @RequestBody(required = true) Map<String, String> requestMap);
+
 
     @DeleteMapping("/delete/{id}")
     ResponseEntity<String> deleteOeuf(@PathVariable Integer id);

@@ -42,7 +42,7 @@ public class ContratLocationRestImpl implements ContratLocationRest {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @Override
+/*    @Override
     public ResponseEntity<String> updateContratLocation(Map<String, String> requestMap) {
         try {
             return contratLocationService.updateContratLocation(requestMap);
@@ -50,7 +50,18 @@ public class ContratLocationRestImpl implements ContratLocationRest {
             ex.printStackTrace();
         }
         return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
+
+    @Override
+    public ResponseEntity<String> updateContratLocation(Integer contratId, Map<String, String> requestMap) {
+        try {
+            return contratLocationService.updateContratLocation(contratId, requestMap);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return AvicoleUtils.getResponseEntity(AvicoleConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @Override
     public ResponseEntity<String> deleteContratLocation(Integer id) {
