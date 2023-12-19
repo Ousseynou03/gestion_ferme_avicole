@@ -26,8 +26,8 @@ export class MortaliteService {
 
 
   // Update
-  updateMortalite(mortalite: Mortalite, headers: any): Observable<any> {
-    const url = `${this.baseUrl}/mortalite/update`;
+  updateMortalite(id:any,mortalite: Mortalite, headers: any): Observable<any> {
+    const url = `${this.baseUrl}/mortalite/update/${id}`;
     return this.http.put(url, mortalite, { headers });
   }
 

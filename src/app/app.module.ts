@@ -70,6 +70,8 @@ import { EditClientComponent } from './demo/elements/client/dialog/edit-client/e
 import { EditDepenseComponent } from './demo/elements/depense/dialog/edit-depense/edit-depense.component';
 import { EditFournisseurComponent } from './demo/elements/fournisseur/dialog/edit-fournisseur/edit-fournisseur.component';
 import { EditMaterielComponent } from './demo/elements/materiel/dialog/edit-materiel/edit-materiel.component';
+import { EditMortaliteComponent } from './demo/elements/mortalite/dialog/edit-mortalite/edit-mortalite.component';
+import { EditNutritionComponent } from './demo/elements/nutrition/dialog/edit-nutrition/edit-nutrition.component';
 
 @NgModule({
   declarations: [
@@ -113,6 +115,8 @@ import { EditMaterielComponent } from './demo/elements/materiel/dialog/edit-mate
     EditDepenseComponent,
     EditFournisseurComponent,
     EditMaterielComponent,
+    EditMortaliteComponent,
+    EditNutritionComponent,
   ],
   imports: [
     BrowserModule,

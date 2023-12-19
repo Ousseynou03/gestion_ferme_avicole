@@ -6,6 +6,8 @@ import { MortaliteService } from '../../services/mortalite.service';
 import { BandeService } from '../../services/bande.service';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EditMortaliteComponent } from './dialog/edit-mortalite/edit-mortalite.component';
 
 @Component({
   selector: 'app-mortalite',
@@ -16,6 +18,7 @@ export class MortaliteComponent implements OnInit{
 
   mortalites: Mortalite[];
   bandes: Bande[];
+  headers : any
 
 
   mortaliteForm = this.fb.group({
@@ -29,7 +32,8 @@ export class MortaliteComponent implements OnInit{
     private mortaliteService : MortaliteService,
     private bandeService: BandeService,
     private fb: FormBuilder,
-    public authService : AuthService
+    public authService : AuthService,
+    private _matDialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -171,6 +175,27 @@ export class MortaliteComponent implements OnInit{
         );
       }
     });
+  }
+
+
+  openDialogEdit(mortalite: any) :void{
+    // Open the dialog
+    const dialogRef = this._matDialog.open(EditMortaliteComponent, {
+      backdropClass: 'my-full-screen-dialog',
+      panelClass:'my-panelClass-dialog',
+      width:'50%',
+      data: mortalite,
+      disableClose: true
+  });
+
+  dialogRef.afterClosed()
+      .subscribe((result) => {
+          console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+          if(result == true){
+
+            this.loadMortaliteList(this.headers)
+          }
+      });
   }
 
 }

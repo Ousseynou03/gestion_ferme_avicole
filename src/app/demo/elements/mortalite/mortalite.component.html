@@ -76,7 +76,7 @@
         <td>{{ mortalite.dateMortalite | date:'yyyy-MM-dd' }}</td>
         <td>{{ mortalite.description }}</td>
         <td>
-          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit" (click)="openDialogEdit(mortalite)">
             <i class="fas fa-edit"></i>
           </button>
           <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteMortalite(mortalite.id)">
