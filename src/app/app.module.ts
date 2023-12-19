@@ -80,6 +80,7 @@ import { EditVenteComponent } from './demo/elements/vente/dialog/edit-vente/edit
 import { AddVenteComponent } from './demo/elements/vente/dialog/add-vente/add-vente.component';
 import { VeterinaireComponent } from './demo/elements/veterinaire/veterinaire.component';
 import { EditAppartementComponent } from './demo/elements/appartement/dialog/edit-appartement/edit-appartement.component';
+import { EditPaiementComponent } from './demo/elements/paiement/dialog/edit-paiement/edit-paiement.component';
 
 @NgModule({
   declarations: [
@@ -133,6 +134,7 @@ import { EditAppartementComponent } from './demo/elements/appartement/dialog/edi
     AddVenteComponent,
     VeterinaireComponent,
     EditAppartementComponent,
+    EditPaiementComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,1 +1,87 @@
-<p>paiement works!</p>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#bandeModal">
+    Ajouter un Paiement
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="bandeModal" tabindex="-1" aria-labelledby="bandeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bandeModalLabel">Nouveau Paiement</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="cards">
+            <div class="card-bodi">
+              <div class="card-header">
+                <span>Enregistrement d'un Paiement</span>
+              </div>
+              <div class="py-4 overflow-hidden">
+                <div class="flex">
+                  <!-- Selected agent form -->
+                  <form [formGroup]="paiementForm" (ngSubmit)="onSubmit()">
+                    <div>
+                      <label for="code">Montant:</label>
+                      <input placeholder="" type="number" id="montant" formControlName="montant">
+                    </div>
+                    <div>
+                      <label for="datePaiement">Date Paiement:</label>
+                      <input placeholder="" type="date" id="datePaiement" formControlName="datePaiement">
+                    </div>
+            
+                  <div>
+                    <label for="locataire">Locataire:</label>
+                  <select id="locataire" formControlName="locataire">
+                    <option *ngFor="let locataire of locataires" [value]="locataire.id">{{ locataire.nom }}</option>
+                  </select>
+                </div>
+                    <button type="submit">Enregistrer</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+
+
+<!-- Liste des bandes -->
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">N°</th>
+        <th scope="col">Montant</th>
+        <th scope="col">date Paiement</th>
+        <th scope="col">locataire</th>
+        <th scope="col" *ngIf="authService && authService.roles && authService.roles.includes('admin')">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+       <tr *ngFor="let paiement of paiements; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ paiement.montant }}</td>
+        <td>{{ paiement.datePaiement | date:'yyyy-MM-dd' }}</td>
+        <td>{{ paiement.locataire.nom }}</td>
+        <td>
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" (click)="openDialogEdit(paiement)" data-bs-target="#exampleModalEdit">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deletePaiment(paiement.id)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
