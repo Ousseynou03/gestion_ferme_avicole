@@ -61,6 +61,8 @@
       <th scope="col">Nom</th>
       <th scope="col">Numero Tel</th>
       <th scope="col">email</th>
+      <th scope="col">Role</th>
+      <th scope="col">Statut</th>
 
       <th scope="col" *ngIf="authService && authService.roles && authService.roles.includes('admin')">Action</th>
     </tr>
@@ -71,8 +73,10 @@
       <td>{{ user.name }}</td>
       <td>{{ user.contactNumber }}</td>
       <td>{{ user.email }}</td>
+      <td>{{ user.role }}</td>
+      <td>{{ user.status }}</td>
       <td>
-        <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary">
+        <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" (click)="openDialogEdit(user)">
           <i class="fas fa-edit"></i>
         </button>
         <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteUser(user.id)">
@@ -83,7 +87,7 @@
   </tbody>
 </table>
 </ng-container>
-<div class="p-3">
+<div class="p-3" *ngIf="!authService.roles.includes('admin')">
   <div class="card">
       <div class="card-body">
           <div class="alert alert-danger">

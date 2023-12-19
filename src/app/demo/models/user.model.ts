@@ -4,5 +4,7 @@ export class User {
     contactNumber: string;
     email: string;
     password: string;
+    role : string;
+    status : string;
   }
   

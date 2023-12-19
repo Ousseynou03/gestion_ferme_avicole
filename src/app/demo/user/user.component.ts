@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { User } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { EditUserComponent } from './dialog/edit-user/edit-user.component';
 
 @Component({
   selector: 'app-user',
@@ -11,16 +13,19 @@ import Swal from 'sweetalert2';
 export class UserComponent {
 
   users: User[] = [];
+  headers : any;
 
   user: User = {
     name: '',
     contactNumber: '',
     email: '',
     password: '',
-    id: 0
+    id: 0,
+    role :'',
+    status : ''
   };
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService,private _matDialog: MatDialog) {}
 
   ngOnInit() {
     // Récupérez le token JWT du localStorage (ou d'où vous le stockez)
@@ -167,5 +172,27 @@ export class UserComponent {
         );
       }
     });
+  }
+
+
+
+  openDialogEdit(user: any) :void{
+    // Open the dialog
+    const dialogRef = this._matDialog.open(EditUserComponent, {
+      backdropClass: 'my-full-screen-dialog',
+      panelClass:'my-panelClass-dialog',
+      width:'50%',
+      data: user,
+      disableClose: true
+  });
+
+  dialogRef.afterClosed()
+      .subscribe((result) => {
+          console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+          if(result == true){
+
+            this.loadUserList()
+          }
+      });
   }
 }

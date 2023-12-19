@@ -1,0 +1,61 @@
+<ng-container>
+
+    <div class="grid grid-cols-1 w-[32rem]">
+        <div class="flex flex-0 items-center pr-3 sm:pr-5 pl-6 sm:pl-8 bg-bleue-foncee-1 h-10 text-white mb-2  ">
+            <div class="text-lg font-medium text-center w-full">Modifier User</div>       
+    
+        </div>
+        <form  [formGroup]="form">    
+
+            <mat-form-field class="flex-auto w-10/12 pr-2">
+                <mat-label>Role</mat-label>
+                <input
+                matInput
+                [formControlName]="'role'">
+            </mat-form-field>
+
+            <mat-form-field class="flex-auto w-10/12 pr-2">
+                <mat-label>Statut Utilisateur</mat-label>
+                <input
+                matInput
+                [formControlName]="'status'">
+            </mat-form-field>
+
+
+    
+        </form>
+
+
+        
+    
+        
+         <div class="flex items-center mt-4 sm:mt-0 justify-between">
+        
+            <mat-toolbar>
+                <button
+                class="order-first sm:order-last"
+                mat-flat-button
+                [color]="'warn'"
+                [mat-dialog-close]>
+                Annuler
+            </button>
+                <span class="example-spacer"></span>
+                <button
+            
+            class="order-first sm:order-last"
+            mat-flat-button
+            [color]="'primary'"
+            [disabled]="!form.valid"
+            (click)="updateUser()"
+            >
+                Modifier
+            </button>
+            </mat-toolbar>
+                     
+            
+            
+        </div>
+        
+    </div>
+    
+</ng-container>

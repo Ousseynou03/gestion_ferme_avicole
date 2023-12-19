@@ -52,9 +52,9 @@ export class AuthService {
     return this.http.get<User>(`${this.baseUrl}/user/name/${id}`, { headers });
   }
 
-    // Mise à jour d'un bâtiment
-    updateUser(user: User, headers: any): Observable<any> {
-      const url = `${this.baseUrl}/user/update`;
+    // Mise à jour d'un user
+    updateUser(id:any,user: User, headers: any): Observable<any> {
+      const url = `${this.baseUrl}/user/update/${id}`;
       return this.http.put(url, user, { headers });
     }
   
