@@ -1,1 +1,87 @@
-<p>contrat-location works!</p>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#bandeModal">
+    Ajouter un Contrat de Location
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="bandeModal" tabindex="-1" aria-labelledby="bandeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bandeModalLabel">Nouveau Contrat</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="cards">
+            <div class="card-bodi">
+              <div class="card-header">
+                <span>Enregistrement d'un Contrat</span>
+              </div>
+              <div class="py-4 overflow-hidden">
+                <div class="flex">
+                  <!-- Selected agent form -->
+                  <form [formGroup]="contratLocationForm" (ngSubmit)="onSubmit()">
+                    <div>
+                      <label for="code">date Debut:</label>
+                      <input placeholder="" type="date" id="dateDebut" formControlName="dateDebut">
+                    </div>
+                    <div>
+                      <label for="datePaiement">Date Fin:</label>
+                      <input placeholder="" type="date" id="dateFin" formControlName="dateFin">
+                    </div>
+            
+                  <div>
+                    <label for="locataire">Locataire:</label>
+                  <select id="locataire" formControlName="locataire">
+                    <option *ngFor="let locataire of locataires" [value]="locataire.id">{{ locataire.nom }}</option>
+                  </select>
+                </div>
+                    <button type="submit">Enregistrer</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+
+
+<!-- Liste des bandes -->
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">N°</th>
+        <th scope="col">Date Debut</th>
+        <th scope="col">date Fin</th>
+        <th scope="col">locataire</th>
+        <th scope="col" *ngIf="authService && authService.roles && authService.roles.includes('admin')">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+       <tr *ngFor="let contratLocation of contratLocations; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ contratLocation.dateDebut | date:'yyyy-MM-dd'}}</td>
+        <td>{{ contratLocation.dateFin | date:'yyyy-MM-dd' }}</td>
+        <td>{{ contratLocation.locataire.nom }}</td>
+        <td>
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" (click)="openDialogEdit(contratLocation)" data-bs-target="#exampleModalEdit">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteContratLocation(contratLocation.id)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
