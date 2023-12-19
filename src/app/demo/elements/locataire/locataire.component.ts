@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
+import { EditLocataireComponent } from './dialog/edit-locataire/edit-locataire.component';
 
 
 @Component({
@@ -21,15 +22,8 @@ import { MatDialog } from '@angular/material/dialog';
 export class LocataireComponent implements OnInit{
 
   locataires : Locataire[];
-  title = 'Liste Des Locataires'
-  displayedColumns: string[] = ['id','prenom', 'nom', 'adresse', 'email', 'actif', 'action'];
-  dataSource!: MatTableDataSource<any>;
-
-
-  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-
-
+  appartements : Appartement[];
+  headers: any
 
   locataireForm = this.fb.group({
     nom: ['', Validators.required],
@@ -44,7 +38,7 @@ export class LocataireComponent implements OnInit{
     private appartementService : AppartementService,
     private fb : FormBuilder,
     public authService : AuthService,
-    public dialog: MatDialog){}
+    private _matDialog: MatDialog,){}
 
 
     ngOnInit() {
@@ -60,7 +54,7 @@ export class LocataireComponent implements OnInit{
   
       const headers = { Authorization: `Bearer ${token}` };
       this.loadLocataireList(headers);
-     // this.loadAppartementList(headers);
+      this.loadAppartementList(headers);
     }
 
     
@@ -83,11 +77,11 @@ export class LocataireComponent implements OnInit{
     }
     
   
- //   loadAppartementList(headers: any) {
-   //   this.appartementService.getAllAppartements(headers).subscribe(appartements => {
-     //   this.appartements = appartements;
-     // });
-   // }
+    loadAppartementList(headers: any) {
+      this.appartementService.getAllAppartements(headers).subscribe(appartements => {
+        this.appartements = appartements;
+      });
+    }
   
     
   
@@ -121,7 +115,7 @@ export class LocataireComponent implements OnInit{
             Swal.fire({
               icon: 'success',
               title: 'Succès',
-              text: 'La bande a été ajoutée avec succès.'
+              text: 'Le Locataire a été ajoutée avec succès.'
             });
             this.locataireForm.reset();
             this.loadLocataireList(headers);
@@ -185,5 +179,30 @@ export class LocataireComponent implements OnInit{
         }
       });
     }
+
+
+
+
+    openDialogEdit(locataire: any) :void{
+      // Open the dialog
+      const dialogRef = this._matDialog.open(EditLocataireComponent, {
+        backdropClass: 'my-full-screen-dialog',
+        panelClass:'my-panelClass-dialog',
+        width:'50%',
+        data: locataire,
+        disableClose: true
+    });
+  
+    dialogRef.afterClosed()
+        .subscribe((result) => {
+            console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+            if(result == true){
+  
+              this.loadLocataireList(this.headers)
+            }
+        });
+    }
+
+
 
 }

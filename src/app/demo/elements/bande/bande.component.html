@@ -102,6 +102,9 @@
           <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteBande(bande.id)">
             <i class="fas fa-trash-alt"></i>
           </button>
+          <a *ngIf="authService.roles.includes('admin')" class="btn btn-link text-success" (click)="generateRapportPdf(bande.id)" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-file-pdf"></i>
+          </a>
         </td>
       </tr>
     </tbody>

@@ -48,4 +48,9 @@ export class BandeService {
       const url = `${this.baseUrl}/bande/totalPouleRestant`;
       return this.http.get<number>(url,{headers})
     }
+
+    getRapportUrl(bandeId: number, headers: any): Observable<Blob> {
+      const url = `${this.baseUrl}/bande/rapport/pdf/${bandeId}`;
+      return this.http.get(url, { headers, responseType: 'blob' });
+    }
 }

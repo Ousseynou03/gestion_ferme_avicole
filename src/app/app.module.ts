@@ -82,6 +82,7 @@ import { VeterinaireComponent } from './demo/elements/veterinaire/veterinaire.co
 import { EditAppartementComponent } from './demo/elements/appartement/dialog/edit-appartement/edit-appartement.component';
 import { EditPaiementComponent } from './demo/elements/paiement/dialog/edit-paiement/edit-paiement.component';
 import { EditVetoComponent } from './demo/elements/veterinaire/dialog/edit-veto/edit-veto.component';
+import { EditLocataireComponent } from './demo/elements/locataire/dialog/edit-locataire/edit-locataire.component';
 
 @NgModule({
   declarations: [
@@ -137,6 +138,7 @@ import { EditVetoComponent } from './demo/elements/veterinaire/dialog/edit-veto/
     EditAppartementComponent,
     EditPaiementComponent,
     EditVetoComponent,
+    EditLocataireComponent,
   ],
   imports: [
     BrowserModule,

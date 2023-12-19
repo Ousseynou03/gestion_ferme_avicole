@@ -1,0 +1,108 @@
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#bandeModal">
+    Ajouter un Locataire
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="bandeModal" tabindex="-1" aria-labelledby="bandeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bandeModalLabel">Nouveau Locataire</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="cards">
+            <div class="card-bodi">
+              <div class="card-header">
+                <span>Enregistrement d'un Locataire</span>
+              </div>
+              <div class="py-4 overflow-hidden">
+                <div class="flex">
+                  <!-- Selected agent form -->
+                  <form [formGroup]="locataireForm" (ngSubmit)="addLocataire()">
+                    <div>
+                      <label for="nom">nom:</label>
+                      <input placeholder="" type="text" id="nom" formControlName="nom">
+                    </div>
+                    <div>
+                      <label for="prenom">prenom:</label>
+                      <input placeholder="" type="text" id="prenom" formControlName="prenom">
+                    </div>
+                    <div>
+                        <label for="adresse">adresse:</label>
+                        <input placeholder="" type="text" id="adresse" formControlName="adresse">
+                      </div>
+                      <div>
+                        <label for="email">email:</label>
+                        <input placeholder="" type="text" id="email" formControlName="email">
+                      </div>
+                      <div>
+                        <label for="actif">actif:</label>
+                        <select  id="actif" formControlName="actif" required>
+                            <option value="Oui">Oui</option>
+                            <option value="Non">Non</option>
+                          </select>
+                      </div>
+            
+                  <div>
+                    <label for="appartement">Appartement:</label>
+                  <select id="appartement" formControlName="appartement">
+                    <option *ngFor="let appartement of appartements" [value]="appartement.id">{{ appartement.nom }}</option>
+                  </select>
+                </div>
+                    <button type="submit">Enregistrer</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+
+
+<!-- Liste des bandes -->
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">N°</th>
+        <th scope="col">nom</th>
+        <th scope="col">prenom</th>
+        <th scope="col">adresse</th>
+        <th scope="col">email</th>
+        <th scope="col">actif</th>
+        <th scope="col">appartement</th>
+        <th scope="col" *ngIf="authService && authService.roles && authService.roles.includes('admin')">Action</th>
+
+      </tr>
+    </thead>
+    <tbody>
+       <tr *ngFor="let locataire of locataires; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ locataire.nom }}</td>
+        <td>{{ locataire.prenom }}</td>
+        <td>{{ locataire.adresse }}</td>
+        <td>{{ locataire.email }}</td>
+        <td>{{ locataire.actif }}</td>
+        <td>{{ locataire.appartement.nom }}</td>
+        <td>
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" (click)="openDialogEdit(locataire)" data-bs-target="#exampleModalEdit">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-danger" (click)="deleteLocataire(locataire.id)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>

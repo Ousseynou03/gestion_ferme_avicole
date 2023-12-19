@@ -200,4 +200,36 @@ export class BandeComponent implements OnInit {
           }
       });
   }
+
+
+  generateRapportPdf(bandeId: number) {
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+  
+    this.bandeService.getRapportUrl(bandeId, headers).subscribe(
+      (pdfBlob: Blob) => {
+        // Créez un objet URL à partir du Blob
+        const url = window.URL.createObjectURL(pdfBlob);
+  
+        // Ouvrez le PDF dans une nouvelle fenêtre
+        const newWindow = window.open(url, '_blank');
+  
+        if (!newWindow) {
+          // La fenêtre popup a été bloquée par le navigateur
+          console.error('La fenêtre popup a été bloquée. Veuillez autoriser les popups dans votre navigateur.');
+        }
+      },
+      error => {
+        console.error('Erreur lors de la récupération du rapport PDF', error);
+  
+        // Gérez l'erreur selon vos besoins
+        // Par exemple, affichez un message à l'utilisateur
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Erreur lors de la récupération du rapport PDF. Veuillez réessayer plus tard.'
+        });
+      }
+    );
+  }
 }

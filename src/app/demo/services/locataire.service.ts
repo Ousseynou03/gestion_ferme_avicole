@@ -26,8 +26,8 @@ export class LocataireService {
 
 
   // Mise à jour 
-  updateLocataire(locataire: Locataire, headers: any): Observable<any> {
-    const url = `${this.baseUrl}/locataire/update`;
+  updateLocataire(id:any,locataire: Locataire, headers: any): Observable<any> {
+    const url = `${this.baseUrl}/locataire/update/${id}`;
     return this.http.put(url, locataire, { headers });
   }
 
