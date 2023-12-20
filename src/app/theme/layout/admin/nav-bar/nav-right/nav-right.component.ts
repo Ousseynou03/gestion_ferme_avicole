@@ -1,6 +1,8 @@
 // Angular import
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Params } from '@angular/router';
+import { AddNewPasswordComponent } from 'src/app/demo/elements/change-password/dialog/add-new-password/add-new-password.component';
 import { User } from 'src/app/demo/models/user.model';
 import { AuthService } from 'src/app/demo/services/auth.service';
 import Swal from 'sweetalert2';
@@ -20,7 +22,7 @@ export class NavRightComponent implements OnInit{
   newPassword: string = '';
 
 
-  constructor(public authService: AuthService, private actRoute: ActivatedRoute) {}
+  constructor(public authService: AuthService, private actRoute: ActivatedRoute, private _matDialog: MatDialog) {}
   
 
 
@@ -58,6 +60,22 @@ export class NavRightComponent implements OnInit{
 
     
   ngOnInit(): void {
+  }
+
+  openDialogEdit(changePassword: any) :void{
+    // Open the dialog
+    const dialogRef = this._matDialog.open(AddNewPasswordComponent, {
+      backdropClass: 'my-full-screen-dialog',
+      panelClass:'my-panelClass-dialog',
+      width:'50%',
+      data: changePassword,
+      disableClose: true
+  });
+
+  dialogRef.afterClosed()
+      .subscribe((result) => {
+          console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+      });
   }
 
 

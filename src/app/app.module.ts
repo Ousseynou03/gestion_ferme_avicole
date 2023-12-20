@@ -84,6 +84,7 @@ import { EditPaiementComponent } from './demo/elements/paiement/dialog/edit-paie
 import { EditVetoComponent } from './demo/elements/veterinaire/dialog/edit-veto/edit-veto.component';
 import { EditLocataireComponent } from './demo/elements/locataire/dialog/edit-locataire/edit-locataire.component';
 import { EditContratLocationComponent } from './demo/elements/contrat-location/dialog/edit-contrat-location/edit-contrat-location.component';
+import { AddNewPasswordComponent } from './demo/elements/change-password/dialog/add-new-password/add-new-password.component';
 
 @NgModule({
   declarations: [
@@ -141,6 +142,7 @@ import { EditContratLocationComponent } from './demo/elements/contrat-location/d
     EditVetoComponent,
     EditLocataireComponent,
     EditContratLocationComponent,
+    AddNewPasswordComponent,
   ],
   imports: [
     BrowserModule,

@@ -73,7 +73,7 @@
         <td>{{ i + 1 }}</td>
         <td>{{ paiement.montant }}</td>
         <td>{{ paiement.datePaiement | date:'yyyy-MM-dd' }}</td>
-        <td>{{ paiement.locataire.nom }}</td>
+        <td>{{ paiement.locataire?.nom }}</td>
         <td>
           <button *ngIf="authService.roles.includes('admin')" class="btn btn-link text-primary" data-bs-toggle="modal" (click)="openDialogEdit(paiement)" data-bs-target="#exampleModalEdit">
             <i class="fas fa-edit"></i>

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { AddNewPasswordComponent } from './dialog/add-new-password/add-new-password.component';
 
 @Component({
   selector: 'app-change-password',
@@ -13,9 +15,10 @@ export class ChangePasswordComponent {
   authenticatedUser: any;
   oldPassword: string = '';
   newPassword: string = '';
+  headers : any
 
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService,private _matDialog: MatDialog) {}
 
   changePassword() {
     this.authService.changePassword({ oldPassword: this.oldPassword, newPassword: this.newPassword }).subscribe(
@@ -40,6 +43,24 @@ export class ChangePasswordComponent {
   
   submitChangePasswordForm() {
     this.changePassword();
+  }
+
+
+
+  openDialogEdit(changePassword: any) :void{
+    // Open the dialog
+    const dialogRef = this._matDialog.open(AddNewPasswordComponent, {
+      backdropClass: 'my-full-screen-dialog',
+      panelClass:'my-panelClass-dialog',
+      width:'50%',
+      data: changePassword,
+      disableClose: true
+  });
+
+  dialogRef.afterClosed()
+      .subscribe((result) => {
+          console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
+      });
   }
 
 }
