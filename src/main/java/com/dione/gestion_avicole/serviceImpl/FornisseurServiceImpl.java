@@ -8,7 +8,7 @@ import com.dione.gestion_avicole.constents.AvicoleConstants;
 import com.dione.gestion_avicole.dao.FournisseurDao;
 import com.dione.gestion_avicole.service.FournisseurService;
 import com.dione.gestion_avicole.utils.AvicoleUtils;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.Optional;
 
 
 @Service
-@Slf4j
+//@Slf4j
 public class FornisseurServiceImpl implements FournisseurService {
 
     private final FournisseurDao fournisseurDao;

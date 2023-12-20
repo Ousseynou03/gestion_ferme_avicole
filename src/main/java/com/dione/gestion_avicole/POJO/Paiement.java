@@ -1,8 +1,5 @@
 package com.dione.gestion_avicole.POJO;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -11,9 +8,6 @@ import java.util.Date;
 
 @DynamicUpdate
 @DynamicInsert
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 public class Paiement {
 
@@ -29,4 +23,46 @@ public class Paiement {
 
     @Temporal(TemporalType.DATE)
     private Date datePaiement;
+
+    public Paiement() {
+    }
+
+    public Paiement(Integer id, Locataire locataire, double montant, Date datePaiement) {
+        this.id = id;
+        this.locataire = locataire;
+        this.montant = montant;
+        this.datePaiement = datePaiement;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Locataire getLocataire() {
+        return locataire;
+    }
+
+    public void setLocataire(Locataire locataire) {
+        this.locataire = locataire;
+    }
+
+    public double getMontant() {
+        return montant;
+    }
+
+    public void setMontant(double montant) {
+        this.montant = montant;
+    }
+
+    public Date getDatePaiement() {
+        return datePaiement;
+    }
+
+    public void setDatePaiement(Date datePaiement) {
+        this.datePaiement = datePaiement;
+    }
 }

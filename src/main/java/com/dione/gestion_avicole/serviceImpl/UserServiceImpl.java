@@ -11,7 +11,7 @@ import com.dione.gestion_avicole.dao.UserDao;
 import com.dione.gestion_avicole.service.UserService;
 import com.dione.gestion_avicole.utils.AvicoleUtils;
 import com.dione.gestion_avicole.wrapper.UserWrapper;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
-@Slf4j
+//@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
-        log.info("Inside signup {}", requestMap);
+      //  log.info("Inside signup {}", requestMap);
         try {
             if (jwtFilter.isAdmin()){
                 if (validateUserSignUp(requestMap)){
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     //Méthode de connexion d'un user
     @Override
     public ResponseEntity<String> login(Map<String, String> requestMap) {
-        log.info("Inside login : ", requestMap);
+       // log.info("Inside login : ", requestMap);
         try {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password"))
@@ -94,14 +94,16 @@ public class UserServiceImpl implements UserService {
                 }
             }
         } catch (BadCredentialsException ex) {
-            log.error("Bad Credentials: {}", ex.getMessage());
+         //   log.error("Bad Credentials: {}", ex.getMessage());
             return new ResponseEntity<String>("{\"message\":\"" + "Bad Credentials." + "\"}", HttpStatus.BAD_REQUEST);
         } catch (Exception ex) {
-            log.error("Error during login: {}", ex.getMessage());
+           // log.error("Error during login: {}", ex.getMessage());
         }
 
         return new ResponseEntity<String>("{\"message\":\"" + "Error during login." + "\"}", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
 
 
 

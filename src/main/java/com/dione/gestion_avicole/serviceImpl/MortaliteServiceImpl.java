@@ -9,7 +9,7 @@ import com.dione.gestion_avicole.dao.BandeDao;
 import com.dione.gestion_avicole.dao.MortaliteDao;
 import com.dione.gestion_avicole.service.MortaliteService;
 import com.dione.gestion_avicole.utils.AvicoleUtils;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.*;
 
 
 @Service
-@Slf4j
+//@Slf4j
 public class MortaliteServiceImpl implements MortaliteService {
 
     private final MortaliteDao mortaliteDao;

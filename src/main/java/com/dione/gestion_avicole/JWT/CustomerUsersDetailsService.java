@@ -2,7 +2,7 @@ package com.dione.gestion_avicole.JWT;
 
 import com.dione.gestion_avicole.dao.UserDao;
 import com.dione.gestion_avicole.POJO.User;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Objects;
 
-@Slf4j
+//@Slf4j
 @Service
 public class CustomerUsersDetailsService implements UserDetailsService {
 
@@ -31,7 +31,7 @@ public class CustomerUsersDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("Inside loadUserByUsername {}", username);
+        //log.info("Inside loadUserByUsername {}", username);
         userDetail = userDao.findEmailById(username);
         if (!Objects.isNull(userDetail))
             return new org.springframework.security.core.userdetails.User(userDetail.getEmail(), userDetail.getPassword(), new ArrayList<>());

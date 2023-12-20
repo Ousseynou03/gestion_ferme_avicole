@@ -9,7 +9,7 @@ import com.dione.gestion_avicole.dao.BandeDao;
 import com.dione.gestion_avicole.dao.RamassageDao;
 import com.dione.gestion_avicole.service.RamassageService;
 import com.dione.gestion_avicole.utils.AvicoleUtils;
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.*;
 
 
 @Service
-@Slf4j
+//@Slf4j
 public class RamassageServiceImpl implements RamassageService {
 
     private final RamassageDao ramassageDao;
