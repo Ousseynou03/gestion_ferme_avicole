@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { RamassageOeufService } from '../../services/ramassage-oeuf.service';
 import { BandeService } from '../../services/bande.service';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -8,18 +8,28 @@ import { Bande } from '../../models/bande.model';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { EditRamassageOeufComponent } from './dialog/edit-ramassage-oeuf/edit-ramassage-oeuf.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-ramassage-oeuf',
   templateUrl: './ramassage-oeuf.component.html',
   styleUrls: ['./ramassage-oeuf.component.scss']
 })
-export class RamassageOeufComponent implements OnInit{
+export class RamassageOeufComponent implements OnInit, AfterViewInit{
 
 
   ramassages: Ramassage[];
   bandes: Bande[];
   headers : any;
+
+  title = 'Liste Des Ramassages Oeufs'
+  displayedColumns: string[] = ['id', 'observation', 'quantite', 'nbrOeufCasse', 'nbrOeufPerdu', 'nbrPlateauOeuf', 'dateRamassage', 'bande', 'action'];
+  dataSource!: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
 
   ramassageForm = this.fb.group({
@@ -27,6 +37,7 @@ export class RamassageOeufComponent implements OnInit{
     quantite: ['', Validators.required],
     nbrOeufCasse : [null, Validators.required],
     nbrOeufPerdu : [null, Validators.required],
+    nbrPlateauOeuf : [null, Validators.required],
     dateRamassage : ['', Validators.required],
     bande: [null, Validators.required],
   });
@@ -40,38 +51,41 @@ export class RamassageOeufComponent implements OnInit{
   ) {}
 
 
-  ngOnInit() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté pour récupérer la liste des ramassages.'
-      });
-      return;
+  ngAfterViewInit() {
+    if(this.paginator === undefined){
+      this.dataSource.paginator = this.paginator;
     }
-
-    const headers = { Authorization: `Bearer ${token}` };
-    this.loadBandeList(headers);
-    this.loadRamassageList(headers);
   }
 
 
-  loadRamassageList(headers: any) {
-    this.ramassageService.getAllRamassages(headers).subscribe(
-      (data: Ramassage[]) => {
-        this.ramassages = data;
+  ngOnInit(): void {
+    this.loadBandeList(this.headers);
+    this.loadRamassageList(this.headers);
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  loadRamassageList(header : any){
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+    this.ramassageService.getAllRamassages(headers)
+    .subscribe({
+      next:(res)=>{
+        this.dataSource = new MatTableDataSource(res);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur de récupération',
-          text: 'Impossible de récupérer la liste des ramassages.'
-        });
-  
-        console.error('Erreur lors de la récupération des ramassages :', error);
+      error:(_err)=>{
+        alert("Impossible de recupere la liste des ramassages!!!")
       }
-    );
+    })
   }
 
 
@@ -89,10 +103,10 @@ export class RamassageOeufComponent implements OnInit{
         observation: this.ramassageForm.value.observation,
         quantite: this.ramassageForm.value.quantite,
         nbrOeufCasse: this.ramassageForm.value.nbrOeufCasse,
-        nbrOeufPerdu : this.ramassageForm.value.nbrOeufPerdu,
-        dateRamassage : this.ramassageForm.value.dateRamassage,
+        nbrOeufPerdu: this.ramassageForm.value.nbrOeufPerdu,
+        dateRamassage: this.ramassageForm.value.dateRamassage,
         bande: this.ramassageForm.value.bande,
-
+        nbrPlateauOeuf: this.ramassageForm.value.nbrPlateauOeuf,
       };
   
       const token = localStorage.getItem('token');
@@ -166,9 +180,7 @@ export class RamassageOeufComponent implements OnInit{
                 text: 'Le Ramassage a été supprimé avec succès.',
                 icon: 'success'
               });
-              this.ramassageService.getAllRamassages(headers).subscribe(updatedRamassages => {
-                this.ramassages = updatedRamassages;
-              });
+              this.loadRamassageList(this.headers)
             },
             (error) => {
               Swal.fire({

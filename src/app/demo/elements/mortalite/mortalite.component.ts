@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Mortalite } from '../../models/moratlite.model';
 import { Bande } from '../../models/bande.model';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -8,17 +8,29 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditMortaliteComponent } from './dialog/edit-mortalite/edit-mortalite.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-mortalite',
   templateUrl: './mortalite.component.html',
   styleUrls: ['./mortalite.component.scss']
 })
-export class MortaliteComponent implements OnInit{
+export class MortaliteComponent implements OnInit, AfterViewInit{
 
   mortalites: Mortalite[];
   bandes: Bande[];
   headers : any
+
+
+
+  title = 'Liste Des Mortalités'
+  displayedColumns: string[] = ['id', 'effectif', 'dateMortalite', 'description', 'bande', 'action'];
+  dataSource!: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
 
   mortaliteForm = this.fb.group({
@@ -36,38 +48,46 @@ export class MortaliteComponent implements OnInit{
     private _matDialog: MatDialog,
   ) {}
 
-  ngOnInit() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté pour récupérer la liste des mortalités.'
-      });
-      return;
+
+  ngAfterViewInit() {
+    if(this.paginator === undefined){
+      this.dataSource.paginator = this.paginator;
     }
+  }
 
+
+  ngOnInit(): void {
+    this.loadMortaliteList(this.headers)
+    this.loadBandeList(this.headers);
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  loadMortaliteList(header : any){
+    const token = localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
-    this.loadBandeList(headers);
-    this.loadMortaliteList(headers);
+    this.mortaliteService.getAllMortalites(headers)
+    .subscribe({
+      next:(res)=>{
+        this.dataSource = new MatTableDataSource(res);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error:(_err)=>{
+        alert("Impossible de recupere la liste des batiments!!!")
+      }
+    })
   }
 
-  loadMortaliteList(headers: any) {
-    this.mortaliteService.getAllMortalites(headers).subscribe(
-      (data: Mortalite[]) => {
-        this.mortalites = data;
-      },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur de récupération',
-          text: 'Impossible de récupérer la liste des mortalités.'
-        });
-  
-        console.error('Erreur lors de la récupération des mortalités :', error);
-      }
-    );
-  }
+
+
   
 
   loadBandeList(headers: any) {
@@ -161,9 +181,7 @@ export class MortaliteComponent implements OnInit{
               text: 'La Mortalité a été supprimé avec succès.',
               icon: 'success'
             });
-            this.mortaliteService.getAllMortalites(headers).subscribe(updatedMortalites => {
-              this.mortalites = updatedMortalites;
-            });
+            this.loadMortaliteList(this.headers)
           },
           (error) => {
             Swal.fire({

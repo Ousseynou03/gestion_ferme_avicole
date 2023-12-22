@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Bande } from '../../models/bande.model';
 import { BandeService } from '../../services/bande.service';
 import { AuthService } from '../../services/auth.service';
@@ -9,18 +9,30 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { switchMap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { EditComponent } from './dialog/edit/edit.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-bande',
   templateUrl: './bande.component.html',
   styleUrls: ['./bande.component.scss']
 })
-export class BandeComponent implements OnInit {
+export class BandeComponent implements OnInit, AfterViewInit{
 
   bandes: Bande[];
   batiments: Batiment[];
 
   headers: any
+
+  title = 'Liste Des Bandes'
+  displayedColumns: string[] = ['id', 'code', 'designation', 'dateDebut', 'dateFin', 'effectifdepart', 'batiment', 'cloture', 'action'];
+  dataSource!: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  
 
 
   bandeForm = this.fb.group({
@@ -29,7 +41,8 @@ export class BandeComponent implements OnInit {
     dateDebut: ['', Validators.required],
     dateFin: ['', Validators.required],
     effectifdepart: [null, Validators.required],
-    batiment: [null,Validators.required]
+    batiment: [null,Validators.required],
+    cloture : ['', Validators.required],
   });
 
   constructor(
@@ -40,38 +53,45 @@ export class BandeComponent implements OnInit {
     private _matDialog: MatDialog,
   ) {}
 
-  ngOnInit() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté pour récupérer la liste des bandes.'
-      });
-      return;
-    }
 
-     this.headers = { Authorization: `Bearer ${token}` };
+    ngAfterViewInit() {
+      if(this.paginator === undefined){
+        this.dataSource.paginator = this.paginator;
+      }
+    }
+  
+
+  ngOnInit(): void {
+    this.loadBandeList(this.headers)
     this.loadBandeList(this.headers);
     this.loadBatimentList(this.headers);
   }
 
-  loadBandeList(headers: any) {
-    this.bandeService.getAllBandes(headers).subscribe(
-      (data: Bande[]) => {
-        this.bandes = data;
-      },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur de récupération',
-          text: 'Impossible de récupérer la liste des bandes.'
-        });
-  
-        console.error('Erreur lors de la récupération des bandes :', error);
-      }
-    );
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
+
+  loadBandeList(header : any){
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+    this.bandeService.getAllBandes(headers)
+    .subscribe({
+      next:(res)=>{
+        this.dataSource = new MatTableDataSource(res);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error:(_err)=>{
+        alert("Impossible de recupere la liste des batiments!!!")
+      }
+    })
+  }
+
   
 
   loadBatimentList(headers: any) {
@@ -92,6 +112,7 @@ export class BandeComponent implements OnInit {
         dateFin: this.bandeForm.value.dateFin,
         effectifdepart: this.bandeForm.value.effectifdepart,
         batiment: this.bandeForm.value.batiment,
+        cloture : this.bandeForm.value.cloture,
       };
   
       console.log('Valeur de batiment avant envoi:', this.bandeForm.value.batiment);
@@ -164,9 +185,7 @@ export class BandeComponent implements OnInit {
               text: 'La Bande a été supprimé avec succès.',
               icon: 'success'
             });
-            this.bandeService.getAllBandes(headers).subscribe(updatedBandes => {
-              this.bandes = updatedBandes;
-            });
+            this.loadBandeList(this.headers)
           },
           (error) => {
             Swal.fire({

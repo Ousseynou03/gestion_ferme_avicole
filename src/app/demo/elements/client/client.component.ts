@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Client } from '../../models/client.model';
 import { ClientService } from '../../services/client.service';
 import { AuthService } from '../../services/auth.service';
@@ -6,17 +6,30 @@ import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { EditClientComponent } from './dialog/edit-client/edit-client.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-client',
   templateUrl: './client.component.html',
   styleUrls: ['./client.component.scss']
 })
-export class ClientComponent implements OnInit{
+export class ClientComponent implements OnInit , AfterViewInit{
 
   clients: Client[] = [];
   clientForm: FormGroup;
   headers: any
+
+
+  title = 'Liste Des clients'
+  displayedColumns: string[] = ['id', 'nom', 'ville', 'numTel', 'action'];
+  dataSource!: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+
 
   client: Client = {
     id: null,
@@ -37,32 +50,42 @@ export class ClientComponent implements OnInit{
       });
     }
 
-  ngOnInit() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté pour récupérer la liste des clients.'
-      });
-      return;
-    }
-    const headers = { Authorization: `Bearer ${token}` };
-    this.clientService.getAllClients(headers).subscribe(
-      (data: Client[]) => {
-        this.clients = data;
-      },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur de récupération',
-          text: 'Impossible de récupérer la liste des clients.'
-        });
-
-        console.error('Erreur lors de la récupération des clients:', error);
+    ngAfterViewInit() {
+      if(this.paginator === undefined){
+        this.dataSource.paginator = this.paginator;
       }
-    );
     }
+  
+  
+    ngOnInit(): void {
+      this.loadClientList(this.headers)
+    }
+  
+    applyFilter(event: Event) {
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+  
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    }
+
+    loadClientList(header : any){
+      const token = localStorage.getItem('token');
+      const headers = { Authorization: `Bearer ${token}` };
+      this.clientService.getAllClients(headers)
+      .subscribe({
+        next:(res)=>{
+          this.dataSource = new MatTableDataSource(res);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        error:(_err)=>{
+          alert("Impossible de recupere la liste des batiments!!!")
+        }
+      })
+    }
+
 
     //Ajout
     addClient() {
@@ -107,21 +130,6 @@ export class ClientComponent implements OnInit{
         );
       }
     }
-    loadClientList(header : any) {
-      const token = localStorage.getItem('token');
-      if (token) {
-        const headers = { Authorization: `Bearer ${token}` };
-  
-        this.clientService.getAllClients(headers).subscribe(
-          (data: Client[]) => {
-            this.clients = data;
-          },
-          (error) => {
-            console.error('Erreur lors de la récupération des client:', error);
-          }
-        );
-      }
-    }
 
 
 
@@ -157,9 +165,7 @@ export class ClientComponent implements OnInit{
               text: 'Le client a été supprimé avec succès.',
               icon: 'success'
             });
-            this.clientService.getAllClients(headers).subscribe(updateClients => {
-              this.clients = updateClients;
-            });
+            this.loadClientList(this.headers)
           },
           (error) => {
             Swal.fire({

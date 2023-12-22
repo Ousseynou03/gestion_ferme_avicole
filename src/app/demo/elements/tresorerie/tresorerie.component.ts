@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { TresorerieService } from '../../services/tresorerie.service';
 import Swal from 'sweetalert2';
 import { Tresorerie } from '../../models/tresorerie.model';
@@ -6,19 +6,30 @@ import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { EditTresorerieComponent } from './dialog/edit-tresorerie/edit-tresorerie.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-tresorerie',
   templateUrl: './tresorerie.component.html',
   styleUrls: ['./tresorerie.component.scss']
 })
-export class TresorerieComponent implements OnInit{
+export class TresorerieComponent implements OnInit, AfterViewInit{
 
 
   tresoreries : Tresorerie[];
 
   tresorerieForm : FormGroup;
   headers : any;
+
+  title = 'Liste Des Trésorerie'
+  displayedColumns: string[] = ['id', 'type', 'nom', 'numero', 'solde', 'action'];
+  dataSource!: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
 
   tresorerie : Tresorerie = {
     id: 0,
@@ -38,20 +49,42 @@ export class TresorerieComponent implements OnInit{
       });
     }
 
-  ngOnInit() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté pour récupérer la liste des trésoreries.'
-      });
-      return;
+
+    ngAfterViewInit() {
+      if(this.paginator === undefined){
+        this.dataSource.paginator = this.paginator;
+      }
+    }
+  
+  
+    ngOnInit(): void {
+      this.loadTresorerieList(this.headers)
+    }
+  
+    applyFilter(event: Event) {
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+  
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
     }
 
-    const headers = { Authorization: `Bearer ${token}` };
-    this.loadTresorerieList(headers);
-  }
+    loadTresorerieList(header : any){
+      const token = localStorage.getItem('token');
+      const headers = { Authorization: `Bearer ${token}` };
+      this.tresoreriService.getAllTresoreries(headers)
+      .subscribe({
+        next:(res)=>{
+          this.dataSource = new MatTableDataSource(res);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        error:(_err)=>{
+          alert("Impossible de recupere la liste des trésoreries!!!")
+        }
+      })
+    }
 
   addTresorerie() {
     if (this.tresorerieForm.valid) {
@@ -96,21 +129,7 @@ export class TresorerieComponent implements OnInit{
     }
   }
 
-  loadTresorerieList(headers: any) {
-    this.tresoreriService.getAllTresoreries(headers).subscribe(
-      (data: Tresorerie[]) => {
-        this.tresoreries = data;
-      },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur de récupération',
-          text: 'Impossible de récupérer la liste des trésoreries.'
-        });
-        console.error('Erreur lors de la récupération des trésoreries :', error);
-      }
-    );
-  }
+
 
 
 

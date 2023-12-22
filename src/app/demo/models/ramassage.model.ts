@@ -6,6 +6,7 @@ export interface Ramassage {
     quantite : string;
     nbrOeufCasse : number;
     nbrOeufPerdu : number;
+    nbrPlateauOeuf : number;
     dateRamassage : string;
     bande : Bande;
 

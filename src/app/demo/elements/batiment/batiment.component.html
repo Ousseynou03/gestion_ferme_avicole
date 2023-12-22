@@ -38,6 +38,7 @@
               </div>
               <button type="submit">Enregistrer</button>
             </form>
+            
           </div>
         </div>
       </div>
@@ -51,7 +52,7 @@
 
 
 <!-- Liste des batiments -->
-
+<!---
 <table class="table table-striped">
   <thead>
     <tr>
@@ -72,13 +73,13 @@
       <td>{{ batiment.capacite }}</td>
       <td>{{ batiment.dimension }}</td>
       <td>
-        <!-- Edit Button -->
+
         <div *ngIf="authService.roles.includes('admin')">
         <button  class="btn btn-link text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit" (click)="openDialogEdit(batiment)">
           <i class="fas fa-edit"></i>
         </button>
       </div>
-        <!-- Delete Button -->
+ 
         <div *ngIf="authService.roles.includes('admin')">
         <button  class="btn btn-link text-danger" (click)="deleteBatiment(batiment.id)">
           <i class="fas fa-trash-alt"></i>
@@ -88,3 +89,77 @@
     </tr>
   </tbody>
 </table>
+
+-->
+<!---->
+<div class="container-fluide page">
+      <div class="container">
+          <div class="mt-2">
+              <mat-form-field>
+                  <mat-label>Rechercher</mat-label>
+                  <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+                </mat-form-field>
+                
+                <div class="mat-elevation-z8">
+                  <table mat-table [dataSource]="dataSource" matSort>
+                
+                    <!-- ID Column -->
+                    <ng-container matColumnDef="id">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>No </th>
+                      <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+                    </ng-container>
+                
+                    <!-- Matricule Column -->
+                    <ng-container matColumnDef="code">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Code </th>
+                      <td mat-cell *matCellDef="let row"> {{row.code}} </td>
+                    </ng-container>
+                
+                    <!-- Prenom Column -->
+                    <ng-container matColumnDef="designation">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> designation </th>
+                      <td mat-cell *matCellDef="let row"> {{row.designation}} </td>
+                    </ng-container>
+                
+                    <!-- Nom Column -->
+                    <ng-container matColumnDef="capacite">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> capacite </th>
+                      <td mat-cell *matCellDef="let row"> {{row.capacite}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dimension">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> dimension </th>
+                      <td mat-cell *matCellDef="let row"> {{row.dimension}} </td>
+                    </ng-container>
+
+                       
+                        <ng-container matColumnDef="action">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+                          <td mat-cell *matCellDef="let row">
+                            <div *ngIf="authService && authService.roles && authService.roles.includes('admin')">
+                              <button mat-icon-button color="primary" (click)="openDialogEdit(row)">
+                                <mat-icon>edit</mat-icon>
+                              </button>
+                            </div>
+                            <div *ngIf="authService && authService.roles && authService.roles.includes('admin')">
+                              <button mat-icon-button color="warn" (click)="deleteBatiment(row.id)">
+                                <mat-icon>delete</mat-icon>
+                              </button>
+                            </div>
+                          </td>
+                        </ng-container>
+
+                                        
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                
+                    <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                      <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                    </tr>
+                  </table>
+                  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users" ></mat-paginator>
+                </div>
+          </div>
+      </div>
+  </div>

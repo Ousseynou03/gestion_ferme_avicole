@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Ouvrier } from '../../models/ouvrier.model';
 import { OuvrierService } from '../../services/ouvrier.service';
 import Swal from 'sweetalert2';
@@ -6,18 +6,32 @@ import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { EditOuvrierComponent } from './dialog/edit-ouvrier/edit-ouvrier.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-ouvrier',
   templateUrl: './ouvrier.component.html',
   styleUrls: ['./ouvrier.component.scss']
 })
-export class OuvrierComponent implements OnInit{
+export class OuvrierComponent implements OnInit, AfterViewInit{
 
   ouvriers: Ouvrier[] = [];
 
   ouvrierForm: FormGroup;
   headers : any
+
+
+  title = 'Liste Des Ouvriers'
+  displayedColumns: string[] = ['id', 'fonction', 'nom', 'numTel', 'ville', 'salaire', 'action'];
+  dataSource!: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+
+
   
 
   ouvrier: Ouvrier = {
@@ -42,34 +56,43 @@ export class OuvrierComponent implements OnInit{
       });
     }
 
-  ngOnInit() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté pour récupérer la liste des ouvriers.'
-      });
-      return;
-    }
-    const headers = { Authorization: `Bearer ${token}` };
-    this.ouvrierService.getAllOuvriers(headers).subscribe(
-      (data: Ouvrier[]) => {
-        this.ouvriers = data;
-      },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur de récupération',
-          text: 'Impossible de récupérer la liste des ouvriers.'
-        });
-
-        console.error('Erreur lors de la récupération des ouvriers:', error);
+    ngAfterViewInit() {
+      if(this.paginator === undefined){
+        this.dataSource.paginator = this.paginator;
       }
-    );
-
-
     }
+  
+  
+    ngOnInit(): void {
+      this.loadOuvrierList(this.headers)
+    }
+  
+    applyFilter(event: Event) {
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+  
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    }
+
+    loadOuvrierList(header : any){
+      const token = localStorage.getItem('token');
+      const headers = { Authorization: `Bearer ${token}` };
+      this.ouvrierService.getAllOuvriers(headers)
+      .subscribe({
+        next:(res)=>{
+          this.dataSource = new MatTableDataSource(res);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        error:(_err)=>{
+          alert("Impossible de recupere la liste des ouvriers!!!")
+        }
+      })
+    }
+
+
 
 //Ajout
 addOuvrier() {
@@ -98,7 +121,7 @@ addOuvrier() {
         });
 
         console.log('Ouvrier enregistré:', response);
-        this.loadOuvrierList();
+        this.loadOuvrierList(this.headers);
         // Réinitialisez le formulaire après l'ajout réussi
         this.ouvrierForm.reset();
       },
@@ -114,21 +137,7 @@ addOuvrier() {
     );
   }
 }
-    loadOuvrierList() {
-      const token = localStorage.getItem('token');
-      if (token) {
-        const headers = { Authorization: `Bearer ${token}` };
-  
-        this.ouvrierService.getAllOuvriers(headers).subscribe(
-          (data: Ouvrier[]) => {
-            this.ouvriers = data;
-          },
-          (error) => {
-            console.error('Erreur lors de la récupération des ouvriers:', error);
-          }
-        );
-      }
-    }
+
 
 // Suppression
   deleteOuvrier(id: number) {
@@ -196,7 +205,7 @@ dialogRef.afterClosed()
         console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
         if(result == true){
 
-          this.loadOuvrierList();
+          this.loadOuvrierList(this.headers);
         }
     });
 }

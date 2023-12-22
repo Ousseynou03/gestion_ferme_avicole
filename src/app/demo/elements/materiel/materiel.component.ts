@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MaterielService } from '../../services/materiel.service';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
@@ -10,13 +10,16 @@ import {FournisseurService} from "../../services/fournisseur.service";
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { EditMaterielComponent } from './dialog/edit-materiel/edit-materiel.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-materiel',
   templateUrl: './materiel.component.html',
   styleUrls: ['./materiel.component.scss']
 })
-export class MaterielComponent implements OnInit{
+export class MaterielComponent implements OnInit, AfterViewInit{
 
   materiels : Materiel[];
   batiments: Batiment[];
@@ -30,6 +33,15 @@ export class MaterielComponent implements OnInit{
     fournisseur: [null, Validators.required],
   });
 
+
+
+  title = 'Liste Des Materiaux'
+  displayedColumns: string[] = ['id', 'designation', 'quantite', 'batiment', 'fournisseur', 'action'];
+  dataSource!: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
   constructor(private materielService: MaterielService,
               public authService: AuthService,
               private batimentService : BatimentService,
@@ -37,37 +49,46 @@ export class MaterielComponent implements OnInit{
               private fb : FormBuilder,
               private _matDialog: MatDialog,) {}
 
-  ngOnInit() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté pour récupérer la liste des mateiaux.'
-      });
-      return;
-    }
-    const headers = { Authorization: `Bearer ${token}` };
-    this.materielService.getAllMateriels(headers).subscribe(
-      (data: Materiel[]) => {
-        this.materiels = data;
-      },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur de récupération',
-          text: 'Impossible de récupérer la liste des matériaux.'
-        });
-
-        console.error('Erreur lors de la récupération des matériaux:', error);
-      }
-    );
-
-    this.loadBatimentList(headers)
-    this.loadFournisseurList(headers)
 
 
-    }
+              ngAfterViewInit() {
+                if(this.paginator === undefined){
+                  this.dataSource.paginator = this.paginator;
+                }
+              }
+            
+            
+              ngOnInit(): void {
+                this.getAllMateriel(this.headers)
+                this.loadBatimentList(this.headers)
+                this.loadFournisseurList(this.headers)
+              }
+            
+              applyFilter(event: Event) {
+                const filterValue = (event.target as HTMLInputElement).value;
+                this.dataSource.filter = filterValue.trim().toLowerCase();
+            
+                if (this.dataSource.paginator) {
+                  this.dataSource.paginator.firstPage();
+                }
+              }
+          
+              getAllMateriel(header : any){
+                const token = localStorage.getItem('token');
+                const headers = { Authorization: `Bearer ${token}` };
+                this.materielService.getAllMateriels(headers)
+                .subscribe({
+                  next:(res)=>{
+                    this.dataSource = new MatTableDataSource(res);
+                    this.dataSource.paginator = this.paginator;
+                    this.dataSource.sort = this.sort;
+                  },
+                  error:(_err)=>{
+                    alert("Impossible de recupere la liste des materiaux!!!")
+                  }
+                })
+              }
+
 
 
   addMateriel() {
@@ -103,7 +124,7 @@ export class MaterielComponent implements OnInit{
             title: 'Succès',
             text: 'Le Materiel a été ajoutée avec succès.'
           });
-          this.loadMaterielList(headers);
+          this.getAllMateriel(headers);
           this.materielForm.reset();
         },
         (error) => {
@@ -171,53 +192,41 @@ export class MaterielComponent implements OnInit{
 
 
     // Suppression
-    deleteMateriel(id: number) {
-      Swal.fire({
-        title: 'Voulez-vous vraiment supprimer ce matériel ?',
-        text: 'Le Matériel sera définitivement supprimé!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Oui, supprimer!'
-      }).then((result) => {
-        if (result.value) {
-          const token = localStorage.getItem('token');
-    
-          if (!token) {
+deleteMateriel(id: number) {
+  Swal.fire({
+    title: 'Voulez-vous vraiment supprimer ce matériel ?',
+    text: 'Le Matériel sera définitivement supprimé!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Oui, supprimer!'
+  }).then((result) => {
+    if (result.value) {
+      const token = localStorage.getItem('token');
+      const headers = { Authorization: `Bearer ${token}` };
+      this.materielService.deleteMateriel(id, headers)
+        .subscribe({
+          next: (_res) => {
             Swal.fire({
-              icon: 'error',
-              title: 'Erreur',
-              text: 'Vous devez être connecté en tant qu\'administrateur pour effectuer cette action.'
+              title: 'Supprimé!',
+              text: 'Le testeur a été supprimé avec succès.',
+              icon: 'success'
             });
-            return;
+            this.getAllMateriel(this.headers);
+          },
+          error: (error) => {
+            Swal.fire({
+              title: 'Oups!',
+              text: 'Impossible de supprimer ce testeur.',
+              icon: 'error'
+            });
+            this.getAllMateriel(this.headers);
           }
-    
-          const headers = { Authorization: `Bearer ${token}` };
-    
-          this.materielService.deleteMateriel(id, headers).subscribe(
-            () => {
-              Swal.fire({
-                title: 'Supprimé!',
-                text: 'Le Matériel a été supprimé avec succès.',
-                icon: 'success'
-              });
-              this.materielService.getAllMateriels(headers).subscribe(updatedMatériels => {
-                this.materiels = updatedMatériels;
-              });
-            },
-            (error) => {
-              Swal.fire({
-                title: 'Oups!',
-                text: 'Impossible de supprimer ce materiel.',
-                icon: 'error'
-              });
-            }
-          );
-        }
-      });
+        });
     }
-
+  });
+}
 
     openDialogEdit(materiel: any) :void{
       // Open the dialog

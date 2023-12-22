@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { DepenseService } from '../../services/depense.service';
 import { BandeService } from '../../services/bande.service';
 import Swal from 'sweetalert2';
@@ -9,13 +9,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Categorie } from '../../models/enums/categorie.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { EditDepenseComponent } from './dialog/edit-depense/edit-depense.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-depense',
   templateUrl: './depense.component.html',
   styleUrls: ['./depense.component.scss']
 })
-export class DepenseComponent implements OnInit{
+export class DepenseComponent implements OnInit, AfterViewInit{
 
 
   depenses : Depense[];
@@ -24,10 +27,19 @@ export class DepenseComponent implements OnInit{
   bandes : Bande[];
   headers: any
 
+  title = 'Liste Des Dépenses'
+  displayedColumns: string[] = ['id', 'dateDepense', 'categorie', 'quantite', 'prixUnitaire', 'montant', 'description', 'bande' , 'action'];
+  dataSource!: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+
+
   depense : Depense = {
     id: 0,
     dateDepense: '',
-    categorie: null,
+    categorie: '',
     quantite: 0,
     prixUnitaire: 0,
     montant: 0,
@@ -42,7 +54,7 @@ export class DepenseComponent implements OnInit{
     private _matDialog: MatDialog){
       this.depenseForm = this.fb.group({
         dateDepense: ['', Validators.required],
-        categorie: [null, Validators.required],
+        categorie: ['', Validators.required],
         quantite: [0, Validators.required],
         prixUnitaire: [0, Validators.required],
         montant: [0, Validators.required],
@@ -53,21 +65,45 @@ export class DepenseComponent implements OnInit{
     }
 
 
-    ngOnInit() {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: 'Vous devez être connecté pour récupérer la liste des dépenses.'
-        });
-        return;
+    ngAfterViewInit() {
+      if(this.paginator === undefined){
+        this.dataSource.paginator = this.paginator;
       }
-  
-      const headers = { Authorization: `Bearer ${token}` };
-      this.loadDepenseList(headers);
-      this.loadBandeList(headers);
     }
+  
+  
+    ngOnInit(): void {
+      this.loadDepenseList(this.headers)
+      this.loadBandeList(this.headers);
+    }
+  
+    applyFilter(event: Event) {
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+  
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
+    }
+
+    loadDepenseList(header : any){
+      const token = localStorage.getItem('token');
+      const headers = { Authorization: `Bearer ${token}` };
+      this.depenseService.getAllDepenses(headers)
+      .subscribe({
+        next:(res)=>{
+          this.dataSource = new MatTableDataSource(res);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        error:(_err)=>{
+          alert("Impossible de recupere la liste des dépenses!!!")
+        }
+      })
+    }
+
+
+
 
     addDepense() {
       if (this.depenseForm.valid) {
@@ -112,22 +148,6 @@ export class DepenseComponent implements OnInit{
       }
     }
 
-    loadDepenseList(headers: any) {
-      this.depenseService.getAllDepenses(headers).subscribe(
-        (data: Depense[]) => {
-          this.depenses = data;
-        },
-        (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Erreur de récupération',
-            text: 'Impossible de récupérer la liste des dépenses.'
-          });
-    
-          console.error('Erreur lors de la récupération des dépenses :', error);
-        }
-      );
-    }
 
     loadBandeList(headers: any) {
       this.bandeService.getAllBandes(headers).subscribe(
@@ -145,6 +165,44 @@ export class DepenseComponent implements OnInit{
         }
       );
     }
+
+
+    // Suppression
+  deleteDepense(id: number) {
+    Swal.fire({
+      title: 'Voulez-vous vraiment supprimer cette dépense ?',
+      text: 'La dépense sera définitivement supprimé!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, supprimer!'
+    }).then((result) => {
+      if (result.value) {
+        const token = localStorage.getItem('token');
+        const headers = { Authorization: `Bearer ${token}` };
+        this.depenseService.deleteDepense(id, headers)
+          .subscribe({
+            next: (_res) => {
+              Swal.fire({
+                title: 'Supprimé!',
+                text: 'La dépense a été supprimé avec succès.',
+                icon: 'success'
+              });
+              this.loadDepenseList(this.headers);
+            },
+            error: (error) => {
+              Swal.fire({
+                title: 'Oups!',
+                text: 'Impossible de supprimer cette dépense.',
+                icon: 'error'
+              });
+              this.loadDepenseList(this.headers);
+            }
+          });
+      }
+    });
+  }
 
 
     openDialogEdit(depense: any) :void{

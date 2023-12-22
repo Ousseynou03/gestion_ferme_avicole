@@ -1,19 +1,30 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { User } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { EditUserComponent } from './dialog/edit-user/edit-user.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent {
+export class UserComponent implements OnInit, AfterViewInit{
 
   users: User[] = [];
   headers : any;
+
+
+  title = 'Liste Des Users'
+  displayedColumns: string[] = ['id', 'name', 'contactNumber', 'email', 'role', 'status', 'action'];
+  dataSource!: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   user: User = {
     name: '',
@@ -27,39 +38,43 @@ export class UserComponent {
 
   constructor(public authService: AuthService,private _matDialog: MatDialog) {}
 
-  ngOnInit() {
-    // Récupérez le token JWT du localStorage (ou d'où vous le stockez)
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      // Gérez l'absence de token, par exemple, en redirigeant l'utilisateur vers la page de connexion
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté pour récupérer la liste des Users.'
-      });
-      return;
+  ngAfterViewInit() {
+    if(this.paginator === undefined){
+      this.dataSource.paginator = this.paginator;
     }
-
-    // Créez un en-tête pour inclure le token JWT
-    const headers = { Authorization: `Bearer ${token}` };
-
-    // Effectuez la requête HTTP pour récupérer la liste des bâtiments avec le token dans l'en-tête
-    this.authService.getAllUsers(headers).subscribe(
-      (data: User[]) => {
-        this.users = data;
-      },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Action Non Autorisée',
-          text: "Vous n'êtes pas autorisé à visualiser la liste des utilisateurs ."
-        });
-
-        console.error('Erreur lors de la récupération des users:', error);
-      }
-    );
   }
+
+
+  ngOnInit(): void {
+    this.loadUserList(this.headers)
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  loadUserList(header : any){
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+    this.authService.getAllUsers(headers)
+    .subscribe({
+      next:(res)=>{
+        this.dataSource = new MatTableDataSource(res);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error:(_err)=>{
+        alert("Impossible de recupere la liste des users!!!")
+      }
+    })
+  }
+
+
 
   signUp() {
     // Récupérez le token JWT du localStorage (ou d'où vous le stockez)
@@ -89,7 +104,7 @@ export class UserComponent {
 
         console.log('Utilisateur enregistré:', response);
                 // Une fois l'inscription réussie, rechargez la liste des utilisateurs
-                this.loadUserList();
+                this.loadUserList(this.headers);
       },
       (error) => {
         Swal.fire({
@@ -104,27 +119,7 @@ export class UserComponent {
   }
 
 
-  loadUserList() {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const headers = { Authorization: `Bearer ${token}` };
 
-      this.authService.getAllUsers(headers).subscribe(
-        (data: User[]) => {
-          this.users = data;
-        },
-        (error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Non Autorisé',
-            text: "Vous n'êtes pas autorisé à visualiser la liste utilisateurs"
-          });
-
-          console.error('Erreur lors de la récupération des utilisateurs:', error);
-        }
-      );
-    }
-  }
 
   // Suppression
   deleteUser(id: number) {
@@ -191,7 +186,7 @@ export class UserComponent {
           console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
           if(result == true){
 
-            this.loadUserList()
+            this.loadUserList(this.headers)
           }
       });
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Nutrition } from '../../models/nutrition.model';
 import { Bande } from '../../models/bande.model';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -10,18 +10,28 @@ import Swal from 'sweetalert2';
 import { Batiment } from '../../models/batiment.model';
 import { MatDialog } from '@angular/material/dialog';
 import { EditNutritionComponent } from './dialog/edit-nutrition/edit-nutrition.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-nutrition',
   templateUrl: './nutrition.component.html',
   styleUrls: ['./nutrition.component.scss']
 })
-export class NutritionComponent implements OnInit{
+export class NutritionComponent implements OnInit, AfterViewInit{
 
   nutritions: Nutrition[];
   batiments: Batiment[];
   bandes : Bande[];
   headers: any;
+
+  title = 'Liste Des Nutritions'
+  displayedColumns: string[] = ['id', 'designation', 'quantite', 'date Entree', 'date Sortie', 'quantite Sortie', 'batiment', 'bande', 'epuisee', 'action'];
+  dataSource!: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
 
   NutritionForm = this.fb.group({
@@ -44,22 +54,45 @@ export class NutritionComponent implements OnInit{
     private _matDialog: MatDialog
   ) {}
 
-  ngOnInit() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté pour récupérer la liste des nutritions.'
-      });
-      return;
-    }
 
-    const headers = { Authorization: `Bearer ${token}` };
-    this.loadBatimentList(headers);
-    this.loadNutritionList(headers);
-    this.loadBandeList(headers);
+  ngAfterViewInit() {
+    if(this.paginator === undefined){
+      this.dataSource.paginator = this.paginator;
+    }
   }
+
+
+  ngOnInit(): void {
+    this.getAllNutrition(this.headers)
+    this.loadBatimentList(this.headers);
+    this.loadBandeList(this.headers);
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  getAllNutrition(header : any){
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+    this.nutritionService.getAllNutritions(headers)
+    .subscribe({
+      next:(res)=>{
+        this.dataSource = new MatTableDataSource(res);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error:(_err)=>{
+        alert("Impossible de recupere la liste des nutritions!!!")
+      }
+    })
+  }
+
 
   loadNutritionList(headers: any) {
     this.nutritionService.getAllNutritions(headers).subscribe(
@@ -140,7 +173,7 @@ export class NutritionComponent implements OnInit{
             title: 'Succès',
             text: 'La Nutrition a été ajoutée avec succès.'
           });
-          this.loadNutritionList(headers);
+          this.getAllNutrition(headers);
           this.NutritionForm.reset();
         },
         (error) => {
@@ -156,52 +189,41 @@ export class NutritionComponent implements OnInit{
   }
 
   // Suppression
-  deleteNutrition(id: number) {
-    Swal.fire({
-      title: 'Voulez-vous vraiment supprimer cette Nutrition ?',
-      text: 'La Nutrition sera définitivement supprimé!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Oui, supprimer!'
-    }).then((result) => {
-      if (result.value) {
-        const token = localStorage.getItem('token');
-  
-        if (!token) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: 'Vous devez être connecté en tant qu\'administrateur pour effectuer cette action.'
-          });
-          return;
-        }
-  
-        const headers = { Authorization: `Bearer ${token}` };
-  
-        this.nutritionService.deleteNutrition(id, headers).subscribe(
-          () => {
+deleteNutrition(id: number) {
+  Swal.fire({
+    title: 'Voulez-vous vraiment supprimer cette Nutrition ?',
+    text: 'La Nutrition sera définitivement supprimé!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Oui, supprimer!'
+  }).then((result) => {
+    if (result.value) {
+      const token = localStorage.getItem('token');
+      const headers = { Authorization: `Bearer ${token}` };
+      this.nutritionService.deleteNutrition(id, headers)
+        .subscribe({
+          next: (_res) => {
             Swal.fire({
               title: 'Supprimé!',
-              text: 'La Bande a été supprimé avec succès.',
+              text: 'La Nutrion a été supprimé avec succès.',
               icon: 'success'
             });
-            this.nutritionService.getAllNutritions(headers).subscribe(updatedNutritions => {
-              this.nutritions = updatedNutritions;
-            });
+            this.getAllNutrition(this.headers);
           },
-          (error) => {
+          error: (error) => {
             Swal.fire({
               title: 'Oups!',
-              text: 'Impossible de supprimer cette nutrition.',
+              text: 'Impossible de supprimer cette Nutrion.',
               icon: 'error'
             });
+            this.getAllNutrition(this.headers);
           }
-        );
-      }
-    });
-  }
+        });
+    }
+  });
+}
 
   openDialogEdit(nutrition: any) :void{
     // Open the dialog

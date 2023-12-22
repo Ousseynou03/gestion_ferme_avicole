@@ -11,4 +11,5 @@ export interface Bande {
     dateFin: string;
     effectifdepart: number;
     batiment: Batiment;
+    cloture : string;
   }

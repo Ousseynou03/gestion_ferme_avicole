@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Fournisseur } from '../../models/fournisseur.model';
 import { FournisseurService } from '../../services/fournisseur.service';
 import { AuthService } from '../../services/auth.service';
@@ -6,17 +6,29 @@ import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { EditFournisseurComponent } from './dialog/edit-fournisseur/edit-fournisseur.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-fournisseur',
   templateUrl: './fournisseur.component.html',
   styleUrls: ['./fournisseur.component.scss']
 })
-export class FournisseurComponent implements OnInit{
+export class FournisseurComponent implements OnInit, AfterViewInit{
 
   fournisseurs: Fournisseur[] = [];
   fournisseurForm: FormGroup;
   headers : any;
+
+  title = 'Liste Des Fournisseurs'
+  displayedColumns: string[] = ['id', 'type', 'nom', 'numTel', 'email', 'action'];
+  dataSource!: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+
 
   fournisseur : Fournisseur = {
     id : null,
@@ -37,40 +49,42 @@ export class FournisseurComponent implements OnInit{
       });
     }
 
-
-  ngOnInit() {
-    // Récupérez le token JWT du localStorage (ou d'où vous le stockez)
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      // Gérez l'absence de token, par exemple, en redirigeant l'utilisateur vers la page de connexion
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté pour récupérer la liste des Fournisseurs.'
-      });
-      return;
+    ngAfterViewInit() {
+      if(this.paginator === undefined){
+        this.dataSource.paginator = this.paginator;
+      }
+    }
+  
+  
+    ngOnInit(): void {
+      this.loadFournisseurList(this.headers)
+    }
+  
+    applyFilter(event: Event) {
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+  
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.firstPage();
+      }
     }
 
-    // Créez un en-tête pour inclure le token JWT
-    const headers = { Authorization: `Bearer ${token}` };
+    loadFournisseurList(header : any){
+      const token = localStorage.getItem('token');
+      const headers = { Authorization: `Bearer ${token}` };
+      this.fournisseurService.getAllFournisseurs(headers)
+      .subscribe({
+        next:(res)=>{
+          this.dataSource = new MatTableDataSource(res);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        },
+        error:(_err)=>{
+          alert("Impossible de recupere la liste des fournisseurs!!!")
+        }
+      })
+    }
 
-    // Effectuez la requête HTTP pour récupérer la liste des bâtiments avec le token dans l'en-tête
-    this.fournisseurService.getAllFournisseurs(headers).subscribe(
-      (data: Fournisseur[]) => {
-        this.fournisseurs = data;
-      },
-      (error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur de récupération',
-          text: 'Impossible de récupérer la liste des fournisseurs.'
-        });
-
-        console.error('Erreur lors de la récupération d un fournisseur:', error);
-      }
-    );
-  }
 
 
   //Ajout
@@ -100,8 +114,7 @@ export class FournisseurComponent implements OnInit{
           });
 
           console.log('Fournisseur enregistré:', response);
-          this.loadFournisseurList();
-          // Réinitialisez le formulaire après l'ajout réussi
+          this.loadFournisseurList(this.headers);
           this.fournisseurForm.reset();
         },
         (error) => {
@@ -116,21 +129,7 @@ export class FournisseurComponent implements OnInit{
       );
     }
   }
-  loadFournisseurList() {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const headers = { Authorization: `Bearer ${token}` };
 
-      this.fournisseurService.getAllFournisseurs(headers).subscribe(
-        (data: Fournisseur[]) => {
-          this.fournisseurs = data;
-        },
-        (error) => {
-          console.error('Erreur lors de la récupération des fournisseurs:', error);
-        }
-      );
-    }
-  }
 
 
   //Suppession
@@ -165,9 +164,7 @@ export class FournisseurComponent implements OnInit{
               text: 'Le fournisseur a été supprimé avec succès.',
               icon: 'success'
             });
-            this.fournisseurService.getAllFournisseurs(headers).subscribe(updatedFounisseur => {
-              this.fournisseurs = updatedFounisseur;
-            });
+            this.loadFournisseurList(this.headers);
           },
           (error) => {
             Swal.fire({
@@ -198,7 +195,7 @@ export class FournisseurComponent implements OnInit{
           console.log("#######################   resulta dialog @@@@@@@@@@@@@@@@@@@",result)
           if(result == true){
 
-            this.loadFournisseurList();
+            this.loadFournisseurList(this.headers);
           }
       });
   }

@@ -64,7 +64,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { ContratLocationComponent } from './demo/elements/contrat-location/contrat-location.component';
 import { MatSortModule } from '@angular/material/sort';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { EditBatimentComponent } from './demo/elements/batiment/dialog/edit-batiment/edit-batiment.component';
 import { EditClientComponent } from './demo/elements/client/dialog/edit-client/edit-client.component';
 import { EditDepenseComponent } from './demo/elements/depense/dialog/edit-depense/edit-depense.component';
@@ -85,6 +85,9 @@ import { EditVetoComponent } from './demo/elements/veterinaire/dialog/edit-veto/
 import { EditLocataireComponent } from './demo/elements/locataire/dialog/edit-locataire/edit-locataire.component';
 import { EditContratLocationComponent } from './demo/elements/contrat-location/dialog/edit-contrat-location/edit-contrat-location.component';
 import { AddNewPasswordComponent } from './demo/elements/change-password/dialog/add-new-password/add-new-password.component';
+
+
+
 
 @NgModule({
   declarations: [
@@ -168,7 +171,8 @@ import { AddNewPasswordComponent } from './demo/elements/change-password/dialog/
     MatNativeDateModule,
     MatToolbarModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatPaginatorModule
 
     
 

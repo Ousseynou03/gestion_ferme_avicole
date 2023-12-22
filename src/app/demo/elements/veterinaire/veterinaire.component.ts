@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Bande } from '../../models/bande.model';
 import { Veterinaire } from '../../models/veterinaire.model';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -9,18 +9,31 @@ import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { EditVenteComponent } from '../vente/dialog/edit-vente/edit-vente.component';
 import { EditVetoComponent } from './dialog/edit-veto/edit-veto.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-veterinaire',
   templateUrl: './veterinaire.component.html',
   styleUrls: ['./veterinaire.component.scss']
 })
-export class VeterinaireComponent {
+export class VeterinaireComponent implements OnInit, AfterViewInit{
 
   bandes: Bande[];
   veterinaires: Veterinaire[];
 
   headers: any
+
+
+  title = 'Liste Des Vétérinaires'
+  displayedColumns: string[] = ['id', 'date', 'nomVeterinaire', 'traitement', 'posologie', 'bande', 'action'];
+  dataSource!: MatTableDataSource<any>;
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+
 
 
   veterinaireForm = this.fb.group({
@@ -39,20 +52,42 @@ export class VeterinaireComponent {
     private _matDialog: MatDialog,
   ) {}
 
-  ngOnInit() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: 'Vous devez être connecté pour récupérer la liste des véterinaires.'
-      });
-      return;
-    }
 
-     this.headers = { Authorization: `Bearer ${token}` };
+  ngAfterViewInit() {
+    if(this.paginator === undefined){
+      this.dataSource.paginator = this.paginator;
+    }
+  }
+
+
+  ngOnInit(): void {
     this.loadBandeList(this.headers);
     this.loadVeterinaireList(this.headers);
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  loadVeterinaireList(header : any){
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+    this.veterinaireService.getAllVeterinaire(headers)
+    .subscribe({
+      next:(res)=>{
+        this.dataSource = new MatTableDataSource(res);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error:(_err)=>{
+        alert("Impossible de recupere la liste des vétérinaires!!!")
+      }
+    })
   }
 
   loadBandeList(headers: any) {
@@ -72,12 +107,6 @@ export class VeterinaireComponent {
     );
   }
   
-
-  loadVeterinaireList(headers: any) {
-    this.veterinaireService.getAllVeterinaire(headers).subscribe(vetos => {
-      this.veterinaires = vetos;
-    });
-  }
 
   
 
