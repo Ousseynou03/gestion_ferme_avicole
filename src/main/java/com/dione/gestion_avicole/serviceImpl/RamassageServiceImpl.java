@@ -2,7 +2,6 @@ package com.dione.gestion_avicole.serviceImpl;
 
 import com.dione.gestion_avicole.JWT.JwtFilter;
 import com.dione.gestion_avicole.POJO.Bande;
-import com.dione.gestion_avicole.POJO.Oeuf;
 import com.dione.gestion_avicole.POJO.Ramassage;
 import com.dione.gestion_avicole.constents.AvicoleConstants;
 import com.dione.gestion_avicole.dao.BandeDao;
@@ -77,7 +76,7 @@ public class RamassageServiceImpl implements RamassageService {
         // Validation et ajout de nbrOeufCasse
         if (requestMap.containsKey("nbrOeufPerdu")) {
             try {
-                double nbrOeufPerdu = Double.parseDouble(requestMap.get("nbrOeufPerdu"));
+                int nbrOeufPerdu = Integer.parseInt(requestMap.get("nbrOeufPerdu"));
                 ramassage.setNbrOeufPerdu(nbrOeufPerdu);
             } catch (NumberFormatException ex) {
                 ex.printStackTrace();
@@ -87,8 +86,18 @@ public class RamassageServiceImpl implements RamassageService {
         // Validation et ajout de nbrOeufCasse
         if (requestMap.containsKey("nbrOeufCasse")) {
             try {
-                double nbrOeufCasse = Double.parseDouble(requestMap.get("nbrOeufCasse"));
+                int nbrOeufCasse = Integer.parseInt(requestMap.get("nbrOeufCasse"));
                 ramassage.setNbrOeufCasse(nbrOeufCasse);
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        // Validation et ajout de nbrPlateauOeuf
+        if (requestMap.containsKey("nbrPlateauOeuf")) {
+            try {
+                int nbrPlateauOeuf = Integer.parseInt(requestMap.get("nbrPlateauOeuf"));
+                ramassage.setNbrPlateauOeuf(nbrPlateauOeuf);
             } catch (NumberFormatException ex) {
                 ex.printStackTrace();
             }

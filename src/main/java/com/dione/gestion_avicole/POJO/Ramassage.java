@@ -18,8 +18,9 @@ public class Ramassage {
     private Integer id;
     private String observation;
     private String quantite;
-    private double nbrOeufCasse;
-    private double nbrOeufPerdu;
+    private int nbrOeufCasse;
+    private int nbrOeufPerdu;
+    private int nbrPlateauOeuf;
     private Date dateRamassage;
 
     @ManyToOne
@@ -29,12 +30,13 @@ public class Ramassage {
     public Ramassage() {
     }
 
-    public Ramassage(Integer id, String observation, String quantite, double nbrOeufCasse, double nbrOeufPerdu, Date dateRamassage, Bande bande) {
+    public Ramassage(Integer id, String observation, String quantite, int nbrOeufCasse, int nbrOeufPerdu, int nbrePlateauOeuf ,Date dateRamassage, Bande bande) {
         this.id = id;
         this.observation = observation;
         this.quantite = quantite;
         this.nbrOeufCasse = nbrOeufCasse;
         this.nbrOeufPerdu = nbrOeufPerdu;
+        this.nbrPlateauOeuf = nbrPlateauOeuf;
         this.dateRamassage = dateRamassage;
         this.bande = bande;
     }
@@ -63,24 +65,32 @@ public class Ramassage {
         this.quantite = quantite;
     }
 
-    public double getNbrOeufCasse() {
+    public int getNbrOeufCasse() {
         return nbrOeufCasse;
     }
 
-    public void setNbrOeufCasse(double nbrOeufCasse) {
+    public void setNbrOeufCasse(int nbrOeufCasse) {
         this.nbrOeufCasse = nbrOeufCasse;
     }
 
-    public double getNbrOeufPerdu() {
+    public int getNbrOeufPerdu() {
         return nbrOeufPerdu;
     }
 
-    public void setNbrOeufPerdu(double nbrOeufPerdu) {
+    public void setNbrOeufPerdu(int nbrOeufPerdu) {
         this.nbrOeufPerdu = nbrOeufPerdu;
     }
 
     public Date getDateRamassage() {
         return dateRamassage;
+    }
+
+    public void setNbrPlateauOeuf(int nbrPlateauOeuf) {
+        this.nbrPlateauOeuf = nbrPlateauOeuf;
+    }
+
+    public int getNbrPlateauOeuf() {
+        return nbrPlateauOeuf;
     }
 
     public void setDateRamassage(Date dateRamassage) {

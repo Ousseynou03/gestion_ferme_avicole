@@ -13,6 +13,7 @@ import com.dione.gestion_avicole.utils.AvicoleUtils;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfWriter;
 //import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -70,7 +72,7 @@ public class BandeServiceImpl implements BandeService {
         }
         bande.setCode(requestMap.get("code"));
         bande.setDesignation(requestMap.get("designation"));
-        bande.setCloture("Non");
+        bande.setCloture(requestMap.get("cloture"));
 
         // Validation et ajout de effectifdepart
         if (requestMap.containsKey("effectifdepart")) {
@@ -257,7 +259,7 @@ public ResponseEntity<String> updateBande(Integer bandeId, Map<String, String> r
 
 
 
-    // Génération de Rapport
+    //Génération de rapport
     @Override
     public byte[] genererRapport(Integer bandeId) {
         Document document = new Document();
@@ -274,12 +276,19 @@ public ResponseEntity<String> updateBande(Integer bandeId, Map<String, String> r
                 String designationBande = bande.getDesignation();
                 String codeBatiment = bande.getBatiment().getCode();
                 String designationBatiment = bande.getBatiment().getDesignation();
+                String clotureBande = bande.getCloture();
+                Date datedebut = bande.getDateDebut();
+                Date dateFin = bande.getDateFin();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
                 // Ajouter les données de la bande au rapport
                 document.add(new Paragraph("Code de la bande: " + codeBande));
                 document.add(new Paragraph("Désignation de la bande: " + designationBande));
                 document.add(new Paragraph("Code du batiment: " + codeBatiment));
                 document.add(new Paragraph("Désignation du batiment: " + designationBatiment));
+                document.add(new Paragraph("Bande Cloturée : " + clotureBande));
+                document.add(new Paragraph("Début bande : " + dateFormat.format(datedebut)));
+                document.add(new Paragraph("Fin bande : " + dateFormat.format(dateFin)));
 
                 // Récupérer les dépenses liées à la bande
                 List<Depense> depenses = depenseDao.findByBandeId(bandeId);
@@ -291,12 +300,35 @@ public ResponseEntity<String> updateBande(Integer bandeId, Map<String, String> r
                             .collect(Collectors.toList());
                     document.add(new Paragraph("\nCatégories de dépense: " + String.join(", ", categories)));
 
-                    List<String> quantites = depenses.stream()
-                            .map(depense -> String.valueOf(depense.getQuantite()))
-                            .collect(Collectors.toList());
-                    document.add(new Paragraph("Quantités: " + String.join(", ", quantites)));
+                    List<Object[]> totalMontantByCategorie = depenseDao.getTotalMontantByCategorieForBande(bandeId);
 
-                    // Ajoutez d'autres données de dépense au besoin
+                    BigDecimal totalMontant = BigDecimal.ZERO;
+
+                    for (Object[] row : totalMontantByCategorie) {
+                        String categorie = row[0].toString();
+
+                        BigDecimal montant;
+
+                        if (row[1] instanceof BigDecimal) {
+                            montant = (BigDecimal) row[1];
+                        } else {
+
+                            try {
+                                montant = new BigDecimal(row[1].toString());
+                            } catch (NumberFormatException e) {
+                                throw new RuntimeException("Impossible de convertir en BigDecimal : " + row[1], e);
+                            }
+                        }
+
+                        document.add(new Paragraph("Dépense pour " + categorie + ": " + String.format("%.2f", montant)  +  " FCFA"));
+                    }
+
+                    for (Object[] row : totalMontantByCategorie) {
+                        totalMontant = totalMontant.add(BigDecimal.valueOf((Double) row[1]));
+                    }
+
+
+                    document.add(new Paragraph("Montant total des dépenses pour la " + designationBande + ": " + String.format("%.2f", totalMontant) + " FCFA"));
                 }
             }
 
@@ -307,14 +339,6 @@ public ResponseEntity<String> updateBande(Integer bandeId, Map<String, String> r
 
         return baos.toByteArray();
     }
-
-
-
-
-
-
-
-
 }
 
 
